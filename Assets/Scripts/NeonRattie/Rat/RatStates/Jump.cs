@@ -10,7 +10,6 @@ namespace NeonRattie.Rat.RatStates
         public override RatActionStates State 
         { 
             get {return RatActionStates.Jump;}
-            protected set { }
         }
 
         public override void Enter(IState previousState)

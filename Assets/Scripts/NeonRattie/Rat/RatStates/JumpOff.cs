@@ -21,7 +21,6 @@ namespace NeonRattie.Rat.RatStates
         public override RatActionStates State 
         { 
             get {return RatActionStates.JumpOff;}
-            protected set { }
         }
 
         private readonly Queue<Vector3> arcPositions = new Queue<Vector3>(100);
