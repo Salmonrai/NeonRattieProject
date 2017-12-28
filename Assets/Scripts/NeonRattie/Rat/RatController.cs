@@ -173,6 +173,13 @@ namespace NeonRattie.Rat
             return TryMove(position, groundLayer);
         }
 
+        public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            transform.position = position;
+            transform.rotation = rotation;
+            transform.localScale = scale;
+        }
+
         public bool TryMove(Vector3 position, LayerMask surface)
         {
             var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * 0.5f, transform.rotation,
@@ -180,7 +187,7 @@ namespace NeonRattie.Rat
             var success = hits.Length == 0;
             if (success)
             {
-                transform.position = position;
+                SetTransform(position, transform.rotation, transform.localScale);
             }
             return success;
         }
@@ -327,6 +334,18 @@ namespace NeonRattie.Rat
                 DrawGizmos -= action;
             }
         }
+        
+        protected virtual void OnEnable()
+        {
+            MainPrefab.ManagementLoaded += OnManagementLoaded;
+            PlayerControls.Instance.Walk += OnWalk;
+        }
+
+        protected virtual void OnDisable()
+        {
+            MainPrefab.ManagementLoaded -= OnManagementLoaded;
+            PlayerControls.Instance.Walk -= OnWalk;
+        }
 
         protected virtual void Update()
         {
@@ -348,22 +367,7 @@ namespace NeonRattie.Rat
             UpdateVelocity(Time.deltaTime);
             FindLowestPoint();
         }
-        
-
-        protected virtual void OnEnable()
-        {
-            MainPrefab.ManagementLoaded += OnManagementLoaded;
-            PlayerControls.Instance.Walk += OnWalk;
-        }
-
-        protected virtual void OnDisable()
-        {
-            MainPrefab.ManagementLoaded -= OnManagementLoaded;
-            PlayerControls.Instance.Walk -= OnWalk;
-        }
-
-       
-        
+  
         protected virtual void OnDrawGizmos()
         {
             Gizmos.DrawLine(transform.position, transform.position + LocalForward * 10);

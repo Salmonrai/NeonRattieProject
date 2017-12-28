@@ -9,10 +9,12 @@ namespace NeonRattie.Rat.RatStates
     {
         public RatStateMachine StateMachine { get; set; }
         
-        public abstract RatActionStates State { get; protected set; }
+        public abstract RatActionStates State { get; }
         
         protected RatBrain rat;
         protected Vector3 groundPosition;
+
+        private const float FALL_CHECK_MULTIPLIER = 0.01f;
 
         public void Init(RatBrain ratBrain, RatStateMachine machine)
         {
@@ -72,7 +74,7 @@ namespace NeonRattie.Rat.RatStates
 
         protected void FallTowards()
         {
-            Vector3 point = rat.transform.position - rat.transform.up;
+            Vector3 point = rat.transform.position - rat.transform.up * FALL_CHECK_MULTIPLIER;
             rat.TryMove(point);
         }
 
