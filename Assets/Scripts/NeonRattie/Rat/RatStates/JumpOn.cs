@@ -8,7 +8,7 @@ using UnityEngine;
 namespace NeonRattie.Rat.RatStates
 {
     //TODO: LOTS OF SIMILARITIES WITH JumpOff.cs
-    public class Climb : RatState, IActionState
+    public class JumpOn : RatState, IActionState
     {
         private readonly float negligibleDistance = 0.1f;
         
@@ -29,7 +29,7 @@ namespace NeonRattie.Rat.RatStates
 
         public override RatActionStates State
         {
-            get { return RatActionStates.Climb;}
+            get { return RatActionStates.JumpOn;}
         }
 
         public override void Enter (IState previousState )
@@ -37,7 +37,7 @@ namespace NeonRattie.Rat.RatStates
             Debug.Log("[CLIMB] Enter()");
             slerpTime = 0;
             base.Enter(previousState);
-            rat.RatAnimator.PlayClimb();
+            rat.RatAnimator.PlayJumpOn();
             GetGroundData();
             if ( rat.JumpBox == null )
             {

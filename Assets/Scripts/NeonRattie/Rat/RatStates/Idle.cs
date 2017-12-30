@@ -24,6 +24,8 @@ namespace NeonRattie.Rat.RatStates
             rat.RatAnimator.PlayIdle();
             PlayerControls.Instance.Walk += OnWalkPressed;
             PlayerControls.Instance.Jump += OnJump;
+
+            rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;        
         }
 
         public override void Tick()
@@ -37,7 +39,6 @@ namespace NeonRattie.Rat.RatStates
             if (playerControls.CheckKey(playerControls.Forward))
             {
                 rat.ChangeState(RatActionStates.Walk);
-                Debug.Log("[IDLE] Change To walk");
                 return;
             }
             

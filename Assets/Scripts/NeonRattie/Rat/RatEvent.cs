@@ -82,7 +82,7 @@ namespace NeonRattie.Rat
                 case RatActionStates.Jump:
                     PlayJump();
                     break;
-                case RatActionStates.Climb:
+                case RatActionStates.JumpOn:
                     PlayClimb();
                     break;
                 case RatActionStates.JumpOff:
