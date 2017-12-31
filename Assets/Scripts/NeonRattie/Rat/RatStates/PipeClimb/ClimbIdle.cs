@@ -17,14 +17,16 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             base.Enter(state);
             PlayerControls.Instance.ClimbUp += OnClimbUp;
+            rat.AddDrawGizmos(OnGizmosDrawn);
         }
 
         public override void Tick()
         {
-            Vector3 fallTowards;
-            if (PolePoint(out fallTowards))
+            RaycastHit hit;
+            if (RotateToClimbPole(out hit))
             {
-                FallTowards(fallTowards, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
+                rat.PreviousClimbFallTowardsPoint = hit.point;
+                FallTowards(rat.PreviousClimbFallTowardsPoint, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
             }
         }
 
@@ -32,6 +34,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             base.Exit(state);
             PlayerControls.Instance.ClimbUp -= OnClimbUp;
+            rat.RemoveDrawGizmos(OnGizmosDrawn);
         }
 
         private void OnClimbUp(float amount)

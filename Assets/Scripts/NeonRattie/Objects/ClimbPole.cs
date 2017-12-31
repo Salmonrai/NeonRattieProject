@@ -15,6 +15,8 @@ namespace NeonRattie.Objects
         public Vector3 Point { get { return climbPoint.position; } }
         public Quaternion Rotation {get { return climbPoint.rotation; }}
         public Bounds Bounds { get { return meshRenderer.bounds; } }
+        
+        public Collider Collider { get; private set; }
 
         private Hightlight hightlight;
         private MeshRenderer meshRenderer;
@@ -28,7 +30,7 @@ namespace NeonRattie.Objects
         {
             hightlight = GetComponentInChildren<Hightlight>();
             meshRenderer = climbPoint.GetComponent<MeshRenderer>();
-            
+            Collider = GetComponent<Collider>();
         }
     }
 }

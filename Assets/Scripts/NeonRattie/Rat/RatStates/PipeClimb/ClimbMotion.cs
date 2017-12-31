@@ -15,21 +15,30 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             base.Enter(state);
             PlayerControls.Instance.Unwalk += OnUnWalk;
+            
+            rat.AddDrawGizmos(OnGizmosDrawn);
         }
 
+        private Vector3 normal, tangent;
+        private RaycastHit hit;
+
+        private Vector3 FallTowardsData
+        {
+            get { return rat.PreviousClimbFallTowardsPoint; }
+            set { rat.PreviousClimbFallTowardsPoint = value; }
+        }
+        
         public override void Tick()
         {
             base.Tick();
-            Vector3 fallTowards;
-            if (!PolePoint(out fallTowards))
+            if (!RotateToClimbPole(out hit))
             {
-                Vector3 point = rat.RatPosition.position + rat.RatPosition.up * 0.1f;
-                rat.SetTransform(point, rat.RatPosition.rotation, rat.RatPosition.localScale);
                 return;
             }
+            FallTowardsData = hit.point;
             Vector3 forward = rat.RatPosition.position +
                               rat.RatPosition.forward * rat.RunSpeed * Time.deltaTime;
-            if (Vector3.Distance(fallTowards, rat.RatPosition.position) < 0.4f)
+            if (Vector3.Distance(FallTowardsData, rat.RatPosition.position) < 0.4f)
             {
                 rat.TryMove(forward);
                 if (!PlayerControls.Instance.CheckKey(PlayerControls.Instance.ClimbUpKey))
@@ -37,18 +46,30 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                     rat.ChangeState(RatActionStates.ClimbIdle);
                 }
             }
-            FallTowards(fallTowards, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
+
+            FallTowards(FallTowardsData, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
         }
 
         public override void Exit(IState nextState)
         {
             base.Exit(nextState);
             PlayerControls.Instance.Unwalk -= OnUnWalk;
+            rat.RemoveDrawGizmos(OnGizmosDrawn);
         }
 
         private void OnUnWalk(float amount)
         {
             rat.ChangeState(RatActionStates.ClimbIdle);
+        }
+
+        protected override void OnGizmosDrawn()
+        {
+            base.OnGizmosDrawn();
+            Vector3 point = rat.RatPosition.position;
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(point, normal);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(point,  tangent);
         }
     }
 }

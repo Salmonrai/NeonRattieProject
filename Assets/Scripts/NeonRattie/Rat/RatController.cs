@@ -246,6 +246,8 @@ namespace NeonRattie.Rat
 
         public Dictionary<Type, MonoBehaviour> AttachedMonoBehaviours;
 
+        public Vector3 PreviousClimbFallTowardsPoint { get; set; }
+
         public void ChangeState (RatActionStates state)
         {
             StateMachine.ChangeState(state);

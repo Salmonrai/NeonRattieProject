@@ -37,5 +37,16 @@ namespace Flusk.Extensions
             flatten = direction * magnitude;
             return flatten;
         }
+
+        /// <summary>
+        /// What the fuck is this?
+        /// Try to calculate the tangent from a normal
+        /// </summary>
+        public static Vector3 CalculateTangent(this Vector3 normal)
+        {
+            Vector3 upTangent = Vector3.Cross(normal, Vector3.up).normalized;
+            Vector3 forwardTangent = Vector3.Cross(normal, Vector3.forward).normalized;
+            return upTangent.sqrMagnitude > forwardTangent.sqrMagnitude ? upTangent : forwardTangent;
+        }
     }
 }

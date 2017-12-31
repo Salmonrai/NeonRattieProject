@@ -52,7 +52,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 
             Vector3 offset = rat.ClimbPole.Bounds.extents.normalized;
             offset = offset.Flatten();
-            offset *= 0.01f;
+            offset *= 0.02f;
             
             positionTweener =
                 new PositionTweener(rat.ClimbUpPolesCurve, rat.RatPosition.position, rat.ClimbPole.Point + offset, rat.transform);
