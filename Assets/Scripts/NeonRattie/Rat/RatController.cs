@@ -263,9 +263,9 @@ namespace NeonRattie.Rat
             transform.localScale = scale;
         }
 
-        public bool TryMove(Vector3 position, LayerMask surface)
+        public bool TryMove(Vector3 position, LayerMask surface, float boxSize = 0.5f)
         {
-            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * 0.5f, transform.rotation,
+            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * boxSize, transform.rotation,
                 surface);
             var success = hits.Length == 0;
             if (success)

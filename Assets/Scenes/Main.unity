@@ -427,21 +427,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4381831498089106, guid: d85bc53e3edd3834ba7e4760b16ea37d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -473,151 +458,6 @@ Prefab:
     - target: {fileID: 4381831498089106, guid: d85bc53e3edd3834ba7e4760b16ea37d, type: 2}
       propertyPath: m_RootOrder
       value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114035764398905710, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 1170415334}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: jumpLayer.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: walkSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: runSpeed
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: jumpForce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: collisionMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.data[0].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.data[0].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.data[1].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_Curve.Array.data[1].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbUpPolesCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[0].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[0].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[1].value
-      value: 1.0251164
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[1].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[1].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.data[0].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.data[0].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.data[1].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_Curve.Array.data[1].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climDownPolesCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[0].time
-      value: 0.70149994
-      objectReference: {fileID: 0}
-    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-        type: 2}
-      propertyPath: climbRotationCurve.m_Curve.Array.data[0].value
-      value: 0.00016784668
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d85bc53e3edd3834ba7e4760b16ea37d, type: 2}
@@ -13681,28 +13521,6 @@ Transform:
   m_Father: {fileID: 1260999006}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!1 &1170415331 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1947188201113636, guid: d85bc53e3edd3834ba7e4760b16ea37d,
-    type: 2}
-  m_PrefabInternal: {fileID: 23586807}
---- !u!95 &1170415334
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1170415331}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &1173313722
 Prefab:
   m_ObjectHideFlags: 0
@@ -14605,8 +14423,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &1239919822
-MeshCollider:
+--- !u!136 &1239919822
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -14614,11 +14432,10 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: a4a2dff3e31b4594aa6aca8c3c346f1a, type: 3}
+  m_Radius: 0.01
+  m_Height: 0.30269736
+  m_Direction: 1
+  m_Center: {x: 0.13960125, y: 0.15098763, z: 1.77}
 --- !u!1001 &1247910455
 Prefab:
   m_ObjectHideFlags: 0

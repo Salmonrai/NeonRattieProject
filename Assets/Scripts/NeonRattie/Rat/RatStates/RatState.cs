@@ -67,6 +67,11 @@ namespace NeonRattie.Rat.RatStates
             groundPosition = ground == null ? rat.transform.position : ground.position;
         }
 
+        protected void FallTowards(Vector3 point, LayerMask mask, float boxSize = 0.5f)
+        {
+            rat.TryMove(point, mask, boxSize);
+        }
+
         protected void FallTowards (Vector3 point)
         {
             rat.TryMove(point);
@@ -82,6 +87,7 @@ namespace NeonRattie.Rat.RatStates
         {
             rat.TryMove(rat.LowestPoint - Vector3.down * 0.1f);
         }
+        
         
         protected Vector3 GetUpValue(float deltaTime, AnimationCurve curve, float height)
         {

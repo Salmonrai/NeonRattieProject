@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 4099511528463210}
   - component: {fileID: 33869396682367352}
   - component: {fileID: 23484501563939514}
+  - component: {fileID: 95751322739060438}
   m_Layer: 0
   m_Name: Rat_Model
   m_TagString: Untagged
@@ -101,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1431839849016584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0728, z: 0}
+  m_LocalPosition: {x: 0, y: 0.018, z: 0}
   m_LocalScale: {x: 0.15458691, y: 0.15458691, z: 0.15458691}
   m_Children:
   - {fileID: 4099511528463210}
@@ -191,6 +192,23 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!95 &95751322739060438
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1947188201113636}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!108 &108568959221191638
 Light:
   m_ObjectHideFlags: 1
@@ -251,7 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da69a62808a02de4195f8ebe6ede88be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
 --- !u!114 &114460836525078172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -274,10 +291,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94830c8997a1044cbe80cdf4671e449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
-  runSpeed: 15
+  walkSpeed: 0.1
+  runSpeed: 0.15
   gravity: {x: 0, y: 0, z: 0}
-  jumpForce: 10
+  jumpForce: 1
   jumpArc:
     serializedVersion: 2
     m_Curve:
@@ -309,18 +326,17 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   mass: 0.1
-  rotateAmount: 300
   ratPosition: {fileID: 4381831498089106}
   collisionMask:
     serializedVersion: 2
-    m_Bits: 4294965449
+    m_Bits: 0
   moveHelperState: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 6400
   jumpLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
   rotationAngleMultiplier: 0.5
   rotateController: {fileID: 114460836525078172}
   climbUpCurve:
@@ -402,6 +418,61 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
+  climbMotionMultiplier: 5
+  climbUpPolesCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  climbRotationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0.70149994
+      value: 0.00016784668
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1.0251164
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  climDownPolesCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
   forwardDirection: {x: 0, y: 0, z: 0}
   ratState: 
 --- !u!136 &136593828472541580
@@ -413,7 +484,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.12
+  m_Radius: 0.06
   m_Height: 0.47
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}

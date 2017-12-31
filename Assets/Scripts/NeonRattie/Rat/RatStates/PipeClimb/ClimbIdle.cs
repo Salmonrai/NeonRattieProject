@@ -1,11 +1,12 @@
-﻿using Flusk.Utility;
+﻿using System;
+using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates.PipeClimb
 {
-    public class ClimbIdle : RatState, IActionState, IClimb
+    public class ClimbIdle : ClimbState, IClimb
     {
         public override RatActionStates State
         {
@@ -16,6 +17,15 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             base.Enter(state);
             PlayerControls.Instance.ClimbUp += OnClimbUp;
+        }
+
+        public override void Tick()
+        {
+            Vector3 fallTowards;
+            if (PolePoint(out fallTowards))
+            {
+                FallTowards(fallTowards, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
+            }
         }
 
         public override void Exit(IState state)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates.PipeClimb
 {
-    public class ClimbMotion : RatState, IActionState, IClimb
+    public class ClimbMotion : ClimbState, IClimb
     {
         public override RatActionStates State
         {
@@ -20,13 +20,24 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Tick()
         {
             base.Tick();
+            Vector3 fallTowards;
+            if (!PolePoint(out fallTowards))
+            {
+                Vector3 point = rat.RatPosition.position + rat.RatPosition.up * 0.1f;
+                rat.SetTransform(point, rat.RatPosition.rotation, rat.RatPosition.localScale);
+                return;
+            }
             Vector3 forward = rat.RatPosition.position +
                               rat.RatPosition.forward * rat.RunSpeed * Time.deltaTime;
-            rat.TryMove(forward);
-            if (!PlayerControls.Instance.CheckKey(PlayerControls.Instance.ClimbUpKey))
+            if (Vector3.Distance(fallTowards, rat.RatPosition.position) < 0.4f)
             {
-                rat.ChangeState(RatActionStates.ClimbIdle);
+                rat.TryMove(forward);
+                if (!PlayerControls.Instance.CheckKey(PlayerControls.Instance.ClimbUpKey))
+                {
+                    rat.ChangeState(RatActionStates.ClimbIdle);
+                }
             }
+            FallTowards(fallTowards, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
         }
 
         public override void Exit(IState nextState)
