@@ -460,6 +460,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114464211205437128, guid: d85bc53e3edd3834ba7e4760b16ea37d,
+        type: 2}
+      propertyPath: climbOffDistance
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d85bc53e3edd3834ba7e4760b16ea37d, type: 2}
   m_IsPrefabParent: 0

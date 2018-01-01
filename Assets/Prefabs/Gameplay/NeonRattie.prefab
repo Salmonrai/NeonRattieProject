@@ -473,6 +473,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  climbOffDistance: 0.01
   forwardDirection: {x: 0, y: 0, z: 0}
   ratState: 
 --- !u!136 &136593828472541580
