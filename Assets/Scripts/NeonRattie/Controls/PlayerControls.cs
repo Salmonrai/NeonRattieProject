@@ -10,13 +10,37 @@ namespace NeonRattie.Controls
     //mostly relays keypresses to certain actions
     public class PlayerControls : PersistentSingleton<PlayerControls>
     {
-        [SerializeField] protected KeyCode [] walkKey;
-        [SerializeField] protected KeyCode reverseKey = KeyCode.S;
-        [SerializeField] protected KeyCode runKey;
-        [SerializeField] protected KeyCode jumpKey;
+        [SerializeField] 
+        protected KeyCode [] walkKey;
+        [SerializeField] 
+        protected KeyCode reverseKey = KeyCode.S;
+        [SerializeField] 
+        protected KeyCode runKey;
+        [SerializeField] 
+        protected KeyCode jumpKey;
 
-        [SerializeField] protected KeyCode pauseKey;
-        [SerializeField] protected KeyCode exitKey;
+        [SerializeField] 
+        protected KeyCode pauseKey;
+        [SerializeField] 
+        protected KeyCode exitKey;
+
+        [Header("Climbing")]
+        [SerializeField]
+        protected KeyCode climbUp;
+        public KeyCode ClimbUpKey { get { return climbUp; } }
+
+        [SerializeField]
+        protected KeyCode turnLeft;
+        public KeyCode TurnLeftKey { get { return turnLeft; } }
+
+        [SerializeField]
+        protected KeyCode turnRight;
+        public KeyCode TurnRightKey { get { return turnRight; } }
+
+        [SerializeField]
+        protected KeyCode climbDown;
+        public KeyCode ClimDownKey { get { return ClimDownKey; } }
+
 
         [Header("Shooosh, only later")]
         [SerializeField] protected KeyCode screenShotKey;
@@ -50,6 +74,10 @@ namespace NeonRattie.Controls
         public event Action Pause;
         public event Action Exit;
 
+        public event Action<float> ClimbUp;
+        public event Action<float> ClimbDown;
+        public event Action<float> TurnLeft;
+        public event Action<float> TurnRight;
         
 
         public bool CheckKeyDown(KeyCode code)
@@ -80,6 +108,12 @@ namespace NeonRattie.Controls
             kc.KeyHit += InvokeRun;
             kc.KeyHit += InvokeJump;
             kc.KeyHit += InvokeUnWalk;   
+            
+            // Climbing
+            kc.KeyHit += InvokeClimbDown;
+            kc.KeyHit += InvokeClimbUp;
+            kc.KeyHit += InvokeTurnLeft;
+            kc.KeyHit += InvokeTurnRight;
         }
 
         protected virtual void OnDisable()
@@ -145,6 +179,42 @@ namespace NeonRattie.Controls
                 return;
             }
             Invoke(Jump, data.AxisValue);
+        }
+
+        private void InvokeClimbUp(KeyData data)
+        {
+            if (climbUp != data.Code)
+            {
+                return;
+            }
+            Invoke(ClimbUp, data.AxisValue);
+        }
+
+        private void InvokeClimbDown(KeyData data)
+        {
+            if (climbDown != data.Code)
+            {
+                return;
+            }
+            Invoke(ClimbDown, data.AxisValue);
+        }
+
+        private void InvokeTurnLeft(KeyData data)
+        {
+            if (turnLeft != data.Code)
+            {
+                return;
+            }
+            Invoke(TurnLeft, data.AxisValue);
+        }
+
+        private void InvokeTurnRight(KeyData data)
+        {
+            if (turnRight != data.Code)
+            {
+                return;
+            }
+            Invoke(TurnRight, data.AxisValue);
         }
 
         [UsedImplicitly]

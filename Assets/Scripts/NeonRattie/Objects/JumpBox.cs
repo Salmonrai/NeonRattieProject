@@ -1,16 +1,18 @@
 ﻿using Flusk.DataHelp;
 using NeonRattie.Controls;
+using NeonRattie.Effects;
 using NeonRattie.Rat;
 using NeonRattie.Shared;
 using UnityEngine;
 
 namespace NeonRattie.Objects
 {
-    [RequireComponent(typeof(Rigidbody))]
-    public class JumpBox : NeonRattieBehaviour
+    [RequireComponent(typeof(Rigidbody), typeof(Hightlight))]
+    public class JumpBox : NeonRattieBehaviour, IClimbable
     {
         [SerializeField]
         protected LayerMask jumpLayer;
+        public LayerMask CollisionMask { get { return jumpLayer; } }
 
         [SerializeField]
         protected Transform jumpPoint;
@@ -18,13 +20,17 @@ namespace NeonRattie.Objects
         {
             get { return jumpPoint; }
         }
+        public Vector3 Point {get { return jumpPoint.position; }}
+        public Quaternion Rotation { get { return jumpPoint.rotation; } }
+        public Bounds Bounds { get { return meshRenderer.bounds; } }
 
-        private Material material;
 
+        private Hightlight hightlight;
+        private MeshRenderer meshRenderer;
 
         public void Select (bool state = true)
         {
-            material.color = state ? Color.red : Color.white;
+            hightlight.Highlight(state);
         }
 
         public Vector3 GetJumpPoint(RatController climber)
@@ -89,7 +95,8 @@ namespace NeonRattie.Objects
 
         protected virtual void Awake ()
         {
-            material = GetComponent<MeshRenderer>().material;
+            hightlight = GetComponentInChildren<Hightlight>();
+            meshRenderer = jumpPoint.GetComponent<MeshRenderer>();
         }
     }
 }

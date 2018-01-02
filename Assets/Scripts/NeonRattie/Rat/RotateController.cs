@@ -19,6 +19,7 @@ namespace NeonRattie.Rat
         
         protected virtual void Rotate()
         {
+            
             Quaternion current = transform.rotation;
             Quaternion next = Quaternion.Slerp(current, goal, slerpTime);
             transform.rotation = next;

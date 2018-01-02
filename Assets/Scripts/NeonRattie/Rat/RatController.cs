@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Net.NetworkInformation;
+using System.Collections.Generic;
 using Flusk.Controls;
 using Flusk.Management;
 using NeonRattie.Controls;
 using NeonRattie.Management;
 using NeonRattie.Objects;
+using NeonRattie.Rat.Animation;
 using NeonRattie.Rat.Data;
 using NeonRattie.Rat.RatStates;
+using NeonRattie.Rat.RatStates.PipeClimb;
 using NeonRattie.Shared;
 using NeonRattie.Utility;
 using UnityEngine;
@@ -17,71 +19,143 @@ namespace NeonRattie.Rat
     [RequireComponent( typeof(RatAnimator))]
     public class RatController : NeonRattieBehaviour, IMovable
     {
+        /// <summary>
+        /// Minimum speed
+        /// </summary>
         [SerializeField] protected float walkSpeed = 10;
+        public float WalkSpeed {get { return walkSpeed; }}
+        
+        /// <summary>
+        /// Soft max speed
+        /// </summary>
         [SerializeField] protected float runSpeed = 15;
+        public float RunSpeed { get { return runSpeed; } }
 
+        /// <summary>
+        /// The gravity the rat uses
+        /// </summary>
         [SerializeField] protected Vector3 gravity;
         public Vector3 Gravity { get { return gravity; } }
 
+        /// <summary>
+        /// The amount of force needed for a jumpp
+        /// </summary>
         [SerializeField] protected float jumpForce = 10;
         public float JumpForce { get { return jumpForce; } }
+        
+        /// <summary>
+        /// The shape of the jump when doing a simple jump
+        /// </summary>
         [SerializeField] protected AnimationCurve jumpArc;
         public AnimationCurve JumpArc { get { return jumpArc; } }
+        
+        /// <summary>
+        /// The shape if the jump when jumping onto a box
+        /// </summary>
         [SerializeField] protected AnimationCurve jumpAnimationCurve;
 
+        /// <summary>
+        /// The percieved mass of the rat
+        /// </summary>
         [SerializeField] protected float mass = 1;
         public float Mass { get { return mass; } }
 
-        [SerializeField] protected float rotateAmount = 300;
-
+        /// <summary>
+        /// An updated value for the position of the rat
+        /// </summary>
         [SerializeField] protected Transform ratPosition;
+        public Transform RatPosition
+        {
+            get { return ratPosition; }
+        }
 
+        /// <summary>
+        /// The colliders the rat will collide with
+        /// </summary>
         [SerializeField] protected LayerMask collisionMask;
-
-        [SerializeField]
-        protected MoveHelperState moveHelperState;
-
         public LayerMask CollisionMask
         {
             get { return collisionMask; }
         }
 
+        /// <summary>
+        /// How the rat is allowed to move
+        /// </summary>
+        [SerializeField]
+        protected MoveHelperState moveHelperState;
+
+        /// <summary>
+        /// The collision mask the rat considers the ground
+        /// </summary>
         [SerializeField]
         protected LayerMask groundLayer;
 
+        /// <summary>
+        /// The objects the rat can jump on
+        /// </summary>
         [SerializeField]
         protected LayerMask jumpLayer;
-
+        
+        /// <summary>
+        /// The mulitplier for when rotation the rat
+        /// </summary>
         [SerializeField] protected float rotationAngleMultiplier = 1;
+        
+        /// <summary>
+        /// A utility for rotating the rat
+        /// </summary>
         [SerializeField] protected RotateController rotateController;
         public RotateController RotateController {get { return rotateController; }}
 
         
         //climbing data
-        [SerializeField] protected AnimationCurve climbUpCurve;
-
+        [SerializeField] 
+        protected AnimationCurve climbUpCurve;
         public AnimationCurve ClimbUpCurve
         {
             get { return climbUpCurve; }
         }
 
-        [SerializeField] protected AnimationCurve forwardMotion;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        [SerializeField] 
+        protected AnimationCurve forwardMotion;
         public AnimationCurve ForwardMotion
         {
             get { return forwardMotion; }
         }
 
-        [SerializeField] protected AnimationMotion jumpOffCurve;
+        [SerializeField] 
+        protected AnimationMotion jumpOffCurve;
         public AnimationMotion JumpOffCurve
         {
             get { return jumpOffCurve; }
         }
 
-        public Transform RatPosition
+        #region Data for ClimbUp and ClimbDown states
+
+        [Header("Climb Up and Climb Down states for poles/pipes and such")]
+
+        [SerializeField]
+        protected float climbMotionMultiplier = 5f;
+        public float ClimbMotionMultiplier { get { return climbMotionMultiplier; } }
+        
+        [SerializeField]
+        protected AnimationCurve climbUpPolesCurve;
+        public AnimationCurve ClimbUpPolesCurve
         {
-            get { return ratPosition; }
+            get { return climbUpPolesCurve; }
         }
+
+        [SerializeField]
+        protected AnimationCurve climbRotationCurve;
+        public AnimationCurve ClimbRotationCurve { get { return climbRotationCurve; } }
+        
+        [SerializeField]
+        protected AnimationCurve climDownPolesCurve;
+        public AnimationCurve ClimbDownPolesCurbe { get { return climDownPolesCurve; } }
+        #endregion
 
         public Vector3 Velocity { get; protected set; }
 
@@ -92,6 +166,7 @@ namespace NeonRattie.Rat
         public NavMeshAgent NavAgent { get; protected set; }
 
         public JumpBox JumpBox { get; private set; }
+        public ClimbPole ClimbPole { get; private set; }
 
         //other rat effects...
 
@@ -107,9 +182,6 @@ namespace NeonRattie.Rat
         protected Updater rotationUpdater = new Updater();
         #endregion
         
-        
-        
-
         //TODO: write editor script so these can be configurable!
         public Vector3 ForwardDirection
         {
@@ -152,16 +224,29 @@ namespace NeonRattie.Rat
         protected RatActionStates
             idle = RatActionStates.Idle,
             jump = RatActionStates.Jump,
-            climb = RatActionStates.Climb,
+            jumpOn = RatActionStates.JumpOn,
             walk = RatActionStates.Walk,
-            jumpOff = RatActionStates.JumpOff;
+            jumpOff = RatActionStates.JumpOff,
+            climbUp = RatActionStates.ClimbUp,
+            climbMotion = RatActionStates.ClimbMotion,
+            climbIdle = RatActionStates.ClimbIdle,
+            climbDown = RatActionStates.ClimbDown;
 
         protected Idle idling;
         protected Jump jumping;
-        protected Climb climbing;
+        protected JumpOn climbing;
         protected Walk walking;
         protected JumpOff jumpingOff;
+
+        protected ClimbUp climbingUp;
+        protected ClimbMotion climbingMotion;
+        protected ClimbIdle climbingIdle;
+        protected ClimbDown climbingDown;
         #endregion
+
+        public Dictionary<Type, MonoBehaviour> AttachedMonoBehaviours;
+
+        public Vector3 PreviousClimbFallTowardsPoint { get; set; }
 
         public void ChangeState (RatActionStates state)
         {
@@ -173,34 +258,73 @@ namespace NeonRattie.Rat
             return TryMove(position, groundLayer);
         }
 
-        public bool TryMove(Vector3 position, LayerMask surface)
+        public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale)
         {
-            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * 0.5f, transform.rotation,
+            transform.position = position;
+            transform.rotation = rotation;
+            transform.localScale = scale;
+        }
+
+        public bool TryMove(Vector3 position, LayerMask surface, float boxSize = 0.5f)
+        {
+            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * boxSize, transform.rotation,
                 surface);
             var success = hits.Length == 0;
             if (success)
             {
-                transform.position = position;
+                SetTransform(position, transform.rotation, transform.localScale);
             }
             return success;
         }
 
-        public bool ClimbValid()
+        public bool ClimbValid<TClimbComponent>(out TClimbComponent climbable) 
+            where TClimbComponent : MonoBehaviour, IClimbable
         {
             var direction = LocalForward;
             RaycastHit info;
-            bool success = Physics.Raycast(transform.position, direction, out info, 5f, 1 << LayerMask.NameToLayer("Interactable"));
+            bool success = Physics.Raycast(transform.position, direction, out info, 0.1f, 
+                1 << LayerMask.NameToLayer("Interactable"));
             if (success)
             {
-                JumpBox = info.transform.GetComponentInChildren<JumpBox>();
-                return JumpBox != null;
+                climbable = info.transform.GetComponentInChildren<TClimbComponent>();
+                if (climbable != null)
+                {
+                    climbable.Select(true);
+                }
+                return climbable != null;
             }
-            if ( JumpBox != null )
-            {
-                JumpBox.Select(false);
-            }
-            JumpBox = null;
+            climbable = null;
             return false; 
+        }
+
+        public bool ClimbUpValid()
+        {
+            ClimbPole pole;
+            bool result = ClimbValid(out pole);
+            if (!result)
+            {
+                if (ClimbPole != null)
+                {
+                    ClimbPole.Select(false);
+                }
+            }
+            ClimbPole = pole;
+            return result;
+        }
+
+        public bool JumpOnValid()
+        {
+            JumpBox box;
+            bool result = ClimbValid(out box);
+            if (!result)
+            {
+                if (JumpBox != null)
+                {
+                    JumpBox.Select(false);
+                }
+            }
+            JumpBox = box;
+            return result;
         }
 
         //TODO: make this process more secure/elegant, some event or something   
@@ -257,7 +381,6 @@ namespace NeonRattie.Rat
             SceneManagement.Instance.Rat = this;
             NavAgent = GetComponentInChildren<NavMeshAgent>();
             Init();
-            RatCollider = GetComponent<Collider>();
         }
 
         
@@ -270,20 +393,38 @@ namespace NeonRattie.Rat
             idling = new Idle();
             walking = new Walk();
             jumping = new Jump();
-            climbing = new Climb();
+            climbing = new JumpOn();
             jumpingOff = new JumpOff();
+            
+            //climbing
+            climbingUp = new ClimbUp();
+            climbingMotion = new ClimbMotion();
+            climbingIdle = new ClimbIdle();
+            climbingDown = new ClimbDown();
 
             idling.Init(this, ratStateMachine);
             walking.Init(this, ratStateMachine);
             jumping.Init(this, ratStateMachine);
             climbing.Init(this, ratStateMachine);
             jumpingOff.Init(this, ratStateMachine);
+            
+            //climbing 
+            climbingUp.Init(this, ratStateMachine);
+            climbingDown.Init(this, ratStateMachine);
+            climbingMotion.Init(this, ratStateMachine);
+            climbingIdle.Init(this, ratStateMachine);
 
             ratStateMachine.AddState(idle, idling);
             ratStateMachine.AddState(walk, walking);
             ratStateMachine.AddState(jump, jumping);
-            ratStateMachine.AddState(climb, climbing);
+            ratStateMachine.AddState(jumpOn, climbing);
             ratStateMachine.AddState(jumpOff, jumpingOff);
+            
+            ratStateMachine.AddState(climbUp, climbingUp);
+            ratStateMachine.AddState(climbDown, climbingDown);
+            ratStateMachine.AddState(climbIdle, climbingIdle);
+            ratStateMachine.AddState(climbMotion, climbingMotion);
+            
             ratStateMachine.ChangeState(idle);
             
             //update helpers
@@ -299,7 +440,6 @@ namespace NeonRattie.Rat
         {
             rotationAxis = axis;
             rotationAngle = angle;
-            //transform.RotateAround(transform.position, axis, angle * rotationAngleMultiplier);
         }
 
         public virtual void RotateRat(float angle)
@@ -327,11 +467,42 @@ namespace NeonRattie.Rat
                 DrawGizmos -= action;
             }
         }
+        
+        public void FindLowestPoint ()
+        {
+            Vector3 point = transform.position - Vector3.down * 10;
+            LowestPoint = Bounds.ClosestPoint(point);
+        }
+
+        protected virtual void Awake()
+        {
+            RatCollider = GetComponent<Collider>();
+            
+            // Cache
+            AttachedMonoBehaviours = new Dictionary<Type, MonoBehaviour>();
+            MonoBehaviour[] monoBehaviours = GetComponentsInChildren<MonoBehaviour>();
+            foreach (MonoBehaviour behaviour in monoBehaviours)
+            {                
+                AttachedMonoBehaviours.Add(behaviour.GetType(), behaviour);
+            }
+        }
+        
+        protected virtual void OnEnable()
+        {
+            MainPrefab.ManagementLoaded += OnManagementLoaded;
+            PlayerControls.Instance.Walk += OnWalk;
+        }
+
+        protected virtual void OnDisable()
+        {
+            MainPrefab.ManagementLoaded -= OnManagementLoaded;
+            PlayerControls.Instance.Walk -= OnWalk;
+        }
 
         protected virtual void Update()
         {
             ratStateMachine.Tick();
-            ClimbValid();
+            JumpOnValid();
             rotationUpdater.Update(Time.deltaTime);
             if  (JumpBox != null )
             {
@@ -348,22 +519,7 @@ namespace NeonRattie.Rat
             UpdateVelocity(Time.deltaTime);
             FindLowestPoint();
         }
-        
-
-        protected virtual void OnEnable()
-        {
-            MainPrefab.ManagementLoaded += OnManagementLoaded;
-            PlayerControls.Instance.Walk += OnWalk;
-        }
-
-        protected virtual void OnDisable()
-        {
-            MainPrefab.ManagementLoaded -= OnManagementLoaded;
-            PlayerControls.Instance.Walk -= OnWalk;
-        }
-
-       
-        
+  
         protected virtual void OnDrawGizmos()
         {
             Gizmos.DrawLine(transform.position, transform.position + LocalForward * 10);
@@ -381,11 +537,7 @@ namespace NeonRattie.Rat
             previousPosition = currentPosition;
         }
 
-        private void FindLowestPoint ()
-        {
-            Vector3 point = transform.position - Vector3.down * 10;
-            LowestPoint = Bounds.ClosestPoint(point);
-        }
+        
 
         private void OnWalk(float axis)
         {
@@ -407,6 +559,12 @@ namespace NeonRattie.Rat
         
         protected void UpdateRotation(float time)
         {
+            bool isClimb = ratStateMachine.CurrentState is IClimb;
+            if (isClimb)
+            {
+                return;
+            }
+            
             Quaternion next = Quaternion.AngleAxis(rotationAngle * rotationAngleMultiplier, rotationAxis);
             next = transform.rotation * next;
             rotationTime += time;

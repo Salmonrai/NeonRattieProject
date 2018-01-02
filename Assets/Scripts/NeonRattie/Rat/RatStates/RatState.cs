@@ -9,10 +9,12 @@ namespace NeonRattie.Rat.RatStates
     {
         public RatStateMachine StateMachine { get; set; }
         
-        public abstract RatActionStates State { get; protected set; }
+        public abstract RatActionStates State { get; }
         
         protected RatBrain rat;
         protected Vector3 groundPosition;
+
+        private const float FALL_CHECK_MULTIPLIER = 0.01f;
 
         public void Init(RatBrain ratBrain, RatStateMachine machine)
         {
@@ -65,6 +67,11 @@ namespace NeonRattie.Rat.RatStates
             groundPosition = ground == null ? rat.transform.position : ground.position;
         }
 
+        protected void FallTowards(Vector3 point, LayerMask mask, float boxSize = 0.5f)
+        {
+            rat.TryMove(point, mask, boxSize);
+        }
+
         protected void FallTowards (Vector3 point)
         {
             rat.TryMove(point);
@@ -72,7 +79,7 @@ namespace NeonRattie.Rat.RatStates
 
         protected void FallTowards()
         {
-            Vector3 point = rat.transform.position - rat.transform.up;
+            Vector3 point = rat.transform.position - rat.transform.up * FALL_CHECK_MULTIPLIER;
             rat.TryMove(point);
         }
 
@@ -80,6 +87,7 @@ namespace NeonRattie.Rat.RatStates
         {
             rat.TryMove(rat.LowestPoint - Vector3.down * 0.1f);
         }
+        
         
         protected Vector3 GetUpValue(float deltaTime, AnimationCurve curve, float height)
         {

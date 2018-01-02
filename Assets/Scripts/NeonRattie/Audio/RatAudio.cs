@@ -102,7 +102,7 @@ namespace NeonRattie.Audio
                 case RatActionStates.Jump:
                     PlayJump();
                     break;
-                case RatActionStates.Climb:
+                case RatActionStates.JumpOn:
                     PlayClimp();
                     break;
                 case RatActionStates.JumpOff:
