@@ -43,7 +43,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                 orientation.position, rat.RatPosition);
             rotation = new RotationTweener(rat.ClimbRotationCurve, currentRotation, 
                 orientation.rotation, rat.RatPosition);
-            
+
+            rotation.MultiplierModifier = position.MultiplierModifier = 5f;
             rotation.Complete = position.Complete = OnComplete;
         }
 
