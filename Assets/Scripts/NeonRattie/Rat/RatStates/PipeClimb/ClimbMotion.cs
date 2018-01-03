@@ -19,7 +19,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             rat.AddDrawGizmos(OnGizmosDrawn);
         }
 
-        private Vector3 normal, tangent;
+        //private Vector3 normal, tangent;
         private RaycastHit hit;
 
         private Vector3 FallTowardsData
@@ -95,9 +95,9 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             base.OnGizmosDrawn();
             Vector3 point = rat.RatPosition.position;
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(point, normal);
+            //Gizmos.DrawRay(point, normal);
             Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(point,  tangent);
+            //Gizmos.DrawRay(point,  tangent);
         }
     }
 }
