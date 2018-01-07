@@ -14,6 +14,8 @@ namespace NeonRattie.Rat.RatStates
         protected RatBrain rat;
         protected Vector3 groundPosition;
 
+        protected IState previous;
+
         private const float FALL_CHECK_MULTIPLIER = 0.01f;
 
         public void Init(RatBrain ratBrain, RatStateMachine machine)

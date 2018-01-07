@@ -89,6 +89,7 @@ namespace NeonRattie.Rat
         /// </summary>
         [SerializeField]
         protected LayerMask groundLayer;
+        public LayerMask GroundLayer { get {return groundLayer;} }
 
         /// <summary>
         /// The objects the rat can jump on
@@ -154,7 +155,15 @@ namespace NeonRattie.Rat
         
         [SerializeField]
         protected AnimationCurve climDownPolesCurve;
-        public AnimationCurve ClimbDownPolesCurbe { get { return climDownPolesCurve; } }
+        public AnimationCurve ClimbDownPolesCurve { get { return climDownPolesCurve; } }
+
+        [SerializeField]
+        protected float climbOffDistance = 0.5f;
+        public float ClimbOffDistance
+        {
+            get { return climbOffDistance; }
+        }
+
         #endregion
 
         public Vector3 Velocity { get; protected set; }
@@ -176,10 +185,14 @@ namespace NeonRattie.Rat
 
 
         #region Rotation Data
-        protected Vector3 rotationAxis;
-        protected float rotationAngle;
-        protected float rotationTime = 0;
-        protected Updater rotationUpdater = new Updater();
+        private Vector3 rotationAxis;
+        private float rotationAngle;
+        private float rotationTime = 0;
+        private Updater rotationUpdater = new Updater();
+        #endregion
+
+        #region Climb Off Point data
+        public Vector3 ClimbOffPosition { get; set; }
         #endregion
         
         //TODO: write editor script so these can be configurable!
@@ -232,16 +245,16 @@ namespace NeonRattie.Rat
             climbIdle = RatActionStates.ClimbIdle,
             climbDown = RatActionStates.ClimbDown;
 
-        protected Idle idling;
-        protected Jump jumping;
-        protected JumpOn climbing;
-        protected Walk walking;
-        protected JumpOff jumpingOff;
+        private Idle idling;
+        private Jump jumping;
+        private JumpOn climbing;
+        private Walk walking;
+        private JumpOff jumpingOff;
 
-        protected ClimbUp climbingUp;
-        protected ClimbMotion climbingMotion;
-        protected ClimbIdle climbingIdle;
-        protected ClimbDown climbingDown;
+        private ClimbUp climbingUp;
+        private ClimbMotion climbingMotion;
+        private ClimbIdle climbingIdle;
+        private ClimbDown climbingDown;
         #endregion
 
         public Dictionary<Type, MonoBehaviour> AttachedMonoBehaviours;

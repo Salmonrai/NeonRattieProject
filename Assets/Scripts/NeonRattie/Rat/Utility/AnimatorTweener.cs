@@ -46,7 +46,7 @@ namespace NeonRattie.Rat.Utility
             to = final;
             this.mover = mover;
             currentTime = 0;
-
+            MultiplierModifier = 1;
             if (animationCurve != null && animationCurve.length > 0)
             {
                 finalTime = animationCurve[animationCurve.length - 1].time;
