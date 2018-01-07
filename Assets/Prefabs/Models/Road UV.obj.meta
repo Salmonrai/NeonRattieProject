@@ -13,7 +13,7 @@ ModelImporter:
     3300000: Road_3
     4300000: Road_3
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:

@@ -13,7 +13,7 @@ ModelImporter:
     3300000: Billboard_Ichiraku_Ramen
     4300000: Billboard_Ichiraku_Ramen
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
