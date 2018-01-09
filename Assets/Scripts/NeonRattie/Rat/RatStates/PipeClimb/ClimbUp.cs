@@ -1,5 +1,4 @@
-﻿using System;
-using Flusk.Extensions;
+﻿using Flusk.Extensions;
 using Flusk.Utility;
 using NeonRattie.Rat.Utility;
 using UnityEngine;
@@ -11,24 +10,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override RatActionStates State
         {
             get { return RatActionStates.ClimbUp; }
-        }
-
-        public enum Orientation
-        {
-            /// <summary>
-            /// At the beginng of the transition, on a flat-ish surface
-            /// </summary>
-            Flat,
-            
-            /// <summary>
-            /// The process of tweeing to the correct orientation
-            /// </summary>
-            Tweening,
-            
-            /// <summary>
-            /// Ready to move upwards
-            /// </summary>
-            StraightUp
         }
 
         /// <summary>
@@ -44,7 +25,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Enter(IState state)
         {
             base.Enter(state);
-            if (rat.ClimbPole == null)
+            if (rat.NextWalkable == null)
             {
                 rat.ChangeState(((RatState)state).State);
                 return;
@@ -55,7 +36,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             offset *= 0.02f;
             
             positionTweener =
-                new PositionTweener(rat.ClimbUpPolesCurve, rat.RatPosition.position, rat.ClimbPole.Point + offset, rat.transform);
+                new PositionTweener(rat.ClimbUpPolesCurve, rat.RatPosition.position, rat.ClimbPole.Position + offset, rat.transform);
             rotationTweener = 
                 new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, rat.ClimbPole.Rotation, rat.transform);
 
@@ -84,7 +65,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             {
                 return;
             }
-            rat.ChangeState(RatActionStates.ClimbIdle);
+            rat.ChangeState(RatActionStates.Idle);
             positionTweener = null;
             rotationTweener = null;
         }

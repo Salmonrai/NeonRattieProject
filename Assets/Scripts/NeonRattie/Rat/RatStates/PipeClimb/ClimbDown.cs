@@ -53,7 +53,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             Vector3 direction = (rat.RatPosition.forward + rat.RatPosition.up).normalized;
             Ray ray = new Ray(rat.RatPosition.position, direction);
             RaycastHit hit;
-            Collider[] hits = Physics.OverlapSphere(rat.RatPosition.position, 1, rat.GroundLayer);
             if (Physics.Raycast(ray, out hit, rat.ClimbOffDistance, rat.GroundLayer))
             {
                 point = hit.point;

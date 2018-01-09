@@ -51,5 +51,22 @@ namespace NeonRattie.Objects
         {
             get { return gameObject.layer; }
         }
+
+        public void CalculateFirstPosition(out Vector3 position, out Quaternion rotation)
+        {
+            position = Position;
+            rotation = Rotation;
+        }
+
+        /// <summary>
+        /// Cache
+        /// </summary>
+        protected virtual void Awake()
+        {
+            if (colliders.Length == 0)
+            {
+                colliders = GetComponentsInChildren<Collider>();
+            }
+        }
     }
 }

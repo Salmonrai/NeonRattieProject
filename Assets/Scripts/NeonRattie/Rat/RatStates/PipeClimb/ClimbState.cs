@@ -21,7 +21,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         protected bool RotateToClimbPole(out RaycastHit hit)
         {
             ClimbPole pole = rat.ClimbPole;
-            Vector3 toClimbPole = pole.Point - rat.RatPosition.position;
+            Vector3 toClimbPole = pole.Position - rat.RatPosition.position;
             toClimbPole = toClimbPole.Flatten().normalized;
             Ray ray = new Ray(rat.RatPosition.position, toClimbPole);
             if (!pole.Collider.Raycast(ray, out hit, float.MaxValue))
@@ -65,7 +65,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             Gizmos.color = Color.black;
             ClimbPole pole = rat.ClimbPole;
-            Vector3 toClimbPole = pole.Point - rat.RatPosition.position;
+            Vector3 toClimbPole = pole.Position - rat.RatPosition.position;
             toClimbPole = toClimbPole.Flatten().normalized;
             Ray ray = new Ray(rat.RatPosition.position, toClimbPole);
             Gizmos.DrawRay(ray.origin, ray.direction);

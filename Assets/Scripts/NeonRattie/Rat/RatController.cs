@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Flusk.Controls;
 using Flusk.Management;
+using Flusk.PhysicsUtility;
 using NeonRattie.Controls;
 using NeonRattie.Management;
 using NeonRattie.Objects;
@@ -78,6 +79,9 @@ namespace NeonRattie.Rat
             get { return collisionMask; }
         }
 
+        [SerializeField]
+        protected float maxGroundDistance = 1;
+
         /// <summary>
         /// How the rat is allowed to move
         /// </summary>
@@ -138,6 +142,15 @@ namespace NeonRattie.Rat
 
         [Header("Climb Up and Climb Down states for poles/pipes and such")]
 
+        [Range(0f, 1f), SerializeField]
+        protected float vectorSimilarityForClimb = 0.5f;
+
+        /// <summary>
+        /// The layer mask that the rat can walk on
+        /// </summary>
+        [SerializeField]
+        protected LayerMask walkableMask;
+        
         [SerializeField]
         protected float climbMotionMultiplier = 5f;
         public float ClimbMotionMultiplier { get { return climbMotionMultiplier; } }
@@ -176,7 +189,9 @@ namespace NeonRattie.Rat
 
         public JumpBox JumpBox { get; private set; }
         public ClimbPole ClimbPole { get; private set; }
-        public IWalkable Walkable { get; private set; }
+        public IWalkable NextWalkable { get; private set; }
+        
+        public IWalkable CurrentWalkable { get; private set; }
 
         //other rat effects...
 
@@ -258,6 +273,29 @@ namespace NeonRattie.Rat
         private ClimbDown climbingDown;
         #endregion
 
+        #region Rays
+
+        public Ray Down
+        {
+            get
+            {
+                Vector3 direction = -RatPosition.up;
+                return new Ray(RatPosition.position, direction);
+            }
+        }
+        
+        public Ray Up
+        {
+            get
+            {
+                Vector3 direction = RatPosition.up;
+                return new Ray(RatPosition.position, direction);
+            }
+        }
+        
+
+        #endregion
+
         public Dictionary<Type, MonoBehaviour> AttachedMonoBehaviours;
 
         public Vector3 PreviousClimbFallTowardsPoint { get; set; }
@@ -313,22 +351,26 @@ namespace NeonRattie.Rat
 
         public bool ClimbUpValid()
         {
-            ClimbPole pole;
-            bool result = ClimbValid(out pole);
-            if (!result)
+            RaycastHit hit;
+            Ray ray = new Ray(RatPosition.position, RatPosition.forward);
+            if (!Raycasting.RaycastForType<IWalkable>(ray, out hit, 5f, walkableMask))
             {
-                if (ClimbPole != null)
-                {
-                    ClimbPole.Select(false);
-                }
+                return false;
             }
-            ClimbPole = pole;
-            return result;
+            NextWalkable = hit.collider.GetComponent<IWalkable>();
+            ClimbPole pole = NextWalkable as ClimbPole;
+            if (pole != null)
+            {
+                ClimbPole = pole;
+            }
+            float dot = Mathf.Abs(Vector3.Dot(hit.normal, RatPosition.up));
+            Debug.Log("Dot: "+dot);
+            return dot <= vectorSimilarityForClimb;
         }
 
         public void NullifyWalkable()
         {
-            Walkable = null;
+            NextWalkable = null;
         }
 
         public void NullifyClimbPole()
@@ -392,7 +434,6 @@ namespace NeonRattie.Rat
             NavAgent.SetDestination(transform.position + direction * walkSpeed);
         }    
 
-
         public RaycastHit GetGroundData (float distance = 10000)
         {
             RaycastHit info;
@@ -407,7 +448,6 @@ namespace NeonRattie.Rat
             Init();
         }
 
-        
         private void Init()
         {
             RatAnimator = GetComponent<RatAnimator>();
@@ -537,7 +577,16 @@ namespace NeonRattie.Rat
             ratState = ratStateMachine.CurrentState.ToString();
 #endif
         }
-        
+
+        protected void FixedUpdate()
+        {
+            RaycastHit hit;
+            if (Raycasting.RaycastForType<IWalkable>(Down, out hit, maxGroundDistance, walkableMask))
+            {
+                CurrentWalkable = hit.collider.GetComponent<IWalkable>();
+            }
+        }
+
         protected virtual void LateUpdate()
         {
             UpdateVelocity(Time.deltaTime);

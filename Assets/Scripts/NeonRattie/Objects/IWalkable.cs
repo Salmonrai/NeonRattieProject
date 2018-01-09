@@ -30,5 +30,11 @@ namespace NeonRattie.Objects
         /// Some insight into the position of the rat when on this walkable object
         /// </summary>
         Vector3 Position { get; }
+
+        /// <summary>
+        /// Given the current rat position, calculates where
+        /// the rat should land when coming onto this walkable
+        /// </summary>
+        void CalculateFirstPosition(out Vector3 position, out Quaternion rotation);
     }
 }

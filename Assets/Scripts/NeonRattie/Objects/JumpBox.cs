@@ -12,7 +12,7 @@ namespace NeonRattie.Objects
     {
         [SerializeField]
         protected LayerMask jumpLayer;
-        public LayerMask CollisionMask { get { return jumpLayer; } }
+        public LayerMask Mask { get { return jumpLayer; } }
 
         [SerializeField]
         protected Transform jumpPoint;
@@ -20,7 +20,7 @@ namespace NeonRattie.Objects
         {
             get { return jumpPoint; }
         }
-        public Vector3 Point {get { return jumpPoint.position; }}
+        public Vector3 Position {get { return jumpPoint.position; }}
         public Quaternion Rotation { get { return jumpPoint.rotation; } }
         public Bounds Bounds { get { return meshRenderer.bounds; } }
 

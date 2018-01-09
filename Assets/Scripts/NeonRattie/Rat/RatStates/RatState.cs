@@ -85,6 +85,16 @@ namespace NeonRattie.Rat.RatStates
             rat.TryMove(point);
         }
 
+        protected void FallTowardCurrentWalkable()
+        {
+            
+        }
+
+        protected void OrientateTowardsCurrentWalkable()
+        {
+            
+        }
+
         protected void FallDown ()
         {
             rat.TryMove(rat.LowestPoint - Vector3.down * 0.1f);

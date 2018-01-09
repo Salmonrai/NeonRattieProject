@@ -32,6 +32,7 @@ namespace NeonRattie.Rat.RatStates
             FallTowards();
             if (rat.ClimbUpValid())
             {
+                Debug.Log("Change to climb");
                 rat.ChangeState(RatActionStates.ClimbUp);
                 return;
             }
