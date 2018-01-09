@@ -176,6 +176,7 @@ namespace NeonRattie.Rat
 
         public JumpBox JumpBox { get; private set; }
         public ClimbPole ClimbPole { get; private set; }
+        public IWalkable Walkable { get; private set; }
 
         //other rat effects...
 
@@ -323,6 +324,16 @@ namespace NeonRattie.Rat
             }
             ClimbPole = pole;
             return result;
+        }
+
+        public void NullifyWalkable()
+        {
+            Walkable = null;
+        }
+
+        public void NullifyClimbPole()
+        {
+            ClimbPole = null;
         }
 
         public bool JumpOnValid()

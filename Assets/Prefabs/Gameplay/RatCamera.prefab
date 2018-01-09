@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114961063567491238}
   - component: {fileID: 45486730485743958}
   - component: {fileID: 114187503247251912}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: RatCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4119757591974902}
   - component: {fileID: 136785987911249300}
   - component: {fileID: 114023536337943786}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: FollowCylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1876970428227748}
   m_LocalRotation: {x: -0.09810398, y: 0, z: 0, w: 0.9951762}
-  m_LocalPosition: {x: -0, y: 0.52, z: 1.91}
+  m_LocalPosition: {x: 0, y: 0.19, z: 6.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4645640383879942}
@@ -69,14 +69,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390001246690298}
-  m_LocalRotation: {x: 0.16002657, y: -4.458438e-16, z: -0.00000001907665, w: 0.98711276}
-  m_LocalPosition: {x: 0, y: 0.074, z: -0.101}
-  m_LocalScale: {x: 0.15458691, y: 0.15458691, z: 0.15458691}
+  m_LocalRotation: {x: 0.2747602, y: -3.0850023e-16, z: -0.00000003275396, w: 0.9615128}
+  m_LocalPosition: {x: 10, y: 5.25, z: 134.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4119757591974902}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 18.417002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 31.895002, y: 0, z: 0}
 --- !u!20 &20452850899749212
 Camera:
   m_ObjectHideFlags: 1
@@ -174,9 +174,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rat: {fileID: 0}
   followData:
-    HeightAboveAgent: 0.03
-    DistanceFromPlayer: 0.06
-    PitchRotation: 0.15
+    HeightAboveAgent: 1.53
+    DistanceFromPlayer: 5.5
+    PitchRotation: 15
   freeControl:
     MoveRadius: 6
     UpMovement: 3.8
