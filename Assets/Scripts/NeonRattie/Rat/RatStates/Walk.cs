@@ -28,11 +28,10 @@ namespace NeonRattie.Rat.RatStates
                 rat.ChangeState(RatActionStates.Idle);
             }
             rat.Walk(rat.WalkDirection);
-            rat.RotateController.SetLookDirection(rat.WalkDirection, Vector3.up, 0.9f);
+            rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
             FallTowards();
             if (rat.ClimbUpValid())
             {
-                Debug.Log("Change to climb");
                 rat.ChangeState(RatActionStates.ClimbUp);
                 return;
             }

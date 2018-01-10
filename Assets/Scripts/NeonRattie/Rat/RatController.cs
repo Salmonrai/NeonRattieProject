@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Flusk.Controls;
+using Flusk.Extensions;
 using Flusk.Management;
 using Flusk.PhysicsUtility;
 using NeonRattie.Controls;
@@ -293,6 +294,9 @@ namespace NeonRattie.Rat
             }
         }
         
+        public Vector3 WalkableUp { get; protected set; }
+        
+        
 
         #endregion
 
@@ -364,7 +368,6 @@ namespace NeonRattie.Rat
                 ClimbPole = pole;
             }
             float dot = Mathf.Abs(Vector3.Dot(hit.normal, RatPosition.up));
-            Debug.Log("Dot: "+dot);
             return dot <= vectorSimilarityForClimb;
         }
 
@@ -495,11 +498,6 @@ namespace NeonRattie.Rat
             rotationUpdater.Add(UpdateRotation);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="angle"></param>
-        /// <param name="axis"></param>
         public virtual void RotateRat(float angle, Vector3 axis)
         {
             rotationAxis = axis;
@@ -511,10 +509,12 @@ namespace NeonRattie.Rat
             RotateRat(angle, Vector3.up);
         }
 
+        // Woops
         public override void Destroy()
         {
         }
 
+        // Woops
         public override void Initialise()
         {
         }
@@ -578,12 +578,28 @@ namespace NeonRattie.Rat
 #endif
         }
 
-        protected void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             RaycastHit hit;
-            if (Raycasting.RaycastForType<IWalkable>(Down, out hit, maxGroundDistance, walkableMask))
+            bool isColliding = Raycasting.SphereCastForType<IWalkable>(RatPosition.position + RatPosition.up, 1f, out hit, Down.direction, 
+                maxGroundDistance + 1, walkableMask);
+
+            Ray down = Down;
+            down.origin += RatPosition.up;
+            isColliding = Raycasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
+            if (isColliding)
             {
-                CurrentWalkable = hit.collider.GetComponent<IWalkable>();
+                var nextWalkable = hit.collider.GetComponent<IWalkable>();
+                if (nextWalkable != CurrentWalkable)
+                {
+                    Debug.Log(nextWalkable);   
+                }
+                CurrentWalkable = nextWalkable;
+                WalkableUp = hit.normal;
+            }
+            else
+            {
+                CurrentWalkable = null;
             }
         }
 

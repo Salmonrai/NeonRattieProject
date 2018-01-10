@@ -1,4 +1,5 @@
-﻿using Flusk.Extensions;
+﻿using System;
+using Flusk.Extensions;
 using Flusk.Utility;
 using NeonRattie.Rat.Utility;
 using UnityEngine;
@@ -34,9 +35,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             Vector3 offset = rat.ClimbPole.Bounds.extents.normalized;
             offset = offset.Flatten();
             offset *= 0.02f;
+
+            Vector3 position = rat.NextWalkable.Position + offset;
             
             positionTweener =
-                new PositionTweener(rat.ClimbUpPolesCurve, rat.RatPosition.position, rat.ClimbPole.Position + offset, rat.transform);
+                new PositionTweener(rat.ClimbUpPolesCurve, rat.RatPosition.position, position, rat.transform);
             rotationTweener = 
                 new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, rat.ClimbPole.Rotation, rat.transform);
 
@@ -53,6 +56,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             base.Tick();
             positionTweener.Tick(Time.deltaTime);
             rotationTweener.Tick(Time.deltaTime);
+        }
+
+        public override void Exit(IState state)
+        {
+            rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;
         }
 
         private void OnComplete()

@@ -48,11 +48,11 @@ namespace NeonRattie.Rat.RatStates
             }
             Vector2 delta = MouseManager.Instance.Delta;
             float deltaX = delta.x;
-            Vector3 axis = Vector3.up;
+            Vector3 axis = rat.WalkableUp;
             if (deltaX > 0)
             {
                 deltaX = -deltaX;
-                axis = Vector3.down;
+                axis = -rat.WalkableUp;
             }
             float angle = Mathf.Atan2(-delta.y, deltaX);
             rat.RotateRat(angle, axis);

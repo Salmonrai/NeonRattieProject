@@ -46,7 +46,7 @@ namespace Flusk.Extensions
         {
             Vector3 upTangent = Vector3.Cross(normal, Vector3.up).normalized;
             Vector3 forwardTangent = Vector3.Cross(normal, Vector3.forward).normalized;
-            return upTangent.sqrMagnitude > forwardTangent.sqrMagnitude ? upTangent : forwardTangent;
+            return upTangent.sqrMagnitude < forwardTangent.sqrMagnitude ? upTangent : forwardTangent;
         }
     }
 }

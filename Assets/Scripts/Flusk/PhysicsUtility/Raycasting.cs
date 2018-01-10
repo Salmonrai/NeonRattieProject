@@ -30,5 +30,16 @@ namespace Flusk.PhysicsUtility
             }
             return false;
         }
+
+        public static bool SphereCastForType<T>(Vector3 center, float radius, out RaycastHit info,
+            Vector3 direction, float distance, LayerMask mask)
+        {
+            if (Physics.SphereCast(center, radius, direction, out info, distance, mask))
+            {
+                return info.collider.GetComponent<T>() != null;
+            }
+
+            return false;
+        }
     }
 }
