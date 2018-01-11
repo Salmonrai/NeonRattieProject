@@ -13,13 +13,17 @@ namespace NeonRattie.Rat
 
         public void SetLookDirection(Vector3 direction, Vector3 upAxis, float rotateSpeed = 1)
         {
+            if (direction.sqrMagnitude <= float.Epsilon)
+            {
+                return;
+            }
+            Debug.LogFormat("Look: {0}, Up: {1}", direction, upAxis);
             goal = Quaternion.LookRotation(direction, upAxis);
             speed = rotateSpeed;
         }
-        
-        protected virtual void Rotate()
+
+        protected virtual void Update()
         {
-            
             Quaternion current = transform.rotation;
             Quaternion next = Quaternion.Slerp(current, goal, slerpTime);
             transform.rotation = next;
@@ -29,12 +33,7 @@ namespace NeonRattie.Rat
             if (Mathf.Abs(change) < 0.01f)
             {
                 slerpTime = 0;
-            }   
-        }
-
-        protected virtual void Update()
-        {
-            Rotate();
+            }
         }
     }
 }

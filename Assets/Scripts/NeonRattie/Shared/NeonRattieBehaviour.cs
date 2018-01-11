@@ -6,9 +6,6 @@ namespace NeonRattie.Shared
     //TODO: not needed anymore
     public abstract class NeonRattieBehaviour : MonoBehaviour
     {
-        public abstract void Destroy();
-
-        public abstract void Initialise();
 
     }
 }

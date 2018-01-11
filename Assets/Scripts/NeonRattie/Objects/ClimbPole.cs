@@ -1,4 +1,5 @@
-﻿using NeonRattie.Effects;
+﻿using System;
+using NeonRattie.Effects;
 using NeonRattie.Objects.Climbing;
 using UnityEngine;
 
@@ -37,6 +38,39 @@ namespace NeonRattie.Objects
         public void Select(bool state)
         {
             hightlight.Highlight(state);
+        }
+
+        /// <summary>
+        /// TODO: Send this off to some extension class somewhere
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public Vector3 ClosestPoint(Vector3 point)
+        {
+            Vector3 closestPoint = Vector3.negativeInfinity;
+            float smallestDistance = float.MaxValue;
+            foreach (Collider current in Colliders)
+            {
+                Vector3 closest = current.ClosestPoint(point);
+                if (Vector3.Distance(closest, point) < smallestDistance)
+                {
+                    closestPoint = closest;
+                }
+            }
+            return closestPoint;
+        }
+
+        public bool Raycast(Ray ray, out RaycastHit info, float maxDistance)
+        {
+            foreach (Collider current in Colliders)
+            {
+                if( current.Raycast(ray, out info, maxDistance) )
+                {
+                    return true;
+                }
+            }
+            info = default(RaycastHit);
+            return false;
         }
 
         public void CalculateFirstPosition(out Vector3 position, out Quaternion rotation)

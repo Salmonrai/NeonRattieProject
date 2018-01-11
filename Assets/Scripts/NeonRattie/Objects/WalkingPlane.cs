@@ -59,6 +59,40 @@ namespace NeonRattie.Objects
         }
 
         /// <summary>
+        /// finds closest point on all colliders
+        /// </summary>
+        public Vector3 ClosestPoint(Vector3 point)
+        {
+            Vector3 closestPoint = Vector3.negativeInfinity;
+            float smallestDistance = float.MaxValue;
+            foreach (Collider current in colliders)
+            {
+                Vector3 closest = current.ClosestPoint(point);
+                if (Vector3.Distance(closest, point) < smallestDistance)
+                {
+                    closestPoint = closest;
+                }
+            }
+            return closestPoint;
+        }
+
+        /// <summary>
+        /// cast against all the colliders
+        /// </summary>
+        public bool Raycast(Ray ray, out RaycastHit info, float maxDistance)
+        {
+            foreach (Collider current in colliders)
+            {
+                if( current.Raycast(ray, out info, maxDistance) )
+                {
+                    return true;
+                }
+            }
+            info = default(RaycastHit);
+            return false;
+        }
+
+        /// <summary>
         /// Cache
         /// </summary>
         protected virtual void Awake()

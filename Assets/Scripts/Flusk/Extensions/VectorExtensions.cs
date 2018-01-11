@@ -48,5 +48,45 @@ namespace Flusk.Extensions
             Vector3 forwardTangent = Vector3.Cross(normal, Vector3.forward).normalized;
             return upTangent.sqrMagnitude < forwardTangent.sqrMagnitude ? upTangent : forwardTangent;
         }
+
+        public static Vector4 ToVector4(this Vector3 vector)
+        {
+            return (Vector4) vector;
+        }
+        
+        public static Vector4 Right()
+        {
+            return Vector3.right.ToVector4();
+        }
+        
+        public static Vector4 Up()
+        {
+            return Vector3.up.ToVector4();
+        }
+        
+        public static Vector4 Forward()
+        {
+            return Vector3.forward.ToVector4();
+        }
+        
+        public static Vector4 W()
+        {
+            Vector4 v = Vector4.zero;
+            v.w = 1;
+            return v;
+        }
+
+        public static Matrix4x4 ToOrigin(Vector4 vector)
+        {
+            Vector4 first = Right();
+            Vector4 second = Up();
+            Vector3 third = Forward();
+            Matrix4x4 matrix = new Matrix4x4();
+            matrix.SetColumn(0, first);
+            matrix.SetColumn(1, second);
+            matrix.SetColumn(2, third);
+            matrix.SetColumn(3, vector);
+            return matrix;
+        }
     }
 }

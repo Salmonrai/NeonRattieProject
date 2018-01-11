@@ -113,5 +113,14 @@ namespace NeonRattie.Rat.RatStates
             float nextStage = curve.Evaluate(deltaTime);
             return direction * nextStage * distance;
         }
+
+        protected void AdjustToPlane()
+        {
+            if (rat.CurrentWalkable == null)
+            {
+                return;
+            }
+            rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
+        }
     }
 }

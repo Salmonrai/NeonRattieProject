@@ -9,6 +9,10 @@ namespace NeonRattie.Utility
         
         public void Update(float deltaTime)
         {
+            if (UpdateAction == null)
+            {
+                return;
+            }
             UpdateAction(deltaTime);
         }
 

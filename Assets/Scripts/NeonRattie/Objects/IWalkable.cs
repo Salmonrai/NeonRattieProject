@@ -36,5 +36,14 @@ namespace NeonRattie.Objects
         /// the rat should land when coming onto this walkable
         /// </summary>
         void CalculateFirstPosition(out Vector3 position, out Quaternion rotation);
+
+        /// <summary>
+        /// Finds the closest point on all colliders
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        Vector3 ClosestPoint(Vector3 point);
+
+        bool Raycast(Ray ray, out RaycastHit info, float maxDistance);
     }
 }

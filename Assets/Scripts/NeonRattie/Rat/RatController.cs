@@ -231,8 +231,10 @@ namespace NeonRattie.Rat
         public Collider RatCollider { get; private set; }
 
         public event Action DrawGizmos;
+        public event Action DrawGUI;
         
         public Vector3 WalkDirection { get; private set; }
+        public Vector3 PreviousWalkDirection { get; private set; }
 
 
 #if UNITY_EDITOR
@@ -362,25 +364,10 @@ namespace NeonRattie.Rat
                 return false;
             }
             NextWalkable = hit.collider.GetComponent<IWalkable>();
-            ClimbPole pole = NextWalkable as ClimbPole;
-            if (pole != null)
-            {
-                ClimbPole = pole;
-            }
             float dot = Mathf.Abs(Vector3.Dot(hit.normal, RatPosition.up));
             return dot <= vectorSimilarityForClimb;
         }
-
-        public void NullifyWalkable()
-        {
-            NextWalkable = null;
-        }
-
-        public void NullifyClimbPole()
-        {
-            ClimbPole = null;
-        }
-
+        
         public bool JumpOnValid()
         {
             JumpBox box;
@@ -493,9 +480,6 @@ namespace NeonRattie.Rat
             ratStateMachine.AddState(climbMotion, climbingMotion);
             
             ratStateMachine.ChangeState(idle);
-            
-            //update helpers
-            rotationUpdater.Add(UpdateRotation);
         }
 
         public virtual void RotateRat(float angle, Vector3 axis)
@@ -503,25 +487,15 @@ namespace NeonRattie.Rat
             rotationAxis = axis;
             rotationAngle = angle;
         }
-
-        public virtual void RotateRat(float angle)
-        {
-            RotateRat(angle, Vector3.up);
-        }
-
-        // Woops
-        public override void Destroy()
-        {
-        }
-
-        // Woops
-        public override void Initialise()
-        {
-        }
-
+        
         public void AddDrawGizmos (Action action)
         {
             DrawGizmos += action;                   
+        }
+
+        public void AddGUI(Action action)
+        {
+            DrawGUI += action;
         }
 
         public void RemoveDrawGizmos (Action action)
@@ -529,6 +503,14 @@ namespace NeonRattie.Rat
             if (DrawGizmos != null)
             {
                 DrawGizmos -= action;
+            }
+        }
+
+        public void RemoveGUI(Action action)
+        {
+            if (DrawGUI != null)
+            {
+                DrawGUI -= action;
             }
         }
         
@@ -618,6 +600,14 @@ namespace NeonRattie.Rat
             }
         }
 
+        protected virtual void OnGUI()
+        {
+            if (DrawGUI != null)
+            {
+                DrawGUI();
+            }
+        }
+
         private void UpdateVelocity(float deltaTime)
         {
             currentPosition = transform.position;
@@ -625,8 +615,6 @@ namespace NeonRattie.Rat
             Velocity = difference / deltaTime;
             previousPosition = currentPosition;
         }
-
-        
 
         private void OnWalk(float axis)
         {
@@ -638,27 +626,72 @@ namespace NeonRattie.Rat
             }
             Vector3 forward = SceneObjects.Instance.CameraControls.GetFlatForward();
             Vector3 right = SceneObjects.Instance.CameraControls.GetFlatRight();
+            if (WalkDirection.sqrMagnitude > float.Epsilon)
+            {
+                PreviousWalkDirection = WalkDirection;
+            }
             WalkDirection = Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Forward) ? forward : Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Back) ? -forward : Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Right) ? right : Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Left) ? -right : Vector3.zero;
+            AdjustPlane();
+
             WalkDirection.Normalize();
         }
-        
-        protected void UpdateRotation(float time)
+
+        public void AdjustToWalkable(IWalkable walkable)
         {
-            bool isClimb = ratStateMachine.CurrentState is IClimb;
-            if (isClimb)
+            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
+            RaycastHit hit;
+            Ray ray = new Ray(RatPosition.position, PreviousWalkDirection);
+            if (!walkable.Raycast(ray, out hit, float.MaxValue))
             {
                 return;
             }
-            
-            Quaternion next = Quaternion.AngleAxis(rotationAngle * rotationAngleMultiplier, rotationAxis);
-            next = transform.rotation * next;
-            rotationTime += time;
-            rotationTime %= 1;
-            transform.rotation = Quaternion.Slerp(transform.rotation, next, rotationTime);
+            CalculateAdjustment(hit, cameraForward);
+        }
+
+        private void AdjustPlane()
+        {
+            // we find the angle between walking plane, and the camera
+            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
+            if (CurrentWalkable == null)
+            {
+                return;
+            }
+            RaycastHit hit;
+            if (!CurrentWalkable.Collider.Raycast(Down, out hit, float.MaxValue))
+            {
+                return;
+            }
+
+            CalculateAdjustment(hit, cameraForward);
+        }
+
+        private void CalculateAdjustment(RaycastHit hit, Vector3 cameraForward)
+        {
+            Vector3 normal = hit.normal;
+            // Larger the difference, the more the planes are similar
+            float dot = Mathf.Abs(Vector3.Dot(cameraForward, normal));
+            if (dot < vectorSimilarityForClimb)
+            {
+                return;
+            }
+
+            // When they are very different adjust, accordingly
+            float inverseDot = 1 - dot;
+            /*
+             * dot = |A||B|cos(x)
+             * when normalised
+             * dot = cos(x)
+             * therefore x = arcos(dot)
+             */
+            float radian = Mathf.Acos(inverseDot);
+            // Find the axis of rotation, which should 
+            // be the axis perpendicular to both vectors
+            Vector3 cross = Vector3.Cross(cameraForward, normal).normalized;
+            WalkDirection = WalkDirection.RotateVector(-radian, cross);
         }
     }
 }

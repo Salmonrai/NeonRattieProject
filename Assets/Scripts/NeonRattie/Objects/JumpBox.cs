@@ -83,16 +83,6 @@ namespace NeonRattie.Objects
             return curve;
         }
 
-        public override void Destroy()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Initialise()
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected virtual void Awake ()
         {
             hightlight = GetComponentInChildren<Hightlight>();
