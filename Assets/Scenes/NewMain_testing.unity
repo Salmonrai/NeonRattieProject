@@ -13411,7 +13411,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 17.54
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalPosition.y
@@ -13419,23 +13419,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 93.13
+      value: 150.8
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -7.7390786e-17
+      value: -2.961467e-18
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.6999355
+      value: -0.004397275
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.000000083438806
+      value: -5.24196e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.7142061
+      value: 0.9999904
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_RootOrder
@@ -13458,7 +13458,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4886513700823718, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 88.844
+      value: -0.504
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}

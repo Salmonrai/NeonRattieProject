@@ -21,20 +21,25 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         /// </summary>
         private RotationTweener rotationTweener;
 
+        /// <summary>
+        /// The ray used to enter this state
+        /// </summary>
+        private Ray previousWalkRay;
+
+        private Vector3 lookDirection;
+
         public override void Enter(IState state)
         {
             base.Enter(state);
-            
-            rat.AdjustToWalkable(rat.NextWalkable);
-            
+            previousWalkRay = new Ray( rat.RatPosition.position, rat.PreviousWalkDirection);
+            lookDirection = rat.AdjustToWalkable(rat.NextWalkable, previousWalkRay);
             if (rat.NextWalkable == null)
             {
                 rat.ChangeState(((RatState)state).State);
                 return;
             }
 
-            Vector3 offset = rat.RatCollider.bounds.extents;
-            offset *= 0.02f;
+            Vector3 offset = rat.RatPosition.up;
 
             Vector3 position = rat.NextWalkable.ClosestPoint(rat.RatPosition.position) + offset;
             
@@ -49,23 +54,15 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             
             positionTweener.Complete += OnComplete;
             rotationTweener.Complete += OnComplete;
-
-            //rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = false;
         }
 
         public override void Tick()
         {
             base.Tick();
             
-            rat.AdjustToWalkable(rat.NextWalkable);
-
+            rat.RotateController.SetLookDirection(lookDirection, rat.RatPosition.up, 0.1f);
             positionTweener.Tick(Time.deltaTime);
             rotationTweener.Tick(Time.deltaTime);
-        }
-
-        public override void Exit(IState state)
-        {
-            //rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;
         }
 
         private void OnComplete()

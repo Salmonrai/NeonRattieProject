@@ -202,9 +202,6 @@ namespace NeonRattie.Rat
 
 
         #region Rotation Data
-        private Vector3 rotationAxis;
-        private float rotationAngle;
-        private float rotationTime = 0;
         private Updater rotationUpdater = new Updater();
         #endregion
 
@@ -481,12 +478,6 @@ namespace NeonRattie.Rat
             
             ratStateMachine.ChangeState(idle);
         }
-
-        public virtual void RotateRat(float angle, Vector3 axis)
-        {
-            rotationAxis = axis;
-            rotationAngle = angle;
-        }
         
         public void AddDrawGizmos (Action action)
         {
@@ -579,10 +570,6 @@ namespace NeonRattie.Rat
                 CurrentWalkable = nextWalkable;
                 WalkableUp = hit.normal;
             }
-            else
-            {
-                CurrentWalkable = null;
-            }
         }
 
         protected virtual void LateUpdate()
@@ -606,6 +593,25 @@ namespace NeonRattie.Rat
             {
                 DrawGUI();
             }
+            
+            ClimbPole climb = CurrentWalkable as ClimbPole;
+            WalkingPlane plane = CurrentWalkable as WalkingPlane;
+            string walkName = "INVALID";
+            if (climb == null)
+            {
+                if (plane != null)
+                {
+                    walkName = plane.gameObject.name;
+                }
+            }
+            else
+            {
+                walkName = climb.gameObject.name;
+            }
+
+            GUIStyle style = new GUIStyle {fontSize = 50};
+            style.normal.textColor = Color.white;
+            GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
         }
 
         private void UpdateVelocity(float deltaTime)
@@ -640,43 +646,37 @@ namespace NeonRattie.Rat
             WalkDirection.Normalize();
         }
 
-        public void AdjustToWalkable(IWalkable walkable)
+        public Vector3 AdjustToWalkable(IWalkable walkable, Ray ray)
         {
             Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
             RaycastHit hit;
-            Ray ray = new Ray(RatPosition.position, PreviousWalkDirection);
-            if (!walkable.Raycast(ray, out hit, float.MaxValue))
-            {
-                return;
-            }
-            CalculateAdjustment(hit, cameraForward);
-        }
-
-        private void AdjustPlane()
-        {
-            // we find the angle between walking plane, and the camera
-            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
             if (CurrentWalkable == null)
             {
-                return;
+                return ray.direction;
             }
-            RaycastHit hit;
-            if (!CurrentWalkable.Collider.Raycast(Down, out hit, float.MaxValue))
+            CurrentWalkable = walkable;
+            if (!walkable.Raycast(ray, out hit, float.MaxValue))
             {
-                return;
+                Debug.Log("Walkable returned");
+                return ray.direction;
             }
-
-            CalculateAdjustment(hit, cameraForward);
+            return CalculateAdjustment(hit, ray, cameraForward);
+        }
+        
+        public Vector3 AdjustToWalkable(IWalkable walkable)
+        {
+            Ray ray = new Ray(RatPosition.position, PreviousWalkDirection);
+            return AdjustToWalkable(walkable, ray);
         }
 
-        private void CalculateAdjustment(RaycastHit hit, Vector3 cameraForward)
+        private Vector3 CalculateAdjustment(RaycastHit hit, Ray ray, Vector3 cameraForward)
         {
             Vector3 normal = hit.normal;
             // Larger the difference, the more the planes are similar
             float dot = Mathf.Abs(Vector3.Dot(cameraForward, normal));
             if (dot < vectorSimilarityForClimb)
             {
-                return;
+                return ray.direction;
             }
 
             // When they are very different adjust, accordingly
@@ -691,7 +691,26 @@ namespace NeonRattie.Rat
             // Find the axis of rotation, which should 
             // be the axis perpendicular to both vectors
             Vector3 cross = Vector3.Cross(cameraForward, normal).normalized;
-            WalkDirection = WalkDirection.RotateVector(-radian, cross);
+            WalkDirection = ray.direction.RotateVector(-radian, cross);
+            Debug.LogFormat("Changed Vector: {0} - Previous: {1}", WalkDirection, PreviousWalkDirection);
+            return WalkDirection;
+        }
+        
+        private void AdjustPlane()
+        {
+            // we find the angle between walking plane, and the camera
+            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
+            if (CurrentWalkable == null)
+            {
+                Debug.Log("Adjust Plane "+StateMachine.CurrentState);
+                return;
+            }
+            RaycastHit hit;
+            if (!CurrentWalkable.Collider.Raycast(Down, out hit, float.MaxValue))
+            {
+                return;
+            }
+            CalculateAdjustment(hit, Down, cameraForward);
         }
     }
 }

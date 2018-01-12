@@ -32,7 +32,6 @@ namespace NeonRattie.Rat.RatStates
         {
             base.Tick();
             FallTowards();
-            RatRotate();
             AdjustToPlane();
             var playerControls = PlayerControls.Instance;
 

@@ -36,28 +36,6 @@ namespace NeonRattie.Rat.RatStates
         {     
         }
 
-        public virtual void Tick(RatStateMachine stateMachine)
-        {  
-        }
-
-        protected void RatRotate()
-        {
-            if (MouseManager.Instance == null)
-            {
-                return;
-            }
-            Vector2 delta = MouseManager.Instance.Delta;
-            float deltaX = delta.x;
-            Vector3 axis = rat.WalkableUp;
-            if (deltaX > 0)
-            {
-                deltaX = -deltaX;
-                axis = -rat.WalkableUp;
-            }
-            float angle = Mathf.Atan2(-delta.y, deltaX);
-            rat.RotateRat(angle, axis);
-        }
-
         protected void OnJump(float x)
         {
             StateMachine.ChangeState(RatActionStates.Jump);

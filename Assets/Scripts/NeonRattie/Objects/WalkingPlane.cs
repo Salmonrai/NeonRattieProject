@@ -67,10 +67,12 @@ namespace NeonRattie.Objects
             float smallestDistance = float.MaxValue;
             foreach (Collider current in colliders)
             {
-                Vector3 closest = current.ClosestPoint(point);
+                Vector3 closest = current.ClosestPointOnBounds(point);
+                float distance = Vector3.Distance(closest, point);
                 if (Vector3.Distance(closest, point) < smallestDistance)
                 {
                     closestPoint = closest;
+                    smallestDistance = distance;
                 }
             }
             return closestPoint;

@@ -17,7 +17,7 @@ namespace NeonRattie.Rat
             {
                 return;
             }
-            Debug.LogFormat("Look: {0}, Up: {1}", direction, upAxis);
+            //Debug.LogFormat("Direction: {0} - upAxis: {1}", direction, upAxis);
             goal = Quaternion.LookRotation(direction, upAxis);
             speed = rotateSpeed;
         }

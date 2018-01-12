@@ -30,9 +30,6 @@ namespace Flusk.Extensions
             // Calculate the axis of rotation
             // Let's assume, the axis value is not normalized, or origned (for generalisation)
             Vector3 abc = m - n;
-            LineFormula x = new LineFormula(n.x, abc.x);
-            LineFormula y = new LineFormula(n.y, abc.y);
-            LineFormula z = new LineFormula(n.z, abc.z);
             float length = abc.magnitude;
             float vLength = Magnitude(abc.y, abc.z);
             
