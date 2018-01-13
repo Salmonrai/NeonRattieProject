@@ -29,8 +29,7 @@ namespace NeonRattie.Rat.RatStates
             }
             rat.Walk(rat.WalkDirection);
             AdjustToPlane();
-            
-            FallTowards();
+            //FallTowards();
             if (rat.ClimbUpValid())
             {
                 rat.ChangeState(RatActionStates.ClimbUp);

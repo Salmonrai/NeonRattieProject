@@ -39,7 +39,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                 return;
             }
 
-            Vector3 offset = rat.RatPosition.up;
+            Vector3 offset = rat.RatPosition.up * 5;
 
             Vector3 position = rat.NextWalkable.ClosestPoint(rat.RatPosition.position) + offset;
             
@@ -49,8 +49,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                 new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, rat.NextWalkable.Rotation, rat.transform);
 
             positionTweener.MultiplierModifier = rotationTweener.MultiplierModifier = rat.ClimbMotionMultiplier;
-            
-            
             
             positionTweener.Complete += OnComplete;
             rotationTweener.Complete += OnComplete;

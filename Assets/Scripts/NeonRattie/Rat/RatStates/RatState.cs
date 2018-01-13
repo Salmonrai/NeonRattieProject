@@ -59,7 +59,7 @@ namespace NeonRattie.Rat.RatStates
 
         protected void FallTowards()
         {
-            Vector3 point = rat.transform.position - rat.transform.up * FALL_CHECK_MULTIPLIER;
+            Vector3 point = rat.transform.position - rat.transform.up;
             rat.TryMove(point);
         }
 

@@ -10,6 +10,7 @@ namespace NeonRattie.Rat
         private float slerpTime;
         private float speed;
 
+        public Vector3 upAxis { get; private set; }
 
         public void SetLookDirection(Vector3 direction, Vector3 upAxis, float rotateSpeed = 1)
         {
@@ -17,7 +18,8 @@ namespace NeonRattie.Rat
             {
                 return;
             }
-            //Debug.LogFormat("Direction: {0} - upAxis: {1}", direction, upAxis);
+
+            this.upAxis = upAxis;
             goal = Quaternion.LookRotation(direction, upAxis);
             speed = rotateSpeed;
         }

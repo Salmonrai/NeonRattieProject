@@ -12,6 +12,7 @@ using NeonRattie.Rat.Data;
 using NeonRattie.Rat.RatStates;
 using NeonRattie.Rat.RatStates.PipeClimb;
 using NeonRattie.Shared;
+using NeonRattie.Testing;
 using NeonRattie.Utility;
 using UnityEngine;
 using UnityEngine.AI;
@@ -320,14 +321,20 @@ namespace NeonRattie.Rat
             transform.localScale = scale;
         }
 
+        private string touching;
         public bool TryMove(Vector3 position, LayerMask surface, float boxSize = 0.5f)
         {
-            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * boxSize, transform.rotation,
+            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents, transform.rotation,
                 surface);
             var success = hits.Length == 0;
             if (success)
             {
+                touching = string.Empty;
                 SetTransform(position, transform.rotation, transform.localScale);
+            }
+            else
+            {
+                touching = hits[0].gameObject.name;
             }
             return success;
         }
@@ -403,11 +410,6 @@ namespace NeonRattie.Rat
             }
             float difference = (closest.point - furtherest.point).y;
             return difference > height;
-        }
-
-        public bool IsGrounded()
-        {
-            return GetGroundData(0.1f).transform != null;
         }
         
         public void Walk(Vector3 direction)
@@ -574,7 +576,6 @@ namespace NeonRattie.Rat
 
         protected virtual void LateUpdate()
         {
-            UpdateVelocity(Time.deltaTime);
             FindLowestPoint();
         }
   
@@ -612,14 +613,9 @@ namespace NeonRattie.Rat
             GUIStyle style = new GUIStyle {fontSize = 50};
             style.normal.textColor = Color.white;
             GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
-        }
-
-        private void UpdateVelocity(float deltaTime)
-        {
-            currentPosition = transform.position;
-            Vector3 difference = previousPosition - currentPosition;
-            Velocity = difference / deltaTime;
-            previousPosition = currentPosition;
+            GUI.Box(new Rect(0, 100, 200, 200), WalkDirection.ToString(), style );
+            GUI.Box(new Rect(0, 200, 200, 200), touching, style);
+            GUI.Box(new Rect(0, 300, 200, 200), rotateController.upAxis.ToString(), style);
         }
 
         private void OnWalk(float axis)
@@ -630,8 +626,10 @@ namespace NeonRattie.Rat
             {
                 return;
             }
-            Vector3 forward = SceneObjects.Instance.CameraControls.GetFlatForward();
-            Vector3 right = SceneObjects.Instance.CameraControls.GetFlatRight();
+
+            MouseRotation rotation = SceneObjects.Instance.MouseRotation;
+            Vector3 forward = rotation.FlatForward();
+            Vector3 right = rotation.FlatRight();
             if (WalkDirection.sqrMagnitude > float.Epsilon)
             {
                 PreviousWalkDirection = WalkDirection;
@@ -641,8 +639,8 @@ namespace NeonRattie.Rat
             WalkDirection += keyboard.CheckKey(player.Back) ? -forward : Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Right) ? right : Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Left) ? -right : Vector3.zero;
-            AdjustPlane();
-
+            
+            
             WalkDirection.Normalize();
         }
 
@@ -691,8 +689,7 @@ namespace NeonRattie.Rat
             // Find the axis of rotation, which should 
             // be the axis perpendicular to both vectors
             Vector3 cross = Vector3.Cross(cameraForward, normal).normalized;
-            WalkDirection = ray.direction.RotateVector(-radian, cross);
-            Debug.LogFormat("Changed Vector: {0} - Previous: {1}", WalkDirection, PreviousWalkDirection);
+            WalkDirection = ray.direction.RotateVector(radian, cross);
             return WalkDirection;
         }
         
@@ -710,6 +707,7 @@ namespace NeonRattie.Rat
             {
                 return;
             }
+
             CalculateAdjustment(hit, Down, cameraForward);
         }
     }

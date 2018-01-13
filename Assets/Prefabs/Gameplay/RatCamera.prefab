@@ -69,14 +69,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390001246690298}
-  m_LocalRotation: {x: 0.2747602, y: -3.0850023e-16, z: -0.00000003275396, w: 0.9615128}
-  m_LocalPosition: {x: 10, y: 5.25, z: 134.3}
+  m_LocalRotation: {x: 0.33576, y: -4.703471e-16, z: -0.000000040025704, w: 0.94194764}
+  m_LocalPosition: {x: 10, y: 5.91, z: 134.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4119757591974902}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 31.895002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 39.238003, y: 0, z: 0}
 --- !u!20 &20452850899749212
 Camera:
   m_ObjectHideFlags: 1
@@ -158,9 +158,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  directionToTarget: {x: -0.9596736, y: -0.2809606, z: -0.0093651125}
-  distanceToTarget: 5.4456034
-  heightAbove: 1.53
+  directionToTarget: {x: 0.38020235, y: -0.22866455, z: 0.89619124}
+  distanceToTarget: 18.41125
+  heightAbove: 4.21
 --- !u!114 &114961063567491238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,8 +174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rat: {fileID: 0}
   followData:
-    HeightAboveAgent: 1.53
-    DistanceFromPlayer: 5.5
+    HeightAboveAgent: 4.21
+    DistanceFromPlayer: 6.7
     PitchRotation: 15
   freeControl:
     MoveRadius: 6
