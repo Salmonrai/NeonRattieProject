@@ -26,6 +26,8 @@ namespace NeonRattie.Testing
 
         [SerializeField]
         protected float rotationSlerpSpeed;
+        
+        public bool MustMaintainPlane { get; set; }
 
         private Vector3 fromRat;
 
@@ -54,6 +56,10 @@ namespace NeonRattie.Testing
             Quaternion rot = transform.rotation;
             rot.SetLookRotation(transform.forward, rat.RatPosition.up);
             transform.rotation = rot;
+            if (MustMaintainPlane)
+            {
+                transform.up = rat.RatPosition.up;
+            }
         }
         
         private void AxisRotation()
@@ -72,7 +78,7 @@ namespace NeonRattie.Testing
                 new Vector3(0, Mathf.Clamp(delta.x, xRange.Min, xRange.Max)) : 
                 new Vector3(Mathf.Clamp(-delta.y, yRange.Min, yRange.Max), 0);
             float angle = Mathf.Clamp(rotationSpeed * delta.magnitude, 0, maxAngleRotation);
-            Quaternion deltaRotation = Quaternion.AngleAxis(angle, axis);
+            Quaternion deltaRotation = Quaternion.AngleAxis(angle, transform.up);
             if (Math.Abs(axis.y) < 0.001f)
             {
                 Quaternion rot = transform.rotation;

@@ -1,4 +1,5 @@
 ﻿using Flusk.Utility;
+using NeonRattie.Management;
 using NeonRattie.Rat.Utility;
 using UnityEngine;
 
@@ -52,6 +53,12 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             
             positionTweener.Complete += OnComplete;
             rotationTweener.Complete += OnComplete;
+
+            SceneObjects sc;
+            if (SceneObjects.TryGetInstance(out sc))
+            {
+                sc.MouseRotation.MustMaintainPlane = true;
+            }
         }
 
         public override void Tick()
@@ -61,6 +68,16 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             rat.RotateController.SetLookDirection(lookDirection, rat.RatPosition.up, 0.1f);
             positionTweener.Tick(Time.deltaTime);
             rotationTweener.Tick(Time.deltaTime);
+        }
+
+        public override void Exit(IState nextState)
+        {
+            base.Exit(nextState);
+            SceneObjects sc;
+            if (SceneObjects.TryGetInstance(out sc))
+            {
+                sc.MouseRotation.MustMaintainPlane = false;
+            }
         }
 
         private void OnComplete()
