@@ -83,12 +83,12 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         private void SetTweens(RaycastHit hit)
         {
             position = new PositionTweener(rat.ClimbDownPolesCurve, rat.RatPosition.position,
-                hit.point + rat.RatCollider.bounds.extents, rat.RatPosition);
+                hit.point + rat.RatCollider.bounds.extents * 0.5f, rat.RatPosition);
             point = hit.point;
             Quaternion rot = new Quaternion {eulerAngles = Vector3.right * 90};
             Quaternion to = rat.RatPosition.rotation * rot;
             rotation = new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, to, rat.RatPosition);
-            
+            rotation.MultiplierModifier = position.MultiplierModifier = 5f;
             rotation.Complete = position.Complete = OnComplete;
         }
 
