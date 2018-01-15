@@ -1,5 +1,6 @@
 ﻿using Flusk.Utility;
 using NeonRattie.Management;
+using NeonRattie.Objects;
 using NeonRattie.Rat.Utility;
 using UnityEngine;
 
@@ -33,21 +34,19 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             base.Enter(state);
             previousWalkRay = new Ray( rat.RatPosition.position, rat.PreviousWalkDirection);
-            lookDirection = rat.AdjustToWalkable(rat.NextWalkable, previousWalkRay);
-            if (rat.NextWalkable == null)
-            {
-                rat.ChangeState(((RatState)state).State);
-                return;
-            }
+            lookDirection = rat.AdjustToClimbable(rat.CurrentClimbable as ClimbPole, previousWalkRay);
 
             Vector3 offset = rat.RatPosition.up * 5;
 
-            Vector3 position = rat.NextWalkable.ClosestPoint(rat.RatPosition.position) + offset;
+            Vector3 position = (rat.CurrentClimbable as ClimbPole).ClosestPoint(rat.RatPosition.position) + offset;
+            
+            Quaternion rotation = new Quaternion();
+            rotation.SetLookRotation(Vector3.up, rat.RatPosition.up);
             
             positionTweener =
                 new PositionTweener(rat.ClimbUpPolesCurve, rat.RatPosition.position, position, rat.transform);
             rotationTweener = 
-                new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, rat.NextWalkable.Rotation, rat.transform);
+                new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, rotation, rat.transform);
 
             positionTweener.MultiplierModifier = rotationTweener.MultiplierModifier = rat.ClimbMotionMultiplier;
             
@@ -90,7 +89,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             {
                 return;
             }
-            rat.ChangeState(RatActionStates.Idle);
+            rat.ChangeState(RatActionStates.ClimbIdle);
             positionTweener = null;
             rotationTweener = null;
         }

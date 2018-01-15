@@ -59,7 +59,7 @@ namespace NeonRattie.Rat.RatStates
 
         protected void FallTowards()
         {
-            Vector3 point = rat.transform.position - rat.transform.up;
+            Vector3 point = rat.RatPosition.position - rat.RatPosition.up;
             rat.TryMove(point);
         }
 
@@ -99,6 +99,7 @@ namespace NeonRattie.Rat.RatStates
                 return;
             }
             rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
+            Debug.LogFormat("Adjusted {0}", rat.CurrentWalkable);
         }
     }
 }

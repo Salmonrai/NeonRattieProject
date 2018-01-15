@@ -1,5 +1,6 @@
 ﻿using System;
 using Flusk.Utility;
+using NeonRattie.Objects;
 using NeonRattie.Rat.Utility;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 
         private PositionTweener position;
         private RotationTweener rotation;
+
+        private Vector3 up;
 
         private Vector3 point;
         
@@ -44,24 +47,22 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             rotation = new RotationTweener(rat.ClimbRotationCurve, currentRotation, 
                 orientation.rotation, rat.RatPosition);
 
-            rotation.MultiplierModifier = position.MultiplierModifier = 5f;
+            rotation.MultiplierModifier = position.MultiplierModifier = 50f;
             rotation.Complete = position.Complete = OnComplete;
         }
 
         private void FindPoint()
         {
-            Vector3 direction = (rat.RatPosition.forward + rat.RatPosition.up).normalized;
+            Vector3 direction = rat.RatPosition.forward;
             Ray ray = new Ray(rat.RatPosition.position, direction);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, rat.ClimbOffDistance, rat.GroundLayer))
             {
                 point = hit.point;
+                rat.SetWalkable(hit.collider.GetComponent<IWalkable>());
                 Debug.Log(point);
+                Debug.Log(hit.collider.gameObject);
                 SetTweens(hit);
-            }
-            else
-            {
-                rat.ChangeState(RatActionStates.ClimbIdle);
             }
         }
 
@@ -69,6 +70,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             position.Tick(Time.deltaTime);
             rotation.Tick(Time.deltaTime);
+            rat.RatPosition.up = Vector3.up;
         }
 
         public override void Exit(IState state)

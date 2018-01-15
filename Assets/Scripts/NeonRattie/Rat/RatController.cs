@@ -14,6 +14,7 @@ using NeonRattie.Rat.RatStates.PipeClimb;
 using NeonRattie.Shared;
 using NeonRattie.Testing;
 using NeonRattie.Utility;
+using NeonRattie.Viewing;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -191,6 +192,9 @@ namespace NeonRattie.Rat
 
         public JumpBox JumpBox { get; private set; }
         public ClimbPole ClimbPole { get; private set; }
+        
+        public IClimbable CurrentClimbable { get; private set; }
+        
         public IWalkable NextWalkable { get; private set; }
         
         public IWalkable CurrentWalkable { get; private set; }
@@ -359,15 +363,21 @@ namespace NeonRattie.Rat
             return false; 
         }
 
+        public void SetWalkable(IWalkable walkable)
+        {
+            CurrentWalkable = walkable;
+        }
+
         public bool ClimbUpValid()
         {
             RaycastHit hit;
             Ray ray = new Ray(RatPosition.position, RatPosition.forward);
-            if (!Raycasting.RaycastForType<IWalkable>(ray, out hit, 5f, walkableMask))
+            if (!Raycasting.RaycastForType<IClimbable>(ray, out hit, 5f, walkableMask))
             {
                 return false;
             }
             NextWalkable = hit.collider.GetComponent<IWalkable>();
+            CurrentClimbable = hit.collider.GetComponent<IClimbable>();
             float dot = Mathf.Abs(Vector3.Dot(hit.normal, RatPosition.up));
             return dot <= vectorSimilarityForClimb;
         }
@@ -627,9 +637,9 @@ namespace NeonRattie.Rat
                 return;
             }
 
-            MouseRotation rotation = SceneObjects.Instance.MouseRotation;
-            Vector3 forward = rotation.FlatForward();
-            Vector3 right = rotation.FlatRight();
+            CameraControls cameraControls = SceneObjects.Instance.CameraControls;
+            Vector3 forward = cameraControls.GetFlatForward();
+            Vector3 right = cameraControls.GetFlatRight();
             if (WalkDirection.sqrMagnitude > float.Epsilon)
             {
                 PreviousWalkDirection = WalkDirection;
@@ -655,7 +665,23 @@ namespace NeonRattie.Rat
             CurrentWalkable = walkable;
             if (!walkable.Raycast(ray, out hit, float.MaxValue))
             {
-                Debug.Log("Walkable returned");
+                return ray.direction;
+            }
+            return CalculateAdjustment(hit, ray, cameraForward);
+        }
+        
+        public Vector3 AdjustToClimbable(ClimbPole climbable, Ray ray)
+        {
+            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
+            RaycastHit hit;
+            if (CurrentClimbable == null)
+            {
+                return ray.direction;
+            }
+
+            CurrentClimbable = climbable;
+            if (!climbable.Raycast(ray, out hit, float.MaxValue))
+            {
                 return ray.direction;
             }
             return CalculateAdjustment(hit, ray, cameraForward);

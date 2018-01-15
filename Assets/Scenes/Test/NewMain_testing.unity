@@ -977,6 +977,26 @@ Prefab:
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 114627659752293806, guid: dd39dde7185656d4287578155fc8a686,
+        type: 2}
+      propertyPath: climbUp
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 114627659752293806, guid: dd39dde7185656d4287578155fc8a686,
+        type: 2}
+      propertyPath: turnLeft
+      value: 97
+      objectReference: {fileID: 0}
+    - target: {fileID: 114627659752293806, guid: dd39dde7185656d4287578155fc8a686,
+        type: 2}
+      propertyPath: turnRight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114627659752293806, guid: dd39dde7185656d4287578155fc8a686,
+        type: 2}
+      propertyPath: climbDown
+      value: 115
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd39dde7185656d4287578155fc8a686, type: 2}
   m_IsPrefabParent: 0
@@ -13460,7 +13480,12 @@ Prefab:
     - target: {fileID: 114833153436867744, guid: b0b32fb5630fb7246b336d0554e987b5,
         type: 2}
       propertyPath: groundLayer.m_Bits
-      value: 4352
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 114833153436867744, guid: b0b32fb5630fb7246b336d0554e987b5,
+        type: 2}
+      propertyPath: climbOffDistance
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
@@ -21850,6 +21875,11 @@ Prefab:
     - target: {fileID: 4045169661790848, guid: aac2f3d92f163b34f843b5bec1ac52b6, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 135355881114139640, guid: aac2f3d92f163b34f843b5bec1ac52b6,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: aac2f3d92f163b34f843b5bec1ac52b6, type: 2}
@@ -35801,6 +35831,10 @@ Prefab:
     - target: {fileID: 4480779708190918, guid: 9a17392fe4da8a149ab4ba8570eb288a, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1305946032629458, guid: 9a17392fe4da8a149ab4ba8570eb288a, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 135966089840264074, guid: 9a17392fe4da8a149ab4ba8570eb288a, type: 2}

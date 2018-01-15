@@ -8,6 +8,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 {
     public class ClimbIdle : ClimbState, IClimb
     {
+        
+        
         public override RatActionStates State
         {
             get { return RatActionStates.ClimbIdle; }
@@ -26,7 +28,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             if (RotateToClimbPole(out hit))
             {
                 rat.PreviousClimbFallTowardsPoint = hit.point;
-                FallTowards(rat.PreviousClimbFallTowardsPoint, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
+                FallTowards(rat.PreviousClimbFallTowardsPoint, 1 << (rat.CurrentClimbable as ClimbPole).gameObject.layer, 0.1f);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Flusk.Utility;
 using NeonRattie.Controls;
+using NeonRattie.Objects;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates.PipeClimb
@@ -50,13 +51,13 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             {
                 return;
             }
-            FallTowards(FallTowardsData, 1 << rat.ClimbPole.gameObject.layer, 0.1f);
+            FallTowards(FallTowardsData, 1 << (rat.CurrentClimbable as ClimbPole).gameObject.layer, 0.1f);
         }
 
         private void ChangeToClimbOff(out RaycastHit hitGround, out Ray ray, out bool groundIsClose)
         {
             ray = new Ray(rat.RatPosition.position, rat.RatPosition.forward);
-            groundIsClose = Physics.Raycast(ray, out hitGround, 0.05f, rat.GroundLayer);
+            groundIsClose = Physics.Raycast(ray, out hitGround, 5f, rat.GroundLayer);
             if (groundIsClose)
             {
                 rat.ChangeState(RatActionStates.ClimbDown);
@@ -68,13 +69,14 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             FallTowardsData = hit.point;
             forward = rat.RatPosition.position +
                       rat.RatPosition.forward * rat.RunSpeed * Time.deltaTime;
-            if (Vector3.Distance(FallTowardsData, rat.RatPosition.position) < 0.4f)
+            bool sucesss = rat.TryMove(forward);
+            if (!sucesss)
             {
-                rat.TryMove(forward);
-                if (!PlayerControls.Instance.CheckKey(PlayerControls.Instance.ClimbUpKey))
-                {
-                    rat.ChangeState(RatActionStates.ClimbIdle);
-                }
+                Debug.Log("Failed to move!");
+            }
+            if (!PlayerControls.Instance.CheckKey(PlayerControls.Instance.ClimbUpKey))
+            {
+                rat.ChangeState(RatActionStates.ClimbIdle);
             }
         }
 

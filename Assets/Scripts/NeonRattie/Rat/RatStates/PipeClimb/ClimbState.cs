@@ -20,7 +20,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 
         protected bool RotateToClimbPole(out RaycastHit hit)
         {
-            ClimbPole pole = rat.ClimbPole;
+            ClimbPole pole = (ClimbPole) rat.CurrentClimbable;
             Vector3 toClimbPole = pole.Position - rat.RatPosition.position;
             toClimbPole = toClimbPole.Flatten().normalized;
             Ray ray = new Ray(rat.RatPosition.position, toClimbPole);
@@ -33,7 +33,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             Vector3 tangent = normal.CalculateTangent();
 
             Quaternion rotation = rat.RatPosition.rotation;
-            rotation.SetLookRotation(-tangent, normal);
+            rotation.SetLookRotation(tangent, normal);
             rat.SetTransform(rat.RatPosition.position, rotation, rat.RatPosition.localScale);
             return true;
         }
@@ -64,7 +64,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         protected virtual void OnGizmosDrawn()
         {
             Gizmos.color = Color.black;
-            ClimbPole pole = rat.ClimbPole;
+            ClimbPole pole = rat.CurrentClimbable as ClimbPole;;
             Vector3 toClimbPole = pole.Position - rat.RatPosition.position;
             toClimbPole = toClimbPole.Flatten().normalized;
             Ray ray = new Ray(rat.RatPosition.position, toClimbPole);

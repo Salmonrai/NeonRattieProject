@@ -6,7 +6,7 @@ using UnityEngine;
 namespace NeonRattie.Objects
 {
     [RequireComponent(typeof(Rigidbody), typeof(Hightlight))]
-    public class ClimbPole : MonoBehaviour, IClimbable, IWalkable
+    public class ClimbPole : MonoBehaviour, IClimbable
     {
         /// <summary>
         /// The mask the climb pole belongs to
