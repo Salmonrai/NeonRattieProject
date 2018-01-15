@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33194308476998516}
   - component: {fileID: 23874508566086314}
   - component: {fileID: 95505212093648644}
+  - component: {fileID: 65411701195092154}
   m_Layer: 0
   m_Name: AirCon_01 (3)
   m_TagString: Untagged
@@ -81,6 +82,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1766047829936172}
   m_Mesh: {fileID: 4300000, guid: f2b906ea1e6fda145898c19ef9d4d847, type: 3}
+--- !u!65 &65411701195092154
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1766047829936172}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8895864, y: 2.0739512, z: 3.1675222}
+  m_Center: {x: -5.2947197, y: 0.07276906, z: 0.0000004941868}
 --- !u!95 &95505212093648644
 Animator:
   serializedVersion: 3
