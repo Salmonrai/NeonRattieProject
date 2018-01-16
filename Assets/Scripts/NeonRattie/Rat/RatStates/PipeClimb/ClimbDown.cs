@@ -25,30 +25,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             base.Enter(state);
 
             FindPoint();
-
             rat.AddDrawGizmos(OnGizmosDrawn);
-        }
-
-        private void FindPointFromList()
-        {
-            Vector3 currentPosition = rat.RatPosition.position;
-            Quaternion currentRotation = rat.RatPosition.rotation;
-            Vector3 nosePoint = rat.RatPosition.position + rat.RatPosition.forward * rat.Bounds.extents.magnitude;
-            Transform orientation = rat.ClimbPole.GetClosestJumpOff(nosePoint);
-            if (orientation == null)
-            {
-                Debug.LogErrorFormat("[{0}] No jump off orientation available", State);
-                rat.ChangeState(((RatState) previous).State);
-                return;
-            }
-            
-            position = new PositionTweener(rat.ClimbDownPolesCurve, currentPosition, 
-                orientation.position, rat.RatPosition);
-            rotation = new RotationTweener(rat.ClimbRotationCurve, currentRotation, 
-                orientation.rotation, rat.RatPosition);
-
-            rotation.MultiplierModifier = position.MultiplierModifier = 50f;
-            rotation.Complete = position.Complete = OnComplete;
         }
 
         private void FindPoint()
@@ -70,7 +47,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             position.Tick(Time.deltaTime);
             rotation.Tick(Time.deltaTime);
-            rat.RatPosition.up = Vector3.up;
         }
 
         public override void Exit(IState state)
@@ -85,8 +61,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             position = new PositionTweener(rat.ClimbDownPolesCurve, rat.RatPosition.position,
                 hit.point + rat.RatCollider.bounds.extents * 0.5f, rat.RatPosition);
             point = hit.point;
-            Quaternion rot = new Quaternion {eulerAngles = Vector3.right * 90};
-            Quaternion to = rat.RatPosition.rotation * rot;
+            Quaternion to = new Quaternion();
+            to.SetLookRotation(rat.RatPosition.up, hit.normal);
             rotation = new RotationTweener(rat.ClimbRotationCurve, rat.RatPosition.rotation, to, rat.RatPosition);
             rotation.MultiplierModifier = position.MultiplierModifier = 5f;
             rotation.Complete = position.Complete = OnComplete;

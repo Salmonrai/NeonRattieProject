@@ -23,6 +23,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         //private Vector3 normal, tangent;
         private RaycastHit hit;
 
+        private float sign = 1;
+
         private Vector3 FallTowardsData
         {
             get { return rat.PreviousClimbFallTowardsPoint; }
@@ -32,7 +34,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Tick()
         {
             base.Tick();
-            if (!RotateToClimbPole(out hit))
+            if (!RotateToClimbPole(out hit, sign))
            {
                 return;
             }
@@ -67,14 +69,29 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         private void Move(out Vector3 forward)
         {
             FallTowardsData = hit.point;
+            PlayerControls pc;
+            if (PlayerControls.TryGetInstance(out pc))
+            {
+                if (pc.CheckKey(pc.ClimDownKey))
+                {
+                    sign = -1;
+                }
+                else if (pc.CheckKey(pc.ClimbUpKey))
+                {
+                    sign = 1;
+                }
+            }
+            
             forward = rat.RatPosition.position +
                       rat.RatPosition.forward * rat.RunSpeed * Time.deltaTime;
+            
+            
             bool sucesss = rat.TryMove(forward);
             if (!sucesss)
             {
                 Debug.Log("Failed to move!");
             }
-            if (!PlayerControls.Instance.CheckKey(PlayerControls.Instance.ClimbUpKey))
+            if (!pc.CheckKey(pc.ClimbUpKey) && !pc.CheckKey(pc.ClimDownKey))
             {
                 rat.ChangeState(RatActionStates.ClimbIdle);
             }

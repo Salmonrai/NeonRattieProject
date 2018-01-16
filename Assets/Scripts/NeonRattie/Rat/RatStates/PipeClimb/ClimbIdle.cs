@@ -18,7 +18,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Enter(IState state)
         {
             base.Enter(state);
-            PlayerControls.Instance.ClimbUp += OnClimbUp;
+            PlayerControls.Instance.ClimbUp += OnClimb;
+            PlayerControls.Instance.ClimbDown += OnClimb;
             rat.AddDrawGizmos(OnGizmosDrawn);
         }
 
@@ -35,11 +36,12 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Exit(IState state)
         {
             base.Exit(state);
-            PlayerControls.Instance.ClimbUp -= OnClimbUp;
+            PlayerControls.Instance.ClimbUp -= OnClimb;
+            PlayerControls.Instance.ClimbDown -= OnClimb;
             rat.RemoveDrawGizmos(OnGizmosDrawn);
         }
 
-        private void OnClimbUp(float amount)
+        private void OnClimb(float amount)
         {
             rat.ChangeState(RatActionStates.ClimbMotion);
         }

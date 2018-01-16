@@ -39,7 +39,7 @@ namespace NeonRattie.Controls
 
         [SerializeField]
         protected KeyCode climbDown;
-        public KeyCode ClimDownKey { get { return ClimDownKey; } }
+        public KeyCode ClimDownKey { get { return climbDown; } }
 
 
         [Header("Shooosh, only later")]
