@@ -1,6 +1,7 @@
 using Flusk.Patterns;
 using NeonRattie.Rat;
 using NeonRattie.Testing;
+using NeonRattie.UI;
 using NeonRattie.Viewing;
 using UnityEngine;
 
@@ -27,6 +28,13 @@ namespace NeonRattie.Management
         public MouseRotation MouseRotation
         {
             get { return mouseRotation; }
+        }
+
+        [SerializeField]
+        protected RatUI ratUI;
+        public RatUI RatUi
+        {
+            get { return ratUI; }
         }
     }
 }
