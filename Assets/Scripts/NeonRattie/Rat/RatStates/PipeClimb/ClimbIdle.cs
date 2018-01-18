@@ -33,6 +33,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             }
         }
 
+        public override void FixedTick()
+        {
+            TryJumpFromClimb();
+        }
+
         public override void Exit(IState state)
         {
             base.Exit(state);

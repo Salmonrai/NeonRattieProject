@@ -1,6 +1,10 @@
 ﻿using Flusk.Management;
+using Flusk.PhysicsUtility;
 using Flusk.Utility;
+using NeonRattie.Management;
+using NeonRattie.Objects;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using RatBrain = NeonRattie.Rat.RatController;
 
 namespace NeonRattie.Rat.RatStates
@@ -15,6 +19,9 @@ namespace NeonRattie.Rat.RatStates
         protected Vector3 groundPosition;
 
         protected IState previous;
+        
+        protected LayerMask JumpBoxLayer {get {return LayerMask.NameToLayer("JumpBox");}}
+        protected JumpBox[] jumpBoxes;
 
         private const float FALL_CHECK_MULTIPLIER = 0.01f;
 
@@ -36,6 +43,10 @@ namespace NeonRattie.Rat.RatStates
         {     
         }
 
+        public virtual void FixedTick()
+        {
+        }
+        
         protected void OnJump(float x)
         {
             StateMachine.ChangeState(RatActionStates.Jump);
@@ -49,7 +60,7 @@ namespace NeonRattie.Rat.RatStates
 
         protected void FallTowards(Vector3 point, LayerMask mask, float boxSize = 0.5f)
         {
-            rat.TryMove(point, mask, boxSize);
+            rat.TryMove(point, mask);
         }
 
         protected void FallTowards (Vector3 point)
@@ -99,7 +110,24 @@ namespace NeonRattie.Rat.RatStates
                 return;
             }
             rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
-            Debug.LogFormat("Adjusted {0}", rat.CurrentWalkable);
+            //Debug.LogFormat("Adjusted {0}", rat.CurrentWalkable);
+        }
+
+        protected bool CheckForJumps(bool activateUi = true)
+        {
+            JumpBox[] boxes = PhysicsCasting.OverlapSphereForType<JumpBox>(rat.RatPosition.position, 3f,  
+                1 << JumpBoxLayer.value);
+            bool valid = boxes.Length > 0;
+            if (activateUi)
+            {
+                SceneObjects.Instance.RatUi.JumpUI.Set(valid);
+            }
+
+            if (valid)
+            {
+                rat.JumpBox = boxes[0];
+            }
+            return valid;
         }
     }
 }

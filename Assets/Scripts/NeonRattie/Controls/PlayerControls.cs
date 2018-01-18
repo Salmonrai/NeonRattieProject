@@ -18,6 +18,10 @@ namespace NeonRattie.Controls
         protected KeyCode runKey;
         [SerializeField] 
         protected KeyCode jumpKey;
+        public KeyCode JumpKey
+        {
+            get { return jumpKey; }
+        }
 
         [SerializeField] 
         protected KeyCode pauseKey;

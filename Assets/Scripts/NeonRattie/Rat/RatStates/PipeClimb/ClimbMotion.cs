@@ -1,6 +1,9 @@
-﻿using Flusk.Utility;
+﻿using System;
+using Flusk.Extensions;
+using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
+using NeonRattie.UI;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates.PipeClimb
@@ -54,6 +57,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                 return;
             }
             FallTowards(FallTowardsData, 1 << (rat.CurrentClimbable as ClimbPole).gameObject.layer, 0.1f);
+        }
+
+        public override void FixedTick()
+        {
+            TryJumpFromClimb();
         }
 
         private void ChangeToClimbOff(out RaycastHit hitGround, out Ray ray, out bool groundIsClose)

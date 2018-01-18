@@ -8,8 +8,9 @@ namespace NeonRattie.UI
     {
         private Text text;
         
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             text = GetComponent<Text>();
         }
     }

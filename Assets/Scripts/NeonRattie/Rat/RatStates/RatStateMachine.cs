@@ -20,10 +20,18 @@ namespace NeonRattie.Rat.RatStates
             ratBrain = rat;
         }
 
-        public override void ChangeState(IState state)
+        public void FixedTick()
+        {
+            if (CurrentState != null)
+            {
+                CurrentState.FixedTick();
+            }
+        }
+
+        public override void ChangeState(RatState state)
         {
             var previousState = ((RatState) CurrentState).State;
-            var nextState = ((RatState) state).State;
+            var nextState = state.State;
             base.ChangeState(state);
             if (stateChanged != null)
             {

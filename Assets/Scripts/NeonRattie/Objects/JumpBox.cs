@@ -35,9 +35,9 @@ namespace NeonRattie.Objects
 
         public Vector3 GetJumpPoint(RatController climber)
         {
-            Vector3 output = jumpPoint.position;
-            Vector3 normal = -climber.LocalForward.normalized;
-            Plane plane = new Plane(normal, jumpPoint.position);
+            Vector3 output = Position;
+            Vector3 normal = (climber.RatPosition.position - Position).normalized;
+            Plane plane = new Plane(normal, jumpPoint.position);;
             Ray ray = new Ray(climber.transform.position, -normal);
             float distance;
             if (plane.Raycast(ray, out distance))

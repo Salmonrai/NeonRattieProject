@@ -73,15 +73,15 @@ namespace NeonRattie.Rat.RatStates
             {
                 Gizmos.DrawSphere(drawPositions[i], 0.1f);
             }
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(goal, 0.2f);
         }
 
         private void CalculateClimbData()
         {
             jumpBox = rat.JumpBox;
             goal = jumpBox.GetJumpPoint(rat);
-            direction = (goal - rat.transform.position).normalized;
-            
-            direction.y = 0;
+            direction = (goal - rat.transform.position).normalized.Flatten();
             var towards = (goal - rat.transform.position);
             boxHeight = towards.y;
             towards.y = 0;
@@ -102,15 +102,15 @@ namespace NeonRattie.Rat.RatStates
             return direction * nextStage * magnitude;
         }
 
-        private void CalculatePositions()
+        protected void CalculatePositions()
         {
             bool reachedTarget = false;
             while (!reachedTarget)
             {
                 float maxtime = Mathf.Min(rat.ForwardMotion.GetFinalTime(), rat.ClimbUpCurve.GetFinalTime());
-                var upValue = GetUpValue(slerpTime);
-                var forwardValue = GetForwardValue(slerpTime);
-                var nextPoint = initialPoint + (upValue + forwardValue);
+                Vector3 upValue = GetUpValue(slerpTime);
+                Vector3 forwardValue = GetForwardValue(slerpTime);
+                Vector3 nextPoint = initialPoint + (upValue + forwardValue);
                 arcPositions.Enqueue(nextPoint);
                 slerpTime += Time.deltaTime;
                 var difference = Vector3.Distance(nextPoint, goal);

@@ -13,6 +13,7 @@ using NeonRattie.Rat.RatStates;
 using NeonRattie.Rat.RatStates.PipeClimb;
 using NeonRattie.Shared;
 using NeonRattie.Testing;
+using NeonRattie.UI;
 using NeonRattie.Utility;
 using NeonRattie.Viewing;
 using UnityEngine;
@@ -190,7 +191,7 @@ namespace NeonRattie.Rat
         public RatAnimator RatAnimator { get; protected set; }
         public NavMeshAgent NavAgent { get; protected set; }
 
-        public JumpBox JumpBox { get; private set; }
+        public JumpBox JumpBox { get; set; }
         public ClimbPole ClimbPole { get; private set; }
         
         public IClimbable CurrentClimbable { get; private set; }
@@ -326,7 +327,7 @@ namespace NeonRattie.Rat
         }
 
         private string touching;
-        public bool TryMove(Vector3 position, LayerMask surface, float boxSize = 0.5f)
+        public bool TryMove(Vector3 position, LayerMask surface)
         {
             var hits = Physics.OverlapBox(position, RatCollider.bounds.extents, transform.rotation,
                 surface);
@@ -372,7 +373,7 @@ namespace NeonRattie.Rat
         {
             RaycastHit hit;
             Ray ray = new Ray(RatPosition.position, RatPosition.forward);
-            if (!Raycasting.RaycastForType<IClimbable>(ray, out hit, 5f, walkableMask))
+            if (!PhysicsCasting.SphereCastForType<IClimbable>(ray.origin, 1f, out hit, ray.direction, 5f, walkableMask))
             {
                 return false;
             }
@@ -490,6 +491,13 @@ namespace NeonRattie.Rat
             
             ratStateMachine.ChangeState(idle);
         }
+
+        public RatUI GetRatUI()
+        {
+            SceneObjects scene;
+            return SceneObjects.TryGetInstance(out scene) ? scene.RatUi : null;
+        }
+        
         
         public void AddDrawGizmos (Action action)
         {
@@ -564,14 +572,15 @@ namespace NeonRattie.Rat
         }
 
         protected virtual void FixedUpdate()
-        {
+        {   
+            ratStateMachine.FixedTick();
             RaycastHit hit;
-            bool isColliding = Raycasting.SphereCastForType<IWalkable>(RatPosition.position + RatPosition.up, 1f, out hit, Down.direction, 
+            bool isColliding = PhysicsCasting.SphereCastForType<IWalkable>(RatPosition.position + RatPosition.up, 1f, out hit, Down.direction, 
                 maxGroundDistance + 1, walkableMask);
 
             Ray down = Down;
             down.origin += RatPosition.up;
-            isColliding = Raycasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
+            isColliding = PhysicsCasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
             if (isColliding)
             {
                 var nextWalkable = hit.collider.GetComponent<IWalkable>();

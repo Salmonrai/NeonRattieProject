@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Flusk.PhysicsUtility
 {
-    public static class Raycasting
+    public static class PhysicsCasting
     {
         public static RaycastHit[] RaycastForTypes<T>(Ray ray, float maxDistance, LayerMask mask) 
         {
@@ -40,6 +40,21 @@ namespace Flusk.PhysicsUtility
             }
 
             return false;
+        }
+
+        public static T[] OverlapSphereForType<T>(Vector3 center, float radius, LayerMask mask)
+        {
+            Collider[] colliders = Physics.OverlapSphere(position: center, radius: radius, layerMask: mask);
+            List<T> typeColliders = new List<T>();
+            foreach (Collider collider in colliders)
+            {
+                T component = collider.GetComponent<T>();
+                if (component != null)
+                {
+                    typeColliders.Add(component);
+                }
+            }
+            return typeColliders.ToArray();
         }
     }
 }

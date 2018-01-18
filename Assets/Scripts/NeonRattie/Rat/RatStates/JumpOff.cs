@@ -48,7 +48,7 @@ namespace NeonRattie.Rat.RatStates
             }
             else
             {
-                rat.StateMachine.ChangeState(previousState);
+                rat.StateMachine.ChangeState(previousState as RatState);
                 return;
             }
             CalculatePositions();

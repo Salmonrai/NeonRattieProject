@@ -10,6 +10,18 @@ namespace NeonRattie.UI
         protected bool beginActive;
         
         protected RatUI uiManager;
+
+        public void Set(bool state)
+        {
+            if (state)
+            {
+                Activate();
+            }
+            else
+            {
+                Deactivate();
+            }
+        }
         
         public virtual void Activate()
         {
