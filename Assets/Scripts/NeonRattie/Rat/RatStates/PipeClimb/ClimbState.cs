@@ -20,35 +20,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             return true;
         }
 
-        protected void TryJumpFromClimb()
-        {
-            bool jumpValid = CheckForJumps();
-            if (!jumpValid)
-            {
-                return;
-            }
-
-            PlayerControls pc;
-            if (!PlayerControls.TryGetInstance(out pc))
-            {
-                return;
-            }
-            if (!pc.CheckKey(pc.JumpKey))
-            {
-                return;
-            }
-            RatUI ratUi = rat.GetRatUI();
-            if (ratUi != null)
-            {
-                ratUi.JumpUI.Set(false);
-            }
-
-            Vector3 direction = (rat.JumpBox.Position - rat.RatPosition.position).normalized;
-            direction = direction.Flatten();
-            rat.RotateController.SetLookDirection(direction, Vector3.up);
-            rat.ChangeState(RatActionStates.JumpOn);
-        }
-
         protected bool RotateToClimbPole(out RaycastHit hit, float sign = 1)
         {
             ClimbPole pole = (ClimbPole) rat.CurrentClimbable;

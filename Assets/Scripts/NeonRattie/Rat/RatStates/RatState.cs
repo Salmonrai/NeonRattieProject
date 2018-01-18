@@ -1,8 +1,12 @@
-﻿using Flusk.Management;
+﻿using System;
+using Flusk.Extensions;
+using Flusk.Management;
 using Flusk.PhysicsUtility;
 using Flusk.Utility;
+using NeonRattie.Controls;
 using NeonRattie.Management;
 using NeonRattie.Objects;
+using NeonRattie.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using RatBrain = NeonRattie.Rat.RatController;
@@ -25,6 +29,8 @@ namespace NeonRattie.Rat.RatStates
 
         private const float FALL_CHECK_MULTIPLIER = 0.01f;
 
+        protected RaycastHit noseHit;
+
         public void Init(RatBrain ratBrain, RatStateMachine machine)
         {
             rat = ratBrain;
@@ -33,10 +39,14 @@ namespace NeonRattie.Rat.RatStates
 
         public virtual void Enter(IState previousState)
         {
+            rat.AddDrawGizmos(OnGizmos);
+            rat.AddGUI(OnGui);
         }
 
         public virtual void Exit(IState nextState)
         {   
+            rat.RemoveDrawGizmos(OnGizmos);
+            rat.RemoveGUI(OnGui);
         }
 
         public virtual void Tick()
@@ -63,32 +73,11 @@ namespace NeonRattie.Rat.RatStates
             rat.TryMove(point, mask);
         }
 
-        protected void FallTowards (Vector3 point)
-        {
-            rat.TryMove(point);
-        }
-
         protected void FallTowards()
         {
             Vector3 point = rat.RatPosition.position - rat.RatPosition.up;
             rat.TryMove(point);
         }
-
-        protected void FallTowardCurrentWalkable()
-        {
-            
-        }
-
-        protected void OrientateTowardsCurrentWalkable()
-        {
-            
-        }
-
-        protected void FallDown ()
-        {
-            rat.TryMove(rat.LowestPoint - Vector3.down * 0.1f);
-        }
-        
         
         protected Vector3 GetUpValue(float deltaTime, AnimationCurve curve, float height)
         {
@@ -109,8 +98,12 @@ namespace NeonRattie.Rat.RatStates
             {
                 return;
             }
-            rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
-            //Debug.LogFormat("Adjusted {0}", rat.CurrentWalkable);
+            Ray ray = rat.Down;
+            ray.origin = rat.NosePoint.position;
+            if (rat.CurrentWalkable.Collider.Raycast(ray, out noseHit, float.MaxValue))
+            {
+                rat.RotateController.SetLookDirection(rat.WalkDirection, noseHit.normal, 0.9f);
+            }
         }
 
         protected bool CheckForJumps(bool activateUi = true)
@@ -123,11 +116,60 @@ namespace NeonRattie.Rat.RatStates
                 SceneObjects.Instance.RatUi.JumpUI.Set(valid);
             }
 
+            bool foundNew = false;
             if (valid)
             {
-                rat.JumpBox = boxes[0];
+                foreach (JumpBox box in boxes)
+                {
+                    if (rat.JumpBox == box)
+                    {
+                        continue;
+                    }
+                    rat.JumpBox = box;
+                    foundNew = true;
+                    break;
+                }
             }
-            return valid;
+            return valid && foundNew;
+        }
+
+        protected virtual void OnGui()
+        {
+            
+        }
+
+        protected virtual void OnGizmos()
+        {
+            
+        }
+
+        protected void TryJumpFromClimb()
+        {
+            bool jumpValid = CheckForJumps();
+            if (!jumpValid)
+            {
+                return;
+            }
+
+            PlayerControls pc;
+            if (!PlayerControls.TryGetInstance(out pc))
+            {
+                return;
+            }
+            if (!pc.CheckKey(pc.JumpKey))
+            {
+                return;
+            }
+            RatUI ratUi = rat.GetRatUI();
+            if (ratUi != null)
+            {
+                ratUi.JumpUI.Set(false);
+            }
+
+            Vector3 direction = (rat.JumpBox.Position - rat.RatPosition.position).normalized;
+            direction = direction.Flatten();
+            rat.RotateController.SetLookDirection(direction, Vector3.up);
+            rat.ChangeState(RatActionStates.JumpOn);
         }
     }
 }

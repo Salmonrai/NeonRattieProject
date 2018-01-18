@@ -12,7 +12,6 @@ using NeonRattie.Rat.Data;
 using NeonRattie.Rat.RatStates;
 using NeonRattie.Rat.RatStates.PipeClimb;
 using NeonRattie.Shared;
-using NeonRattie.Testing;
 using NeonRattie.UI;
 using NeonRattie.Utility;
 using NeonRattie.Viewing;
@@ -41,6 +40,13 @@ namespace NeonRattie.Rat
         /// </summary>
         [SerializeField] protected Vector3 gravity;
         public Vector3 Gravity { get { return gravity; } }
+
+        [SerializeField]
+        protected Transform nosePoint;
+        public Transform NosePoint
+        {
+            get { return nosePoint; }
+        }
 
         /// <summary>
         /// The amount of force needed for a jumpp
@@ -86,11 +92,12 @@ namespace NeonRattie.Rat
         [SerializeField]
         protected float maxGroundDistance = 1;
 
-        /// <summary>
-        /// How the rat is allowed to move
-        /// </summary>
         [SerializeField]
-        protected MoveHelperState moveHelperState;
+        protected float idealGroundDistance = 0.25f;
+        public float IdealGroundDistance
+        {
+            get { return idealGroundDistance; }
+        }
 
         /// <summary>
         /// The collision mask the rat considers the ground
@@ -182,9 +189,6 @@ namespace NeonRattie.Rat
         }
 
         #endregion
-
-        public Vector3 Velocity { get; protected set; }
-
         private Vector3 previousPosition;
         private Vector3 currentPosition;
 
@@ -195,9 +199,7 @@ namespace NeonRattie.Rat
         public ClimbPole ClimbPole { get; private set; }
         
         public IClimbable CurrentClimbable { get; private set; }
-        
-        public IWalkable NextWalkable { get; private set; }
-        
+               
         public IWalkable CurrentWalkable { get; private set; }
 
         //other rat effects...
@@ -237,6 +239,8 @@ namespace NeonRattie.Rat
         public event Action DrawGUI;
         
         public Vector3 WalkDirection { get; private set; }
+        public Vector3 ProjectedWalkPoint { get; protected set; }
+        public RaycastHit ProjectedInfo { get; protected set; }
         public Vector3 PreviousWalkDirection { get; private set; }
 
 
@@ -329,19 +333,16 @@ namespace NeonRattie.Rat
         private string touching;
         public bool TryMove(Vector3 position, LayerMask surface)
         {
-            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents, transform.rotation,
+            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * 0.8f, transform.rotation,
                 surface);
             var success = hits.Length == 0;
             if (success)
             {
                 touching = string.Empty;
                 SetTransform(position, transform.rotation, transform.localScale);
+                return true;
             }
-            else
-            {
-                touching = hits[0].gameObject.name;
-            }
-            return success;
+            return false;
         }
 
         public bool ClimbValid<TClimbComponent>(out TClimbComponent climbable) 
@@ -377,7 +378,6 @@ namespace NeonRattie.Rat
             {
                 return false;
             }
-            NextWalkable = hit.collider.GetComponent<IWalkable>();
             CurrentClimbable = hit.collider.GetComponent<IClimbable>();
             float dot = Mathf.Abs(Vector3.Dot(hit.normal, RatPosition.up));
             return dot <= vectorSimilarityForClimb;
@@ -425,13 +425,8 @@ namespace NeonRattie.Rat
         
         public void Walk(Vector3 direction)
         {
-            if (NavAgent == null)
-            {
-                Vector3 translate = transform.position + direction * walkSpeed * Time.deltaTime;
-                TryMove(translate, collisionMask);
-                return;
-            }
-            NavAgent.SetDestination(transform.position + direction * walkSpeed);
+            Vector3 translate = transform.position + direction * walkSpeed * Time.deltaTime;
+            TryMove(translate, collisionMask);
         }    
 
         public RaycastHit GetGroundData (float distance = 10000)
@@ -451,7 +446,6 @@ namespace NeonRattie.Rat
         private void Init()
         {
             RatAnimator = GetComponent<RatAnimator>();
-
             ratStateMachine.Init(this);
 
             idling = new Idle();
@@ -572,25 +566,36 @@ namespace NeonRattie.Rat
         }
 
         protected virtual void FixedUpdate()
-        {   
+        {
             ratStateMachine.FixedTick();
-            RaycastHit hit;
-            bool isColliding = PhysicsCasting.SphereCastForType<IWalkable>(RatPosition.position + RatPosition.up, 1f, out hit, Down.direction, 
-                maxGroundDistance + 1, walkableMask);
+            CheckForDifferentWalkable();  
+        }
 
-            Ray down = Down;
+        private void CheckForWalkable(Ray down)
+        {
+            RaycastHit hit;
             down.origin += RatPosition.up;
-            isColliding = PhysicsCasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
+            var isColliding = PhysicsCasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
             if (isColliding)
             {
                 var nextWalkable = hit.collider.GetComponent<IWalkable>();
                 if (nextWalkable != CurrentWalkable)
                 {
-                    Debug.Log(nextWalkable);   
+                    Debug.Log(nextWalkable);
                 }
+
                 CurrentWalkable = nextWalkable;
                 WalkableUp = hit.normal;
             }
+        }
+
+        /// <summary>
+        /// Check if there is a change in walkables
+        /// </summary>
+        private void CheckForDifferentWalkable()
+        {
+            Ray ray = new Ray(NosePoint.position, Down.direction);
+            CheckForWalkable(ray);
         }
 
         protected virtual void LateUpdate()
@@ -659,26 +664,22 @@ namespace NeonRattie.Rat
             WalkDirection += keyboard.CheckKey(player.Right) ? right : Vector3.zero;
             WalkDirection += keyboard.CheckKey(player.Left) ? -right : Vector3.zero;
             
-            
             WalkDirection.Normalize();
+
+            CalculateProjectedPoint();
         }
 
-        public Vector3 AdjustToWalkable(IWalkable walkable, Ray ray)
+        private void CalculateProjectedPoint()
         {
-            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
-            RaycastHit hit;
-            if (CurrentWalkable == null)
-            {
-                return ray.direction;
-            }
-            CurrentWalkable = walkable;
-            if (!walkable.Raycast(ray, out hit, float.MaxValue))
-            {
-                return ray.direction;
-            }
-            return CalculateAdjustment(hit, ray, cameraForward);
+            Vector3 point = RatPosition.position + WalkDirection;
+            RaycastHit info;
+            Ray ray = Down;
+            ray.origin = point;
+            var raycast = Physics.Raycast(ray, out info, maxGroundDistance, walkableMask);
+            ProjectedWalkPoint = raycast ? info.point : point;
+            ProjectedInfo = info;
         }
-        
+
         public Vector3 AdjustToClimbable(ClimbPole climbable, Ray ray)
         {
             Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
@@ -694,12 +695,6 @@ namespace NeonRattie.Rat
                 return ray.direction;
             }
             return CalculateAdjustment(hit, ray, cameraForward);
-        }
-        
-        public Vector3 AdjustToWalkable(IWalkable walkable)
-        {
-            Ray ray = new Ray(RatPosition.position, PreviousWalkDirection);
-            return AdjustToWalkable(walkable, ray);
         }
 
         private Vector3 CalculateAdjustment(RaycastHit hit, Ray ray, Vector3 cameraForward)
@@ -727,23 +722,6 @@ namespace NeonRattie.Rat
             WalkDirection = ray.direction.RotateVector(radian, cross);
             return WalkDirection;
         }
-        
-        private void AdjustPlane()
-        {
-            // we find the angle between walking plane, and the camera
-            Vector3 cameraForward = SceneObjects.Instance.CameraControls.transform.forward.Flatten();
-            if (CurrentWalkable == null)
-            {
-                Debug.Log("Adjust Plane "+StateMachine.CurrentState);
-                return;
-            }
-            RaycastHit hit;
-            if (!CurrentWalkable.Collider.Raycast(Down, out hit, float.MaxValue))
-            {
-                return;
-            }
-
-            CalculateAdjustment(hit, Down, cameraForward);
-        }
+       
     }
 }

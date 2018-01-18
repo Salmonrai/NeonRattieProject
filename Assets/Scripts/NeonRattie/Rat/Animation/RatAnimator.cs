@@ -44,7 +44,7 @@ namespace NeonRattie.Rat.Animation
             RatController rat = SceneObjects.Instance.RatController;
             if (rat == null)
             {
-                rat = GetComponent<RatController>();
+                rat = GetComponentInChildren<RatController>();
             }
             Wrapper = new RatAnimatorWrapper(rat);
         }

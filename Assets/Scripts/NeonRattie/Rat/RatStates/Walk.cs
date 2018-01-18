@@ -1,4 +1,5 @@
 ﻿using System;
+using Flusk.Extensions;
 using Flusk.Utility;
 using NeonRattie.Controls;
 using UnityEngine;
@@ -27,9 +28,7 @@ namespace NeonRattie.Rat.RatStates
             {
                 rat.ChangeState(RatActionStates.Idle);
             }
-            rat.Walk(rat.WalkDirection);
-            AdjustToPlane();
-            FallTowards();
+            Adjust();
             if (rat.ClimbUpValid())
             {
                 rat.ChangeState(RatActionStates.ClimbUp);
@@ -43,8 +42,23 @@ namespace NeonRattie.Rat.RatStates
             if (rat.JumpOffValid())
             {
                 rat.ChangeState(RatActionStates.JumpOff);
-            }
-            
+            }           
+        }
+
+        private void Adjust()
+        {
+
+            Ray ray = new Ray(rat.ProjectedWalkPoint, rat.ProjectedInfo.normal);
+            Vector3 point = ray.GetPoint(rat.IdealGroundDistance);
+            point = (point - rat.RatPosition.position).normalized;
+            rat.Walk(point);
+            FallTowards();
+            AdjustToPlane();
+        }
+        
+        public override void FixedTick()
+        {
+            TryJumpFromClimb();
         }
 
         public override void Exit (IState nextState)
@@ -57,5 +71,12 @@ namespace NeonRattie.Rat.RatStates
         {
             StateMachine.ChangeState(RatActionStates.Idle);
         }
+
+        protected override void OnGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(rat.NosePoint.position, noseHit.normal);
+        }
+        
     }
 }

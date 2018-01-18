@@ -53,8 +53,12 @@ namespace NeonRattie.Rat.RatStates
             if (searchTime != null)
             {
                 searchTime.Tick(Time.deltaTime);
-            }
-            
+            }   
+        }
+        
+        public override void FixedTick()
+        {
+            TryJumpFromClimb();
         }
 
         private void UndoSearch ()

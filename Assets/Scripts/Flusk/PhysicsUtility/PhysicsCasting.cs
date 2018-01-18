@@ -41,6 +41,28 @@ namespace Flusk.PhysicsUtility
 
             return false;
         }
+        
+        /*
+         *
+         * public static bool BoxCast(Vector3 center, Vector3 halfExtents,
+         * Vector3 direction, Quaternion orientation = Quaternion.identity,
+         * float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers,
+         * QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);
+         */
+        public static bool BoxCastForType<T>(Ray ray, Vector3 extents, out RaycastHit info, out T component,
+            Quaternion orientation, float maxDistance, 
+            LayerMask layerMask)
+        {
+            bool result = Physics.BoxCast(ray.origin, extents, ray.direction, out info, orientation, maxDistance,
+                layerMask);
+            component = default(T);
+            if (!result)
+            {
+                return false;
+            }
+            component = info.collider.GetComponent<T>();
+            return component == null;
+        }
 
         public static T[] OverlapSphereForType<T>(Vector3 center, float radius, LayerMask mask)
         {
