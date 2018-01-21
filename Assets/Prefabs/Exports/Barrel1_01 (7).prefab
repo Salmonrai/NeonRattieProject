@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33441905019803780}
   - component: {fileID: 23553926501017218}
   - component: {fileID: 95755291463480738}
+  - component: {fileID: 136344111101908432}
   m_Layer: 0
   m_Name: Barrel1_01 (7)
   m_TagString: Untagged
@@ -98,3 +99,16 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!136 &136344111101908432
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1555898123728374}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.7689125
+  m_Height: 1.5594571
+  m_Direction: 1
+  m_Center: {x: -0.010726988, y: 0.006366968, z: 0}
