@@ -1,4 +1,5 @@
-﻿using NeonRattie.Management;
+﻿using System;
+using NeonRattie.Management;
 using UnityEngine;
 
 namespace NeonRattie.Rat.Animation
@@ -13,35 +14,51 @@ namespace NeonRattie.Rat.Animation
     public class RatAnimator : MonoBehaviour
     {      
         public RatAnimatorWrapper Wrapper { get; private set; }
+
+        public event Action IdleComplete;
+        public event Action ScamperComplete;
+        public event Action ScuttleComplete;
+        public event Action JumpComplete;
+        public event Action LongIdleComplete;
         
-        public void PlayIdle()
+        
+        public void PlayIdle(bool state = true)
         {
-            //Wrapper.Idle = true;
+            Wrapper.Idle = state;
         }
 
-        public void PlaySearchingIdle ()
+        public void PlayScamper(bool state = true)
         {
-            //Wrapper.SearchIdle = true;
+            Wrapper.Scamper = state;
         }
 
-        public void PlayWalk()
+        public void PlayJump(bool state = true)
         {
-            //Wrapper.Walk = true;
+            Wrapper.Jump = state;
         }
 
-        public void PlayJump()
+        public void PlayScuttle (bool state = true)
         {
-            //Wrapper.Jump = true;
+            Wrapper.Scuttle = state;
         }
 
-        public void PlayJumpOn ()
+        public void PlayLongIdle(bool state = true, Action action = null)
         {
-            //Wrapper.JumpUp = true;
-        } 
+            Wrapper.LongIdle = state;
+            LongIdleComplete = action;
+        }
 
-        public virtual void Start()
+        public void LongIdleEnd()
         {
-            RatController rat = SceneObjects.Instance.RatController;
+            if (LongIdleComplete != null)
+            {
+                LongIdleComplete();
+            }
+        }
+
+        public virtual void Awake()
+        {
+            RatController rat = GetComponent<RatController>();
             if (rat == null)
             {
                 rat = GetComponentInChildren<RatController>();

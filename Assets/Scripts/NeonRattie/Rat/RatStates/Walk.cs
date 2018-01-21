@@ -16,7 +16,7 @@ namespace NeonRattie.Rat.RatStates
         public override void Enter(IState previousState)
         {
             base.Enter(previousState);
-            rat.RatAnimator.PlayWalk();
+            rat.RatAnimator.PlayScamper();
             PlayerControls.Instance.Unwalk += OnUnWalk;
             PlayerControls.Instance.Jump += OnJump;
         }
@@ -63,6 +63,7 @@ namespace NeonRattie.Rat.RatStates
 
         public override void Exit (IState nextState)
         {
+            rat.RatAnimator.PlayScamper(false);
             PlayerControls.Instance.Unwalk -= OnUnWalk;
             PlayerControls.Instance.Jump -= OnJump;
         }

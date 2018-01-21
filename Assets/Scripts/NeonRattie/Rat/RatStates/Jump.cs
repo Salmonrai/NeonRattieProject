@@ -1,4 +1,5 @@
-﻿using Flusk.Utility;
+﻿using System;
+using Flusk.Utility;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates
@@ -32,6 +33,12 @@ namespace NeonRattie.Rat.RatStates
             {
                 StateMachine.ChangeState(RatActionStates.Idle);
             }
+        }
+
+        public override void Exit(IState state)
+        {
+            base.Exit(state);
+            rat.RatAnimator.PlayJump(false);
         }
 
         private void JumpCalculation()

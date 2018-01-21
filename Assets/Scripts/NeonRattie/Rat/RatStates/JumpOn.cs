@@ -36,7 +36,6 @@ namespace NeonRattie.Rat.RatStates
         {
             slerpTime = 0;
             base.Enter(previousState);
-            rat.RatAnimator.PlayJumpOn();
             GetGroundData();
             if ( rat.JumpBox == null )
             {
@@ -46,6 +45,8 @@ namespace NeonRattie.Rat.RatStates
             CalculateClimbData();
             CalculatePositions();
             rat.AddDrawGizmos(DrawGizmos);
+            
+            rat.RatAnimator.PlayJump();
         }
 
         public override void Tick()
@@ -62,6 +63,7 @@ namespace NeonRattie.Rat.RatStates
         public override void Exit(IState state)
         {
             base.Exit(state);
+            rat.RatAnimator.PlayJump(false);
             rat.RemoveDrawGizmos(DrawGizmos);
         }
 

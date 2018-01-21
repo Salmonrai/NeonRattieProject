@@ -34,6 +34,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             ratUp = rat.RatPosition.up;
             ratForward = rat.RatPosition.forward;
             rat.AddDrawGizmos(OnGizmosDrawn);
+            
+            rat.RatAnimator.PlayScuttle();
         }
         public override void Tick()
         {
@@ -110,6 +112,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             base.Exit(nextState);
             PlayerControls.Instance.Unwalk -= OnUnWalk;
             rat.RemoveDrawGizmos(OnGizmosDrawn);
+            
+            rat.RatAnimator.PlayScuttle(false);
         }
 
         private void OnUnWalk(float amount)

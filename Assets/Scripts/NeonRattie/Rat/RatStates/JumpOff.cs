@@ -29,6 +29,16 @@ namespace NeonRattie.Rat.RatStates
         public override void Enter(IState previousState)
         {
             base.Enter(previousState);
+            if (CalculateJump(previousState))
+            {
+                return;
+            }
+            rat.RatAnimator.PlayJump();
+            rat.AddDrawGizmos(DrawGizmos);
+        }
+
+        private bool CalculateJump(IState previousState)
+        {
             float size = rat.RatCollider.bounds.extents.y;
             Vector3 frontPoint = rat.RatCollider.bounds.ClosestPoint(rat.transform.position + rat.LocalForward);
             Vector3 depth = frontPoint -
@@ -49,10 +59,11 @@ namespace NeonRattie.Rat.RatStates
             else
             {
                 rat.StateMachine.ChangeState(previousState as RatState);
-                return;
+                return true;
             }
+
             CalculatePositions();
-            rat.AddDrawGizmos(DrawGizmos);
+            return false;
         }
 
         public override void Tick()
@@ -72,6 +83,7 @@ namespace NeonRattie.Rat.RatStates
         public override void Exit(IState state)
         {
             base.Exit(state);
+            rat.RatAnimator.PlayJump(false);
             rat.NullifyJumpBox();
         }
         

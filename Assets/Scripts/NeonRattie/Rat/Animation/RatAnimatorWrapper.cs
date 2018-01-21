@@ -4,99 +4,52 @@ namespace NeonRattie.Rat.Animation
 {
     public class RatAnimatorWrapper : AnimatorWrapper<RatController>
     {
-        private const string IDLE_0 = "Idle";
-        private const string IDLE_TIMEOUT_1 = "Idle_Timeout_0";
-        private const string IDLE_TIMEOUT_2 = "Idle_Timeout_1";
-        private const string SEARCH_IDLE = "Search_Idle";
+        private const string IDLE = "Idle";
+        private const string LONG_IDLE = "LongIdle";
         
-        private const string WALK = "Walk";
-        private const string RUN = "Run";
+        private const string SCAMPER = "Scamper";
+        private const string SCUTTLE = "Scuttle";
 
         private const string JUMP = "Jump";
-        private const string JUMP_UP = "Jump_Up";
-        private const string JUMP_DOWN = "Jump_Down";
-
-        private const string CLIMB_UP = "Climb_Up";
-        private const string CLIMB_IDLE = "Climb_Idle";
-        private const string CLIMB_WALK = "Climb_Walk";
-        private const string CLIMB_DOWN = "Climb_Down";
         
         public RatAnimatorWrapper(RatController component) : base(component)
         {
         }
 
-        public bool ClimbIdle
+        public void Reset()
         {
-            get { return GetBool(CLIMB_IDLE); }
-            set {SetBool(CLIMB_IDLE, value);}
+            Idle = true;
+            LongIdle = false;
+            Scamper = false;
+            Scuttle = false;
+            Jump = false;
         }
-
+        
         public bool Idle
         {
-            get { return GetBool(IDLE_0); }
-            set {SetBool(IDLE_0, value);}
+            get { return GetBool(IDLE); }
+            set {SetBool(IDLE, value);}
         }
         
-        public bool IdleTimeOut0
+        public bool LongIdle
         {
-            get { return GetBool(IDLE_TIMEOUT_1); }
-            set {SetBool(IDLE_TIMEOUT_1, value);}
+            get { return GetBool(LONG_IDLE); }
+            set {SetBool(LONG_IDLE, value);}
         }
         
-        public bool IdleTimeOut1
+        
+        public bool Scamper
         {
-            get { return GetBool(IDLE_TIMEOUT_2); }
-            set {SetBool(IDLE_TIMEOUT_2, value);}
+            get { return GetBool(SCAMPER); }
+            set {SetBool(SCAMPER, value);}
         }
         
-        public bool SearchIdle
+        public bool Scuttle
         {
-            get { return GetBool(SEARCH_IDLE); }
-            set {SetBool(SEARCH_IDLE, value);}
+            get { return GetBool(SCUTTLE); }
+            set {SetBool(SCUTTLE, value);}
         }
         
-        
-        public bool Walk
-        {
-            get { return GetBool(WALK); }
-            set {SetBool(WALK, value);}
-        }
-        
-        public bool Run
-        {
-            get { return GetBool(RUN); }
-            set {SetBool(RUN, value);}
-        }
-        
-        public bool JumpUp
-        {
-            get { return GetBool(JUMP_UP); }
-            set {SetBool(JUMP_UP, value);}
-        }
-        
-        public bool JumpDown
-        {
-            get { return GetBool(JUMP_DOWN); }
-            set {SetBool(JUMP_DOWN, value);}
-        }
-        
-        public bool ClimbUp
-        {
-            get { return GetBool(CLIMB_UP); }
-            set {SetBool(CLIMB_UP, value);}
-        }
-        
-        public bool ClimbWalk
-        {
-            get { return GetBool(CLIMB_WALK); }
-            set {SetBool(CLIMB_WALK, value);}
-        }
-        
-        public bool ClimpDown
-        {
-            get { return GetBool(CLIMB_DOWN); }
-            set {SetBool(CLIMB_DOWN, value);}
-        }
 
         public bool Jump
         {
