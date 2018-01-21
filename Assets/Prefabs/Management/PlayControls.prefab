@@ -57,6 +57,10 @@ MonoBehaviour:
   jumpKey: 32
   pauseKey: 9
   exitKey: 27
+  climbUp: 119
+  turnLeft: 97
+  turnRight: 100
+  climbDown: 115
   screenShotKey: 0
   forward: 119
   back: 115

@@ -15,18 +15,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             get { return RatActionStates.ClimbMotion; }
         }
 
-        public override void Enter(IState state)
-        {
-            base.Enter(state);
-            PlayerControls.Instance.Unwalk += OnUnWalk;
-            
-            rat.AddDrawGizmos(OnGizmosDrawn);
-        }
 
         //private Vector3 normal, tangent;
         private RaycastHit hit;
-
         private float sign = 1;
+        private Vector3 ratUp, ratForward;
 
         private Vector3 FallTowardsData
         {
@@ -34,17 +27,24 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             set { rat.PreviousClimbFallTowardsPoint = value; }
         }
         
+        public override void Enter(IState state)
+        {
+            base.Enter(state);
+            PlayerControls.Instance.Unwalk += OnUnWalk;
+            ratUp = rat.RatPosition.up;
+            ratForward = rat.RatPosition.forward;
+            rat.AddDrawGizmos(OnGizmosDrawn);
+        }
         public override void Tick()
         {
             base.Tick();
-            if (!RotateToClimbPole(out hit, sign))
-           {
+            if (!RotateToClimbPole(out hit, Vector3.up, Vector3.forward, sign))
+            {
                 return;
             }
 
-            Vector3 forward;
-           
             // For controlling the rat motion forward
+            Vector3 forward;
             Move(out forward);
             
             // Jump off check
@@ -82,11 +82,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             {
                 if (pc.CheckKey(pc.ClimDownKey))
                 {
-                    sign = -1;
+                    sign = 1;
                 }
                 else if (pc.CheckKey(pc.ClimbUpKey))
                 {
-                    sign = 1;
+                    sign = -1;
                 }
             }
             

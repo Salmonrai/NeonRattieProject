@@ -11,9 +11,9 @@ namespace NeonRattie.Rat.Animation
     /// and directly through names
     /// </summary>
     public class RatAnimator : MonoBehaviour
-    {
+    {      
         public RatAnimatorWrapper Wrapper { get; private set; }
-
+        
         public void PlayIdle()
         {
             //Wrapper.Idle = true;

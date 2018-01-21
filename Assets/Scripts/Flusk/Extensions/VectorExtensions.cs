@@ -44,8 +44,13 @@ namespace Flusk.Extensions
         /// </summary>
         public static Vector3 CalculateTangent(this Vector3 normal)
         {
-            Vector3 upTangent = Vector3.Cross(normal, Vector3.up).normalized;
-            Vector3 forwardTangent = Vector3.Cross(normal, Vector3.forward).normalized;
+            return normal.CalculateTangent(Vector3.up, Vector3.forward);
+        }
+
+        public static Vector3 CalculateTangent(this Vector3 normal, Vector3 up, Vector3 forward)
+        {
+            Vector3 upTangent = Vector3.Cross(normal, up).normalized;
+            Vector3 forwardTangent = Vector3.Cross(normal, forward).normalized;
             return upTangent.sqrMagnitude < forwardTangent.sqrMagnitude ? upTangent : forwardTangent;
         }
 

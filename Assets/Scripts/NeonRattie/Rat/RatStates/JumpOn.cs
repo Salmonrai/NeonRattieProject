@@ -34,7 +34,6 @@ namespace NeonRattie.Rat.RatStates
 
         public override void Enter (IState previousState )
         {
-            Debug.Log("[CLIMB] Enter()");
             slerpTime = 0;
             base.Enter(previousState);
             rat.RatAnimator.PlayJumpOn();
