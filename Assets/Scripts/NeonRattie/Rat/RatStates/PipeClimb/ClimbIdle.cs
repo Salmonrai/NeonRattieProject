@@ -21,6 +21,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             PlayerControls.Instance.ClimbUp += OnClimb;
             PlayerControls.Instance.ClimbDown += OnClimb;
             rat.AddDrawGizmos(OnGizmosDrawn);
+            
+            rat.RatAnimator.PlayIdle();
         }
 
         public override void Tick()
@@ -44,6 +46,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             PlayerControls.Instance.ClimbUp -= OnClimb;
             PlayerControls.Instance.ClimbDown -= OnClimb;
             rat.RemoveDrawGizmos(OnGizmosDrawn);
+            
+            rat.RatAnimator.PlayIdle(false);
         }
 
         private void OnClimb(float amount)

@@ -26,6 +26,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 
             FindPoint();
             rat.AddDrawGizmos(OnGizmosDrawn);
+            
+            rat.RatAnimator.PlayJump();
         }
 
         private void FindPoint()
@@ -56,6 +58,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             position = null;
             rotation = null;
             rat.RemoveDrawGizmos(OnGizmosDrawn);
+            
+            rat.RatAnimator.PlayJump(false);
         }
 
         private void SetTweens(RaycastHit hit)

@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Flusk.Utility;
-using Flusk.Management;
+﻿using Flusk.Management;
 using Flusk.Utility;
 using NeonRattie.Controls;
 using UnityEngine;
@@ -13,6 +12,8 @@ namespace NeonRattie.Rat.RatStates
         private const float RESET_TIME = 10;
         private Timer searchTime;
 
+        private Timer timeOut;
+
         public override RatActionStates State 
         { 
             get {return RatActionStates.Idle;}
@@ -25,7 +26,11 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Walk += OnWalkPressed;
             PlayerControls.Instance.Jump += OnJump;
 
-            rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;        
+            rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;     
+            
+            rat.RatAnimator.PlayIdle();
+            
+            timeOut = new Timer(5, TimeOut);
         }
 
         public override void Tick()
@@ -33,6 +38,33 @@ namespace NeonRattie.Rat.RatStates
             base.Tick();
             FallTowards();
             AdjustToPlane();
+            ChangeStates();
+            
+            timeOut.Tick(Time.deltaTime);
+        }
+        
+        public override void Exit(IState previousState)
+        {
+            PlayerControls.Instance.Walk -= OnWalkPressed;
+            PlayerControls.Instance.Jump -= OnJump;
+            rat.RatAnimator.PlayIdle(false);
+            OnLongIdleComplete();
+        }
+
+        private void TimeOut()
+        {
+            rat.RatAnimator.PlayLongIdle(true, OnLongIdleComplete);
+        }
+
+        private void OnLongIdleComplete()
+        {
+            // Cancel long idle
+            rat.RatAnimator.LongIdleComplete -= TimeOut;
+            rat.RatAnimator.PlayLongIdle(false);
+        }
+
+        private void ChangeStates()
+        {
             var playerControls = PlayerControls.Instance;
 
             if (playerControls.CheckKey(playerControls.Forward))
@@ -40,22 +72,24 @@ namespace NeonRattie.Rat.RatStates
                 rat.ChangeState(RatActionStates.Walk);
                 return;
             }
-            
+
             if (MouseManager.Instance == null)
             {
                 return;
             }
+
             if (!(MouseManager.Instance.Delta.magnitude > 0))
             {
                 return;
             }
+
             StartSearch();
             if (searchTime != null)
             {
                 searchTime.Tick(Time.deltaTime);
-            }   
+            }
         }
-        
+
         public override void FixedTick()
         {
             TryJumpFromClimb();
@@ -73,16 +107,10 @@ namespace NeonRattie.Rat.RatStates
             {
                 return;
             }
-            rat.RatAnimator.PlaySearchingIdle();
             searchTime = new Timer(RESET_TIME, UndoSearch);
         }
 
-        public override void Exit(IState previousState)
-        {
-            PlayerControls.Instance.Walk -= OnWalkPressed;
-            PlayerControls.Instance.Jump -= OnJump;
-
-        }
+        
 
         private void OnWalkPressed(float axisValue)
         {

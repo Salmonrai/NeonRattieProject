@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Assets.Scripts.Flusk.Utility
+namespace Flusk.Utility
 {
     public class Timer
     {
@@ -14,7 +11,7 @@ namespace Assets.Scripts.Flusk.Utility
 
         public Timer (float time, Action onComplete = null )
         {
-            this.time = time;
+            goal = time;
             Complete = onComplete;
         }
 
