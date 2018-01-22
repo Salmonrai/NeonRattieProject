@@ -7206,7 +7206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 10
   runSpeed: 15
-  gravity: {x: 0, y: 0, z: 0}
+  gravity: {x: 0, y: -9.81, z: 0}
   nosePoint: {fileID: 4587758449209652}
   jumpForce: 10
   jumpArc:
@@ -7215,14 +7215,14 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 7.069827
-      outSlope: 7.069827
+      inSlope: 3.3141444
+      outSlope: 3.3141444
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.48979416
-      value: 0.99684536
-      inSlope: 0.2939421
-      outSlope: 0.2939421
+      time: 0.50178754
+      value: 0.48539746
+      inSlope: -0.020538662
+      outSlope: -0.020538662
       tangentMode: 0
     - serializedVersion: 2
       time: 0.99990845
@@ -7269,7 +7269,7 @@ MonoBehaviour:
     m_Bits: 8448
   jumpLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 8192
   rotationAngleMultiplier: 0.5
   rotateController: {fileID: 114277874191685530}
   climbUpCurve:
