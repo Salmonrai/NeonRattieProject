@@ -114,7 +114,7 @@ namespace NeonRattie.Rat.RatStates
 
         private void OnWalkPressed(float axisValue)
         {
-            if (StateMachine != null)
+            if (StateMachine != null )
             {
                 StateMachine.ChangeState(RatActionStates.Walk);
             }

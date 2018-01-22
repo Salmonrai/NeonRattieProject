@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Flusk.Extensions;
 using Flusk.Utility;
 using NeonRattie.Controls;
+using NeonRattie.Objects;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates
@@ -27,27 +29,15 @@ namespace NeonRattie.Rat.RatStates
             if (Math.Abs(rat.WalkDirection.magnitude) < 0.001f)
             {
                 rat.ChangeState(RatActionStates.Idle);
+                return;
             }
             Adjust();
-            if (rat.ClimbUpValid())
-            {
-                rat.ChangeState(RatActionStates.ClimbUp);
-                return;
-            }
-            if (rat.JumpOnValid())
-            {
-                rat.ChangeState(RatActionStates.JumpOn);
-                return;
-            }
-            if (rat.JumpOffValid())
-            {
-                rat.ChangeState(RatActionStates.JumpOff);
-            }           
+            ChangeStates();
         }
+
 
         private void Adjust()
         {
-
             Ray ray = new Ray(rat.ProjectedWalkPoint, rat.ProjectedInfo.normal);
             Vector3 point = ray.GetPoint(rat.IdealGroundDistance);
             point = (point - rat.RatPosition.position).normalized;
@@ -67,6 +57,26 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Unwalk -= OnUnWalk;
             PlayerControls.Instance.Jump -= OnJump;
         }
+        
+        private void ChangeStates()
+        {
+            if (rat.ClimbUpValid())
+            {
+                rat.ChangeState(RatActionStates.ClimbUp);
+                return;
+            }
+
+            if (rat.JumpOnValid())
+            {
+                rat.ChangeState(RatActionStates.JumpOn);
+                return;
+            }
+
+            if (rat.JumpOffValid())
+            {
+                rat.ChangeState(RatActionStates.JumpOff);
+            }
+        }
 
         private void OnUnWalk(float x)
         {
@@ -78,6 +88,5 @@ namespace NeonRattie.Rat.RatStates
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(rat.NosePoint.position, noseHit.normal);
         }
-        
     }
 }

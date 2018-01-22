@@ -91,6 +91,10 @@ namespace NeonRattie.Rat
 
         [SerializeField]
         protected float maxGroundDistance = 1;
+        public float MaxGroundDistance
+        {
+            get { return maxGroundDistance;}
+        }
 
         [SerializeField]
         protected float idealGroundDistance = 0.25f;
@@ -161,6 +165,10 @@ namespace NeonRattie.Rat
         /// </summary>
         [SerializeField]
         protected LayerMask walkableMask;
+        public LayerMask WalkableMask
+        {
+            get { return walkableMask; }
+        }
         
         [SerializeField]
         protected float climbMotionMultiplier = 5f;
@@ -334,7 +342,7 @@ namespace NeonRattie.Rat
         public bool TryMove(Vector3 position, LayerMask surface)
         {
             var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * 0.8f, transform.rotation,
-                surface);
+                surface.value);
             var success = hits.Length == 0;
             if (success)
             {
@@ -346,19 +354,15 @@ namespace NeonRattie.Rat
         }
 
         public bool ClimbValid<TClimbComponent>(out TClimbComponent climbable) 
-            where TClimbComponent : MonoBehaviour, IClimbable
+            where TClimbComponent : MonoBehaviour
         {
-            var direction = LocalForward;
+            var direction = ratPosition.forward;
             RaycastHit info;
-            bool success = Physics.Raycast(transform.position, direction, out info, 0.1f, 
-                1 << LayerMask.NameToLayer("Interactable"));
+            Ray ray = new Ray(ratPosition.position, ratPosition.forward);
+            bool success = Physics.SphereCast(ray, 0.5f, out info, 1f, jumpLayer);
             if (success)
             {
                 climbable = info.transform.GetComponentInChildren<TClimbComponent>();
-                if (climbable != null)
-                {
-                    climbable.Select(true);
-                }
                 return climbable != null;
             }
             climbable = null;
@@ -518,6 +522,12 @@ namespace NeonRattie.Rat
                 DrawGUI -= action;
             }
         }
+
+        public bool IsGroundBelow()
+        {
+            RaycastHit hit;
+            return Physics.Raycast(Down, out hit, maxGroundDistance, walkableMask);
+        }
         
         public void FindLowestPoint ()
         {
@@ -575,18 +585,42 @@ namespace NeonRattie.Rat
         {
             RaycastHit hit;
             down.origin += RatPosition.up;
-            var isColliding = PhysicsCasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
-            if (isColliding)
+            down.direction = (down.direction * 0.7f + ratPosition.forward * 0.3f);
+            var isColliding = PhysicsCasting.SphereCastForType<IWalkable>(down, 0.2f, out hit,
+                maxGroundDistance + 1, walkableMask);
+            //var isColliding = PhysicsCasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
+            if (!isColliding)
             {
-                var nextWalkable = hit.collider.GetComponent<IWalkable>();
-                if (nextWalkable != CurrentWalkable)
-                {
-                    Debug.Log(nextWalkable);
-                }
-
-                CurrentWalkable = nextWalkable;
-                WalkableUp = hit.normal;
+                return;
             }
+
+            var nextWalkable = hit.collider.GetComponent<IWalkable>();
+            if (nextWalkable != CurrentWalkable && CurrentWalkable != null)
+            {
+                Vector3 point = RatPosition.position + Vector3.up * 5f;
+                Vector3 currentPoint = CurrentWalkable.ClosestPoint(point);
+                Vector3 nextPoint = nextWalkable.ClosestPoint(point);
+                if (nextPoint.y > currentPoint.y)
+                {
+                    Vector3 movePoint = ratPosition.position;
+                    movePoint.y = movePoint.y + idealGroundDistance;
+                    movePoint += ratPosition.forward * Vector3.Magnitude(ratPosition.position - hit.point) * 0.5f;
+                    SetTransform(movePoint, ratPosition.rotation, ratPosition.localScale);
+                    GetRatUI().JumpUI.Activate();
+                }
+                else
+                {
+                    GetRatUI().JumpUI.Deactivate();
+                }
+                Debug.Log(nextWalkable);
+            }
+            else
+            {
+                GetRatUI().JumpUI.Deactivate();
+            }
+
+            CurrentWalkable = nextWalkable;
+            WalkableUp = hit.normal;
         }
 
         /// <summary>

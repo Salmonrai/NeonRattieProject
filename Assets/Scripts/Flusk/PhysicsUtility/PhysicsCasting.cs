@@ -41,14 +41,13 @@ namespace Flusk.PhysicsUtility
 
             return false;
         }
+
+        public static bool SphereCastForType<T>(Ray ray, float radius, out RaycastHit info,
+            float distance, LayerMask mask)
+        {
+            return SphereCastForType<T>(ray.origin, radius, out info, ray.direction, distance, mask);
+        }
         
-        /*
-         *
-         * public static bool BoxCast(Vector3 center, Vector3 halfExtents,
-         * Vector3 direction, Quaternion orientation = Quaternion.identity,
-         * float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers,
-         * QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);
-         */
         public static bool BoxCastForType<T>(Ray ray, Vector3 extents, out RaycastHit info, out T component,
             Quaternion orientation, float maxDistance, 
             LayerMask layerMask)

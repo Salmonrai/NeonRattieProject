@@ -52,7 +52,7 @@ namespace NeonRattie.Rat.RatStates
         public override void Tick()
         {
             base.Tick();
-            rat.TryMove(arcPositions.Dequeue());
+            rat.SetTransform(arcPositions.Dequeue(), rat.RatPosition.rotation, rat.RatPosition.localScale);
             if (arcPositions.Count > 0)
             {
                 return;
@@ -113,7 +113,7 @@ namespace NeonRattie.Rat.RatStates
                 Vector3 forwardValue = GetForwardValue(slerpTime);
                 Vector3 nextPoint = initialPoint + (upValue + forwardValue);
                 arcPositions.Enqueue(nextPoint);
-                slerpTime += Time.deltaTime;
+                slerpTime += Time.deltaTime * 2f;
                 var difference = Vector3.Distance(nextPoint, goal);
                 reachedTarget = difference < negligibleDistance || (maxtime > 0 && slerpTime > maxtime);
             }

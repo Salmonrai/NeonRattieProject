@@ -31,6 +31,8 @@ namespace NeonRattie.Rat.RatStates
 
         protected RaycastHit noseHit;
 
+        protected bool foundJumpBox, foundClimbable;
+
         public void Init(RatBrain ratBrain, RatStateMachine machine)
         {
             rat = ratBrain;
@@ -41,6 +43,7 @@ namespace NeonRattie.Rat.RatStates
         {
             rat.AddDrawGizmos(OnGizmos);
             rat.AddGUI(OnGui);
+            foundJumpBox = foundClimbable = false;
         }
 
         public virtual void Exit(IState nextState)
@@ -59,13 +62,18 @@ namespace NeonRattie.Rat.RatStates
         
         protected void OnJump(float x)
         {
+            if (foundClimbable || foundJumpBox)
+            {
+                return;
+            }
             StateMachine.ChangeState(RatActionStates.Jump);
         }
 
         protected void GetGroundData ()
         {
-            var ground = rat.GetGroundData().transform;
-            groundPosition = ground == null ? rat.transform.position : ground.position;
+            RaycastHit hit;
+            bool hitGround = Physics.Raycast(rat.Down, out hit, rat.MaxGroundDistance, rat.WalkableMask);
+            groundPosition = hitGround ? hit.point : rat.RatPosition.position;
         }
 
         protected void FallTowards(Vector3 point, LayerMask mask, float boxSize = 0.5f)
@@ -110,14 +118,14 @@ namespace NeonRattie.Rat.RatStates
         {
             JumpBox[] boxes = PhysicsCasting.OverlapSphereForType<JumpBox>(rat.RatPosition.position, 3f,  
                 1 << JumpBoxLayer.value);
-            bool valid = boxes.Length > 0;
+            foundJumpBox = boxes.Length > 0;
             if (activateUi)
             {
-                SceneObjects.Instance.RatUi.JumpUI.Set(valid);
+                SceneObjects.Instance.RatUi.JumpUI.Set(foundJumpBox);
             }
 
             bool foundNew = false;
-            if (valid)
+            if (foundJumpBox)
             {
                 foreach (JumpBox box in boxes)
                 {
@@ -130,7 +138,20 @@ namespace NeonRattie.Rat.RatStates
                     break;
                 }
             }
-            return valid && foundNew;
+            return foundJumpBox && foundNew;
+        }
+
+        protected bool FindWalkables(ref WalkingPlane plane)
+        {
+            RaycastHit info;
+            bool hit = PhysicsCasting.SphereCastForType<WalkingPlane>(rat.RatPosition.position, 0.5f, out
+                info, rat.RatPosition.forward, 1f, rat.WalkableMask);
+            if (hit)
+            {
+                plane = info.collider.GetComponent<WalkingPlane>();
+            }
+
+            return hit;
         }
 
         protected virtual void OnGui()
