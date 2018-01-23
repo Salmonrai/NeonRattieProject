@@ -24,7 +24,7 @@ namespace NeonRattie.Viewing
         protected TriggerCallback delayCollider;
 
         [SerializeField]
-        protected LayerMask groundLayer;
+        protected LayerMask cameraCollisions;
 
         [SerializeField]
         protected float speed = 1;
@@ -46,9 +46,15 @@ namespace NeonRattie.Viewing
 
         protected float maxRotation = 10;
 
-        private Vector3 speedTest;
+        private bool separated;
 
-        private Vector3 idleForward;
+        private float Distance
+        {
+            get { return followData.DistanceFromPlayer; }
+        }
+
+        private Collider hittingCollider;
+    
 
         public Vector3 GetFlatRight ()
         {
@@ -73,9 +79,52 @@ namespace NeonRattie.Viewing
         }
 
         protected virtual void Update()
-        {   
+        {
+            if (separated)
+            {
+                return;
+            }
             AxisRotation();
             RealignToRat();
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            Vector3 towards = rat.RatPosition.position - transform.position;
+            Vector3 direction = towards.normalized;
+            float magnitude = towards.magnitude;
+            if (magnitude > 10f)
+            {
+                separated = false;
+                hittingCollider = null;
+                return;
+            }
+            Ray ray = new Ray(transform.position, direction);
+            RaycastHit hit;
+            separated = Physics.Raycast(ray, out hit, magnitude, cameraCollisions);
+            if (separated)
+            {
+                Vector3 point = hit.point + direction * 2f;
+                point.y = rat.RatPosition.position.y + followData.HeightAboveAgent;
+                transform.position = point;
+                hittingCollider = hit.collider;
+            }
+            else
+            {
+                Collider[] colliders = Physics.OverlapSphere(transform.position, 1f, cameraCollisions);
+                foreach (var hits in colliders)
+                {
+                    if (hittingCollider == hits)
+                    {
+                        separated = true;
+                        break;
+                    }
+                }
+            }
+            if (!separated)
+            {
+                hittingCollider = null;
+            }
         }
 
         private void AxisRotation()
@@ -136,9 +185,10 @@ namespace NeonRattie.Viewing
         private void RealignToRat()
         {
             Ray currentCameraRay = new Ray(transform.position, transform.forward);
-            Vector3 point = currentCameraRay.GetPoint(followData.DistanceFromPlayer);
+            Vector3 point = currentCameraRay.GetPoint(Distance);
             Vector3 difference = rat.transform.position - point;
-            transform.position = Vector3.Slerp(transform.position, transform.position + difference, Time.deltaTime * orbitSpeed);
+            transform.position = Vector3.Slerp(transform.position, transform.position + difference, 
+                Time.deltaTime * orbitSpeed);
             transform.position = CorrectHeightFromGround(transform.position);
         }
 
@@ -146,7 +196,7 @@ namespace NeonRattie.Viewing
         private Vector3 CalculatePositionByRotation(Quaternion rotation)
         {
             Vector3 newForward = rotation * Vector3.forward;
-            Vector3 newPosition = transform.position + newForward * followData.DistanceFromPlayer;
+            Vector3 newPosition = transform.position + newForward * Distance;
             return newPosition;
         }
     }
