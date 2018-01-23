@@ -119,5 +119,20 @@ namespace NeonRattie.Rat.RatStates
                 StateMachine.ChangeState(RatActionStates.Walk);
             }
         }
+
+        protected override void OnJump(float axis)
+        {
+            // the rat should only jump up, check above
+            float yExtents = rat.RatCollider.bounds.extents.y * 2f;
+            RaycastHit info;
+            Ray up = rat.Down;
+            up.direction = -up.direction;
+            bool hit = Physics.Raycast(up, out info, yExtents, rat.CollisionMask);
+            if (hit)
+            {
+                return;
+            }
+            base.OnJump(axis);
+        }
     }
 }

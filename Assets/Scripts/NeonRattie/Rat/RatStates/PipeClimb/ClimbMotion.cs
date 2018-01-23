@@ -96,7 +96,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                       rat.RatPosition.forward * rat.RunSpeed * Time.deltaTime;
             
             
-            bool sucesss = rat.TryMove(forward);
+            bool sucesss = rat.TryMove(forward, rat.GroundLayer, 0.5f);
             if (!sucesss)
             {
                 Debug.Log("Failed to move!");

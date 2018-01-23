@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Security.Cryptography;
-using Flusk.Extensions;
 using Flusk.Utility;
 using NeonRattie.Controls;
-using NeonRattie.Objects;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates
@@ -81,6 +78,21 @@ namespace NeonRattie.Rat.RatStates
         private void OnUnWalk(float x)
         {
             StateMachine.ChangeState(RatActionStates.Idle);
+        }
+
+        protected override void OnJump(float axis)
+        {
+            // the rat should only jump up, check above
+            float yExtents = 10f;
+            RaycastHit info;
+            Vector3 direction = rat.RatPosition.up + rat.RatPosition.forward;
+            Ray ray = new Ray(rat.ButPoint.position, rat.RatPosition.up + rat.RatPosition.forward);
+            bool hit = Physics.Raycast(ray, out info, yExtents, rat.CollisionMask);
+            if (hit)
+            {
+                return;
+            }
+            base.OnJump(axis);
         }
 
         protected override void OnGizmos()

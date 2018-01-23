@@ -60,7 +60,7 @@ namespace NeonRattie.Rat.RatStates
         {
         }
         
-        protected void OnJump(float x)
+        protected virtual void OnJump(float x)
         {
             if (foundClimbable || foundJumpBox)
             {

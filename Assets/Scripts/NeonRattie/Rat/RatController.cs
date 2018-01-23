@@ -48,6 +48,9 @@ namespace NeonRattie.Rat
             get { return nosePoint; }
         }
 
+        [SerializeField] protected Transform buttPoint;
+        public Transform ButPoint { get { return buttPoint; } }
+
         /// <summary>
         /// The amount of force needed for a jumpp
         /// </summary>
@@ -328,7 +331,7 @@ namespace NeonRattie.Rat
 
         public bool TryMove (Vector3 position)
         {
-            return TryMove(position, groundLayer);
+            return TryMove(position, groundLayer);  
         }
 
         public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale)
@@ -339,9 +342,9 @@ namespace NeonRattie.Rat
         }
 
         private string touching;
-        public bool TryMove(Vector3 position, LayerMask surface)
+        public bool TryMove(Vector3 position, LayerMask surface, float sizing = 1)
         {
-            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * 0.8f, transform.rotation,
+            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * sizing, transform.rotation,
                 surface.value);
             var success = hits.Length == 0;
             if (success)
@@ -351,6 +354,13 @@ namespace NeonRattie.Rat
                 return true;
             }
             return false;
+        }
+
+        public bool IsMotionValid(Vector3 position, LayerMask surface, float sizing = 1)
+        {
+            var hits = Physics.OverlapBox(position, RatCollider.bounds.extents * sizing, transform.rotation,
+                surface.value);
+            return hits.Length == 0;
         }
 
         public bool ClimbValid<TClimbComponent>(out TClimbComponent climbable) 

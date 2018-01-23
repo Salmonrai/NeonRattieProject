@@ -16,7 +16,7 @@ namespace NeonRattie.Tools
         {
             colliders = GetComponents<BoxCollider>();
             int length = colliders.Length;
-            Transform previous = transform.FindChild(CHILD_NAME);
+            Transform previous = transform.Find(CHILD_NAME);
             if (previous != null)
             {
                 DestroyImmediate(previous.gameObject);
