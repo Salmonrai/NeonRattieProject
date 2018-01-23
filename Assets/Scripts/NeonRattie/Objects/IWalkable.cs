@@ -32,6 +32,11 @@ namespace NeonRattie.Objects
         Vector3 Position { get; }
 
         /// <summary>
+        /// The up orientation of this plane
+        /// </summary>
+        Vector3 Up { get; }
+
+        /// <summary>
         /// Given the current rat position, calculates where
         /// the rat should land when coming onto this walkable
         /// </summary>

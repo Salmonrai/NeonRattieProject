@@ -36,9 +36,9 @@ namespace NeonRattie.Rat.RatStates
         private void Adjust()
         {
             Ray ray = new Ray(rat.ProjectedWalkPoint, rat.ProjectedInfo.normal);
-            Vector3 point = ray.GetPoint(rat.IdealGroundDistance);
-            point = (point - rat.RatPosition.position).normalized;
-            rat.Walk(point);
+            Vector3 direction = ray.GetPoint(rat.IdealGroundDistance);
+            direction = (direction - rat.RatPosition.position).normalized;
+            rat.Walk(direction);
             FallTowards();
             AdjustToPlane();
         }
@@ -46,6 +46,8 @@ namespace NeonRattie.Rat.RatStates
         public override void FixedTick()
         {
             TryJumpFromClimb();
+
+            rat.CheckForDifferentWalkable();
         }
 
         public override void Exit (IState nextState)

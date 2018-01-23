@@ -83,7 +83,7 @@ namespace NeonRattie.Rat.RatStates
 
         protected void FallTowards()
         {
-            Vector3 point = rat.RatPosition.position - rat.RatPosition.up;
+            Vector3 point = rat.RatPosition.position + rat.Gravity.normalized;
             rat.TryMove(point);
         }
         
@@ -106,12 +106,7 @@ namespace NeonRattie.Rat.RatStates
             {
                 return;
             }
-            Ray ray = rat.Down;
-            ray.origin = rat.NosePoint.position;
-            if (rat.CurrentWalkable.Collider.Raycast(ray, out noseHit, float.MaxValue))
-            {
-                rat.RotateController.SetLookDirection(rat.WalkDirection, noseHit.normal, 0.9f);
-            }
+            rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
         }
 
         protected bool CheckForJumps(bool activateUi = true)

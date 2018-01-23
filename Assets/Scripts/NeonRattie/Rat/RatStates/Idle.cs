@@ -26,10 +26,10 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Walk += OnWalkPressed;
             PlayerControls.Instance.Jump += OnJump;
 
-            rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;     
-            
+            rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;
+
             rat.RatAnimator.PlayIdle();
-            
+
             timeOut = new Timer(5, TimeOut);
         }
 
@@ -93,6 +93,7 @@ namespace NeonRattie.Rat.RatStates
         public override void FixedTick()
         {
             TryJumpFromClimb();
+            rat.CheckForDifferentWalkable();
         }
 
         private void UndoSearch ()

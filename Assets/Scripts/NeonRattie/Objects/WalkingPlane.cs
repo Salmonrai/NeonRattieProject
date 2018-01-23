@@ -52,6 +52,15 @@ namespace NeonRattie.Objects
             get { return gameObject.layer; }
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        /// The up orientation of this plane
+        /// </summary>
+        public Vector3 Up
+        {
+            get { return orientationHelper.up; }
+        }
+
         public void CalculateFirstPosition(out Vector3 position, out Quaternion rotation)
         {
             position = Position;
@@ -102,6 +111,10 @@ namespace NeonRattie.Objects
             if (colliders.Length == 0)
             {
                 colliders = GetComponentsInChildren<Collider>();
+            }
+            if (orientationHelper == null)
+            {
+                orientationHelper = transform;
             }
         }
     }

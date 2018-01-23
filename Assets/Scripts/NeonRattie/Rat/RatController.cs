@@ -440,7 +440,7 @@ namespace NeonRattie.Rat
         public void Walk(Vector3 direction)
         {
             Vector3 translate = transform.position + direction * walkSpeed * Time.deltaTime;
-            TryMove(translate, collisionMask);
+            TryMove(translate, collisionMask, 0.6f);
         }    
 
         public RaycastHit GetGroundData (float distance = 10000)
@@ -588,7 +588,6 @@ namespace NeonRattie.Rat
         protected virtual void FixedUpdate()
         {
             ratStateMachine.FixedTick();
-            CheckForDifferentWalkable();  
         }
 
         private void CheckForWalkable(Ray down)
@@ -596,11 +595,12 @@ namespace NeonRattie.Rat
             RaycastHit hit;
             down.origin += RatPosition.up;
             down.direction = (down.direction * 0.7f + ratPosition.forward * 0.3f);
-            var isColliding = PhysicsCasting.SphereCastForType<IWalkable>(down, 0.2f, out hit,
+            var isColliding = PhysicsCasting.SphereCastForType<IWalkable>(down, 0.5f, out hit,
                 maxGroundDistance + 1, walkableMask);
-            //var isColliding = PhysicsCasting.RaycastForType<IWalkable>(down, out hit, maxGroundDistance + 1, walkableMask);
             if (!isColliding)
             {
+                CurrentWalkable = null;
+                EmergencyCheckForWalkable();
                 return;
             }
 
@@ -622,7 +622,6 @@ namespace NeonRattie.Rat
                 {
                     GetRatUI().JumpUI.Deactivate();
                 }
-                Debug.Log(nextWalkable);
             }
             else
             {
@@ -630,13 +629,30 @@ namespace NeonRattie.Rat
             }
 
             CurrentWalkable = nextWalkable;
-            WalkableUp = hit.normal;
+            WalkableUp = CurrentWalkable.Up;
+            rotateController.SetLookDirection(WalkDirection, WalkableUp);
+        }
+
+        private void EmergencyCheckForWalkable()
+        {
+            IWalkable [] walkable = PhysicsCasting.OverlapSphereForType<IWalkable>(ratPosition.position,
+                3f, WalkableMask);
+            if (walkable.Length > 0)
+            {
+                CurrentWalkable = walkable[0];
+                WalkableUp = CurrentWalkable.Up;
+                rotateController.SetLookDirection(WalkDirection, CurrentWalkable.Up);
+            }
+            else
+            {
+                TryMove(ratPosition.position + gravity.normalized);
+            }
         }
 
         /// <summary>
         /// Check if there is a change in walkables
         /// </summary>
-        private void CheckForDifferentWalkable()
+        public void CheckForDifferentWalkable()
         {
             Ray ray = new Ray(NosePoint.position, Down.direction);
             CheckForWalkable(ray);
@@ -681,9 +697,6 @@ namespace NeonRattie.Rat
             GUIStyle style = new GUIStyle {fontSize = 50};
             style.normal.textColor = Color.white;
             GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
-            GUI.Box(new Rect(0, 100, 200, 200), WalkDirection.ToString(), style );
-            GUI.Box(new Rect(0, 200, 200, 200), touching, style);
-            GUI.Box(new Rect(0, 300, 200, 200), rotateController.upAxis.ToString(), style);
         }
 
         private void OnWalk(float axis)
