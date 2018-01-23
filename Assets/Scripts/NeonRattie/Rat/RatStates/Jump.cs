@@ -19,14 +19,14 @@ namespace NeonRattie.Rat.RatStates
             rat.RatAnimator.PlayJump();
             stateTime = 0;
             GetGroundData();
+            rat.GetRatUI().JumpUI.Deactivate();
         }
 
         public override void Tick()
         {
             base.Tick();
             JumpCalculation();
-            rat.Walk(rat.WalkDirection);
-            stateTime += Time.deltaTime;
+            stateTime += Time.deltaTime * 2f;
             int length = rat.JumpArc.length;
             bool passed = rat.JumpArc[length - 1].time <= stateTime;
             if ( passed )
@@ -39,13 +39,16 @@ namespace NeonRattie.Rat.RatStates
         {
             base.Exit(state);
             rat.RatAnimator.PlayJump(false);
+            
         }
 
         private void JumpCalculation()
         {
             float jumpMultiplier = rat.JumpArc.Evaluate(stateTime);
             Vector3 force = (rat.JumpForce * -rat.Gravity.normalized * jumpMultiplier);
-            rat.TryMove(rat.GetGroundData().point + force);
+            Vector3 up = groundPosition + force;
+            Vector3 forward = rat.RatPosition.forward * stateTime * rat.WalkSpeed;
+            rat.TryMove(up + forward);
         }
     }
 }

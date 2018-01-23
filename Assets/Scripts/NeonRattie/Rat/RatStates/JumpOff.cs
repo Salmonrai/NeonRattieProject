@@ -33,7 +33,7 @@ namespace NeonRattie.Rat.RatStates
             {
                 return;
             }
-            rat.RatAnimator.PlayJump();
+            rat.RatAnimator.PlayScamper();
             rat.AddDrawGizmos(DrawGizmos);
         }
 
