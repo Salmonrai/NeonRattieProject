@@ -106,7 +106,7 @@ namespace NeonRattie.Rat.RatStates
             {
                 return;
             }
-            rat.RotateController.SetLookDirection(rat.WalkDirection, rat.WalkableUp, 0.9f);
+            rat.RotateController.SetLookDirection(rat.ProjectedDirection, rat.WalkableUp, 0.9f);
         }
 
         protected bool CheckForJumps(bool activateUi = true)
