@@ -5059,7 +5059,7 @@ Prefab:
     - target: {fileID: 114961063567491238, guid: 1017ec6a6258f504d9a0b9762b969857,
         type: 2}
       propertyPath: cameraCollisions.m_Bits
-      value: 16640
+      value: 16384
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 92722976745667606, guid: 1017ec6a6258f504d9a0b9762b969857, type: 2}
@@ -13052,7 +13052,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 445731801}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.67, y: -6.5, z: -23.1}
+  m_LocalPosition: {x: 27.67, y: -6.34, z: -22.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1552142225}
@@ -39049,13 +39049,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1420086904}
-  m_LocalRotation: {x: -0.3420201, y: 0, z: 0, w: 0.9396927}
+  m_LocalRotation: {x: -0.33380687, y: 0, z: 0, w: 0.94264156}
   m_LocalPosition: {x: 29.309998, y: -12.06, z: -34.65}
-  m_LocalScale: {x: 0.7116817, y: 2.4565, z: 1.2912627}
+  m_LocalScale: {x: 0.7116817, y: 2.4565, z: 1.368911}
   m_Children: []
   m_Father: {fileID: 1552142225}
   m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: -40, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -39, y: 0, z: 0}
 --- !u!114 &1420086906
 MonoBehaviour:
   m_ObjectHideFlags: 0
