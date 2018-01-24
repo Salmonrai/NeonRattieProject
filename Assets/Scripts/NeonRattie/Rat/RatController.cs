@@ -172,6 +172,13 @@ namespace NeonRattie.Rat
         {
             get { return walkableMask; }
         }
+
+        [SerializeField]
+        protected LayerMask climbMask;
+        public LayerMask ClimbMask
+        {
+            get { return climbMask; }
+        }
         
         [SerializeField]
         protected float climbMotionMultiplier = 5f;
@@ -394,7 +401,7 @@ namespace NeonRattie.Rat
         {
             RaycastHit hit;
             Ray ray = new Ray(RatPosition.position, RatPosition.forward);
-            if (!PhysicsCasting.SphereCastForType<IClimbable>(ray.origin, 1f, out hit, ray.direction, 5f, walkableMask))
+            if (!PhysicsCasting.SphereCastForType<IClimbable>(ray.origin, 2f, out hit, ray.direction, 5f, climbMask))
             {
                 return false;
             }

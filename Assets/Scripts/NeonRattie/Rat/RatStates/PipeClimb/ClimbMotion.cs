@@ -1,9 +1,6 @@
-﻿using System;
-using Flusk.Extensions;
-using Flusk.Utility;
+﻿using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
-using NeonRattie.UI;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates.PipeClimb
@@ -14,12 +11,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             get { return RatActionStates.ClimbMotion; }
         }
-
-
-        //private Vector3 normal, tangent;
         private RaycastHit hit;
         private float sign = 1;
-        private Vector3 ratUp, ratForward;
 
         private Vector3 FallTowardsData
         {
@@ -31,8 +24,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         {
             base.Enter(state);
             PlayerControls.Instance.Unwalk += OnUnWalk;
-            ratUp = rat.RatPosition.up;
-            ratForward = rat.RatPosition.forward;
             rat.AddDrawGizmos(OnGizmosDrawn);
             
             rat.RatAnimator.PlayScuttle();
