@@ -35,7 +35,7 @@ namespace NeonRattie.Rat.RatStates
 
         private void Adjust()
         {
-            Ray ray = new Ray(rat.ProjectedWalkPoint, rat.ProjectedInfo.normal);
+            Ray ray = new Ray(rat.ProjectedGroundPoint, rat.ProjectedInfo.normal);
             Vector3 direction = ray.GetPoint(rat.IdealGroundDistance);
             direction = (direction - rat.RatPosition.position).normalized;
             rat.Walk(direction);

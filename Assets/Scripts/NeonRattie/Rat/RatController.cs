@@ -250,7 +250,9 @@ namespace NeonRattie.Rat
         public event Action DrawGUI;
         
         public Vector3 WalkDirection { get; private set; }
+        public Vector3 ProjectedGroundPoint { get; protected set; }
         public Vector3 ProjectedWalkPoint { get; protected set; }
+        public Vector3 ProjectedDirection { get; protected set; }
         public RaycastHit ProjectedInfo { get; protected set; }
         public Vector3 PreviousWalkDirection { get; private set; }
 
@@ -352,6 +354,10 @@ namespace NeonRattie.Rat
                 touching = string.Empty;
                 SetTransform(position, transform.rotation, transform.localScale);
                 return true;
+            }
+            else
+            {
+                touching = hits[0].name;
             }
             return false;
         }
@@ -697,6 +703,7 @@ namespace NeonRattie.Rat
             GUIStyle style = new GUIStyle {fontSize = 50};
             style.normal.textColor = Color.white;
             GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
+            GUI.Box(new Rect(0, 200, 200, 200), touching, style );
         }
 
         private void OnWalk(float axis)
@@ -728,12 +735,16 @@ namespace NeonRattie.Rat
 
         private void CalculateProjectedPoint()
         {
-            Vector3 point = RatPosition.position + WalkDirection;
+            Vector3 point = RatPosition.position + WalkDirection + Vector3.up;
             RaycastHit info;
             Ray ray = Down;
             ray.origin = point;
             var raycast = Physics.Raycast(ray, out info, maxGroundDistance, walkableMask);
-            ProjectedWalkPoint = raycast ? info.point : point;
+            ProjectedGroundPoint = raycast ? info.point : point;
+            
+            Ray pointRay = new Ray(ProjectedGroundPoint, info.normal);
+            ProjectedWalkPoint = pointRay.GetPoint(idealGroundDistance);
+            ProjectedDirection = raycast ? (ProjectedWalkPoint - ratPosition.position) : WalkDirection;
             ProjectedInfo = info;
         }
 
