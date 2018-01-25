@@ -1,5 +1,4 @@
-﻿using System;
-using Flusk.Utility;
+﻿using Flusk.Utility;
 using NeonRattie.Controls;
 using UnityEngine;
 
@@ -8,9 +7,6 @@ namespace NeonRattie.Rat.RatStates
     public class Jump : RatState, IActionState
     {
         private float stateTime;
-
-        private int maxFailedCollisions = 5;
-        private int failedCollisions;
 
         private bool jumpForward;
 
@@ -26,7 +22,6 @@ namespace NeonRattie.Rat.RatStates
             stateTime = 0;
             GetGroundData();
             rat.GetRatUI().JumpUI.Deactivate();
-            failedCollisions = 0;
             jumpForward = PlayerControls.Instance.CheckKey(PlayerControls.Instance.Forward);
         }
 

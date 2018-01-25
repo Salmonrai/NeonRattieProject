@@ -6,12 +6,12 @@ namespace NeonRattie.UI
     [RequireComponent(typeof(Text))]
     public class UIText : RatUIComponent
     {
-        private Text text;
+        public Text Text { get; private set; }
         
         protected override void Awake()
         {
             base.Awake();
-            text = GetComponent<Text>();
+            Text = GetComponent<Text>();
         }
     }
 }

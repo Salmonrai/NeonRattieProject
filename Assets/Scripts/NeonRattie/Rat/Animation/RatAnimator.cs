@@ -15,10 +15,13 @@ namespace NeonRattie.Rat.Animation
     {      
         public RatAnimatorWrapper Wrapper { get; private set; }
 
+        //Until we need it
+        /*
         public event Action IdleComplete;
         public event Action ScamperComplete;
         public event Action ScuttleComplete;
         public event Action JumpComplete;
+        */
         public event Action LongIdleComplete;
         
         

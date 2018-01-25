@@ -87,7 +87,6 @@ namespace NeonRattie.Rat.RatStates
             // the rat should only jump up, check above
             float yExtents = 10f;
             RaycastHit info;
-            Vector3 direction = rat.RatPosition.up + rat.RatPosition.forward;
             Ray ray = new Ray(rat.ButPoint.position, rat.RatPosition.up + rat.RatPosition.forward);
             bool hit = Physics.Raycast(ray, out info, yExtents, rat.CollisionMask);
             if (hit)
