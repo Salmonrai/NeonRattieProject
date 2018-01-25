@@ -44,6 +44,20 @@ namespace NeonRattie.Viewing
         [SerializeField]
         protected Range yRange;
 
+        private bool keepYPoint;
+
+        public bool KeepYPoint
+        {
+            get { return keepYPoint; }
+            set
+            {
+                cachedYPoint = transform.position.y;
+                keepYPoint = value;
+            }
+        }
+
+        private float cachedYPoint;
+
         protected float maxRotation = 10;
 
         private bool separated;
@@ -124,6 +138,16 @@ namespace NeonRattie.Viewing
             if (!separated)
             {
                 hittingCollider = null;
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (keepYPoint)
+            {
+                Vector3 position = transform.position;
+                position.y = cachedYPoint;
+                transform.position = position;
             }
         }
 

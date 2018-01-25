@@ -463,13 +463,6 @@ namespace NeonRattie.Rat
             return info;
         }
 
-        protected virtual void OnManagementLoaded()
-        {
-            SceneManagement.Instance.Rat = this;
-            NavAgent = GetComponentInChildren<NavMeshAgent>();
-            Init();
-        }
-
         private void Init()
         {
             RatAnimator = GetComponent<RatAnimator>();
@@ -570,16 +563,20 @@ namespace NeonRattie.Rat
                 AttachedMonoBehaviours.Add(behaviour.GetType(), behaviour);
             }
         }
+
+        protected virtual void Start()
+        {
+            SceneManagement.Instance.Rat = this;
+            Init();
+        }
         
         protected virtual void OnEnable()
         {
-            MainPrefab.ManagementLoaded += OnManagementLoaded;
             PlayerControls.Instance.Walk += OnWalk;
         }
 
         protected virtual void OnDisable()
         {
-            MainPrefab.ManagementLoaded -= OnManagementLoaded;
             PlayerControls.Instance.Walk -= OnWalk;
         }
 
