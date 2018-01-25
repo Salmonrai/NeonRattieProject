@@ -684,7 +684,7 @@ namespace NeonRattie.Rat
                 DrawGizmos();
             }
         }
-
+#if UNITY_EDITOR
         protected virtual void OnGUI()
         {
             if (DrawGUI != null)
@@ -712,7 +712,7 @@ namespace NeonRattie.Rat
             GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
             GUI.Box(new Rect(0, 200, 200, 200), touching, style );
         }
-
+#endif
         private void OnWalk(float axis)
         {
             KeyboardControls keyboard;
