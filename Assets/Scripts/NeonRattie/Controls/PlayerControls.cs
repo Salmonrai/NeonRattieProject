@@ -68,6 +68,9 @@ namespace NeonRattie.Controls
         protected KeyCode jumpUp = KeyCode.Space;
         public KeyCode JumpUp { get { return jumpUp; } }
 
+        [SerializeField] protected KeyCode select = KeyCode.Return;
+        public KeyCode Select { get { return select; } }
+
         //float value to communicate any access amount
         //for "pressurised" speed
         public event Action<float> Walk;
