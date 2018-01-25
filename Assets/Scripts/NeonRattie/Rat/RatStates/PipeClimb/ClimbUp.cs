@@ -59,12 +59,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 
             positionTweener.Complete += OnComplete;
             rotationTweener.Complete += OnComplete;
-
-            SceneObjects sc;
-            if (SceneObjects.TryGetInstance(out sc))
-            {
-                sc.MouseRotation.MustMaintainPlane = true;
-            }
         }
 
         public override void Tick()
@@ -79,12 +73,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Exit(IState nextState)
         {
             base.Exit(nextState);
-            SceneObjects sc;
-            if (SceneObjects.TryGetInstance(out sc))
-            {
-                sc.MouseRotation.MustMaintainPlane = false;
-            }
-            
             rat.RatAnimator.PlayJump(false);
         }
 

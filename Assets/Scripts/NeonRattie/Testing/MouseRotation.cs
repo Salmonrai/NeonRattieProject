@@ -1,12 +1,9 @@
 ﻿using System;
-using Flusk.Extensions;
 using Flusk.Management;
 using Flusk.Structures;
 using NeonRattie.Management;
 using NeonRattie.Rat;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace NeonRattie.Testing
 {
