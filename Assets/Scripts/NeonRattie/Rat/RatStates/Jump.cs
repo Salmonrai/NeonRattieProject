@@ -1,5 +1,6 @@
 ﻿using Flusk.Utility;
 using NeonRattie.Controls;
+using NeonRattie.Management;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates
@@ -23,6 +24,8 @@ namespace NeonRattie.Rat.RatStates
             GetGroundData();
             rat.GetRatUI().JumpUI.Deactivate();
             jumpForward = PlayerControls.Instance.CheckKey(PlayerControls.Instance.Forward);
+
+            SceneObjects.Instance.CameraControls.KeepYPoint = true;
         }
 
         public override void Tick()
@@ -42,6 +45,7 @@ namespace NeonRattie.Rat.RatStates
         {
             base.Exit(state);
             rat.RatAnimator.PlayJump(false);
+            SceneObjects.Instance.CameraControls.KeepYPoint = false;
         }
 
         private void JumpCalculation()

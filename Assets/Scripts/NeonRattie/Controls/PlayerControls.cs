@@ -3,6 +3,7 @@ using Flusk.Controls;
 using Flusk.Patterns;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NeonRattie.Controls
 {
@@ -121,6 +122,14 @@ namespace NeonRattie.Controls
             kc.KeyHit += InvokeClimbUp;
             kc.KeyHit += InvokeTurnLeft;
             kc.KeyHit += InvokeTurnRight;
+        }
+
+        protected virtual void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneManager.LoadScene("Menu");
+            }
         }
 
         protected virtual void OnDisable()

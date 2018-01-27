@@ -1,6 +1,7 @@
 ﻿using Flusk.Management;
 using Flusk.Utility;
 using NeonRattie.Controls;
+using NeonRattie.Objects;
 using UnityEngine;
 
 namespace NeonRattie.Rat.RatStates
@@ -54,6 +55,7 @@ namespace NeonRattie.Rat.RatStates
         private void TimeOut()
         {
             rat.RatAnimator.PlayLongIdle(true, OnLongIdleComplete);
+            timeOut.Reset();
         }
 
         private void OnLongIdleComplete()
@@ -69,6 +71,12 @@ namespace NeonRattie.Rat.RatStates
 
             if (playerControls.CheckKey(playerControls.Forward))
             {
+                if (rat.CurrentWalkable is WalkingPoles)
+                {
+                    rat.ChangeState(RatActionStates.HorizontalPipeMotion);
+                    return;
+                }
+                
                 rat.ChangeState(RatActionStates.Walk);
                 return;
             }
@@ -115,6 +123,11 @@ namespace NeonRattie.Rat.RatStates
 
         private void OnWalkPressed(float axisValue)
         {
+            if (rat.CurrentWalkable is WalkingPoles)
+            {
+                rat.ChangeState(RatActionStates.HorizontalPipeMotion);
+                return;
+            }
             if (StateMachine != null )
             {
                 StateMachine.ChangeState(RatActionStates.Walk);

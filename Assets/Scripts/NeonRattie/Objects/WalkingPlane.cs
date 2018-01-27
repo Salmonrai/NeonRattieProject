@@ -33,7 +33,7 @@ namespace NeonRattie.Objects
         /// </summary>
         public Quaternion Rotation
         {
-            get { return orientationHelper.rotation; }
+            get { return orientationHelper.localRotation; }
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace NeonRattie.Objects
         /// <summary>
         /// The up orientation of this plane
         /// </summary>
-        public Vector3 Up
+        public virtual Vector3 Up
         {
             get { return orientationHelper.up; }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using NeonRattie.Management;
 using UnityEngine;
 
@@ -51,6 +52,7 @@ namespace NeonRattie.Rat.Animation
             LongIdleComplete = action;
         }
 
+        [UsedImplicitly]
         public void LongIdleEnd()
         {
             if (LongIdleComplete != null)

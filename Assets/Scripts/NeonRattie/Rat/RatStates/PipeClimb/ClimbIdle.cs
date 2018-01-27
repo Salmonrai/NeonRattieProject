@@ -28,7 +28,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         public override void Tick()
         {
             RaycastHit hit;
-            if (RotateToClimbPole(out hit))
+            if (RotateToClimbPole(out hit, -1))
             {
                 rat.PreviousClimbFallTowardsPoint = hit.point;
                 FallTowards(rat.PreviousClimbFallTowardsPoint, 1 << (rat.CurrentClimbable as ClimbPole).gameObject.layer, 0.1f);
@@ -73,10 +73,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
                 float magnitude = Vector3.Distance(rat.LowestPoint, rat.RatPosition.position);
                 Vector3 point = info.point + info.normal * magnitude;
                 rat.SetTransform(point, rat.ClimbPole.Rotation, rat.RatPosition.localScale);
-            }
-            else
-            {
-                Debug.Log("How are you even in this state?");
             }
         }
     }

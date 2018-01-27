@@ -33,13 +33,13 @@ namespace NeonRattie.Rat.RatStates
         }
 
 
-        private void Adjust()
+        protected virtual void Adjust()
         {
             Ray ray = new Ray(rat.ProjectedGroundPoint, rat.ProjectedInfo.normal);
             Vector3 direction = ray.GetPoint(rat.IdealGroundDistance);
             direction = (direction - rat.RatPosition.position).normalized;
             rat.Walk(direction);
-            FallTowards();
+            //FallTowards();
             AdjustToPlane();
         }
         
@@ -57,7 +57,7 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Jump -= OnJump;
         }
         
-        private void ChangeStates()
+        protected virtual void ChangeStates()
         {
             if (rat.ClimbUpValid())
             {
@@ -77,7 +77,7 @@ namespace NeonRattie.Rat.RatStates
             }
         }
 
-        private void OnUnWalk(float x)
+        protected virtual void OnUnWalk(float x)
         {
             StateMachine.ChangeState(RatActionStates.Idle);
         }
