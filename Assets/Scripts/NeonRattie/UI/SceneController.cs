@@ -8,6 +8,8 @@ namespace NeonRattie.UI
     public class SceneController : PersistentSingleton<SceneController>
     {
         [SerializeField] protected GameObject loading;
+        
+        public bool Loading { get; private set; }
 
         public void LoadScene(string name)
         {
@@ -28,11 +30,13 @@ namespace NeonRattie.UI
         {
             AsyncOperation async = SceneManager.LoadSceneAsync(name);
             loading.gameObject.SetActive(true);
+            Loading = true;
             while (!async.isDone)
             {
                 yield return null;
             }
             loading.gameObject.SetActive(false);
+            Loading = false;
         }
     }
 }

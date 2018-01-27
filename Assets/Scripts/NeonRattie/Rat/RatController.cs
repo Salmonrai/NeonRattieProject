@@ -736,6 +736,7 @@ namespace NeonRattie.Rat
             style.normal.textColor = Color.white;
             GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
             GUI.Box(new Rect(0, 100, 200, 200), touching, style );
+            GUI.Box(new Rect(0, 200, 200, 200), Time.timeSinceLevelLoad.ToString(), style);
         }
 #endif
         private void OnWalk(float axis)

@@ -2,7 +2,9 @@
 using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
+using NeonRattie.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NeonRattie.Rat.RatStates
 {
@@ -10,10 +12,12 @@ namespace NeonRattie.Rat.RatStates
     {
 
         public bool hasMovedMouse = false;
-        private const float RESET_TIME = 10;
+        private const float RESET_TIME = 10f;
+        private const float TO_MENU_TIME = 30f;
         private Timer searchTime;
 
         private Timer timeOut;
+        private Timer toMenuTimer;
 
         public override RatActionStates State 
         { 
@@ -32,6 +36,7 @@ namespace NeonRattie.Rat.RatStates
             rat.RatAnimator.PlayIdle();
 
             timeOut = new Timer(5, TimeOut);
+            toMenuTimer = new Timer(TO_MENU_TIME, ToMenu);
         }
 
         public override void Tick()
@@ -42,6 +47,7 @@ namespace NeonRattie.Rat.RatStates
             ChangeStates();
             
             timeOut.Tick(Time.deltaTime);
+            toMenuTimer.Tick(Time.deltaTime);
         }
         
         public override void Exit(IState previousState)
@@ -50,12 +56,19 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Jump -= OnJump;
             rat.RatAnimator.PlayIdle(false);
             OnLongIdleComplete();
+            toMenuTimer = null;
         }
 
         private void TimeOut()
         {
             rat.RatAnimator.PlayLongIdle(true, OnLongIdleComplete);
             timeOut.Reset();
+        }
+
+        private void ToMenu()
+        {
+            SceneController.Instance.LoadSceneAsync("Menu");
+            toMenuTimer.Reset();
         }
 
         private void OnLongIdleComplete()
