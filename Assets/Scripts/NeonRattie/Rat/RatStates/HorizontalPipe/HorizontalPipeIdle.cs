@@ -7,12 +7,18 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
 {
     public class HorizontalPipeIdle : Idle
     {
+        public override RatActionStates State
+        {
+            get { return RatActionStates.HorizontalPipeIdle; }
+        }
+        
         private WalkingPoles pole;
         
         public override void Enter(IState state)
         {
             base.Enter(state);
             pole = rat.CurrentWalkable as WalkingPoles;
+            toMenuTimer = new Timer(TO_MENU_TIME, ToMenu);
         }
 
         public override void FixedTick()

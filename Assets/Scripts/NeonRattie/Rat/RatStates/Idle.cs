@@ -13,11 +13,11 @@ namespace NeonRattie.Rat.RatStates
 
         public bool hasMovedMouse = false;
         private const float RESET_TIME = 10f;
-        private const float TO_MENU_TIME = 30f;
+        protected const float TO_MENU_TIME = 30f;
         private Timer searchTime;
 
         private Timer timeOut;
-        private Timer toMenuTimer;
+        protected Timer toMenuTimer;
 
         public override RatActionStates State 
         { 
@@ -47,7 +47,10 @@ namespace NeonRattie.Rat.RatStates
             ChangeStates();
             
             timeOut.Tick(Time.deltaTime);
-            toMenuTimer.Tick(Time.deltaTime);
+            if (toMenuTimer != null)
+            {
+                toMenuTimer.Tick(Time.deltaTime);
+            }
         }
         
         public override void Exit(IState previousState)
@@ -56,7 +59,6 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Jump -= OnJump;
             rat.RatAnimator.PlayIdle(false);
             OnLongIdleComplete();
-            toMenuTimer = null;
         }
 
         private void TimeOut()
@@ -65,7 +67,7 @@ namespace NeonRattie.Rat.RatStates
             timeOut.Reset();
         }
 
-        private void ToMenu()
+        protected void ToMenu()
         {
             SceneController.Instance.LoadSceneAsync("Menu");
             toMenuTimer.Reset();

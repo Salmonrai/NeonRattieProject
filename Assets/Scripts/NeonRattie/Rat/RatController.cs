@@ -292,7 +292,8 @@ namespace NeonRattie.Rat
             climbIdle = RatActionStates.ClimbIdle,
             climbDown = RatActionStates.ClimbDown,
             horizontalPipe = RatActionStates.HorizontalPipeMotion,
-            horizontalIdle = RatActionStates.HorizontalPipeIdle;
+            horizontalIdle = RatActionStates.HorizontalPipeIdle,
+            pipeToWalk = RatActionStates.PipeToWalk;
 
         private Idle idling;
         private Jump jumping;
@@ -307,6 +308,10 @@ namespace NeonRattie.Rat
 
         private HorizontalPipeWalk horizontalPipeWalk;
         private HorizontalPipeIdle horizontalPipeIdle;
+        private PipeWalkToPlane pipeWalkToPlane;
+
+        public WalkingPlane PipeToWalkable { get; set; }
+        
         #endregion
 
         #region Rays
@@ -495,6 +500,8 @@ namespace NeonRattie.Rat
             
             horizontalPipeWalk = new HorizontalPipeWalk();
             horizontalPipeIdle = new HorizontalPipeIdle();
+            
+            pipeWalkToPlane = new PipeWalkToPlane();
 
             idling.Init(this, ratStateMachine);
             walking.Init(this, ratStateMachine);
@@ -510,6 +517,8 @@ namespace NeonRattie.Rat
 
             horizontalPipeWalk.Init(this, ratStateMachine);
             horizontalPipeIdle.Init(this, ratStateMachine);
+            
+            pipeWalkToPlane.Init(this, ratStateMachine);
 
             ratStateMachine.AddState(idle, idling);
             ratStateMachine.AddState(walk, walking);
@@ -524,6 +533,7 @@ namespace NeonRattie.Rat
             
             ratStateMachine.AddState(horizontalPipe, horizontalPipeWalk);
             ratStateMachine.AddState(horizontalIdle, horizontalPipeIdle);
+            ratStateMachine.AddState(pipeToWalk, pipeWalkToPlane);
             
             ratStateMachine.ChangeState(idle);
         }

@@ -18226,6 +18226,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyOriginalColliders: 0
+--- !u!1 &596181256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 596181257}
+  - component: {fileID: 596181259}
+  - component: {fileID: 596181258}
+  m_Layer: 8
+  m_Name: TelephoneWireCollider1 (21)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &596181257
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 596181256}
+  m_LocalRotation: {x: 0.27661112, y: 0.50969017, z: -0.18718739, w: 0.79288274}
+  m_LocalPosition: {x: -26.61, y: 49.02, z: 156.9}
+  m_LocalScale: {x: 2.00941, y: 0.6428601, z: 12.001324}
+  m_Children: []
+  m_Father: {fileID: 1647910265}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 39.010002, y: 65.08, z: -1.0960001}
+--- !u!114 &596181258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 596181256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce3b79a254f4fb488fa962fda2ac3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orientationHelper: {fileID: 0}
+  colliders:
+  - {fileID: 596181259}
+--- !u!65 &596181259
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 596181256}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &597827901
 Prefab:
   m_ObjectHideFlags: 0
@@ -26092,35 +26148,35 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4243501743334618, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.32618028
+      value: -0.32618025
       objectReference: {fileID: 0}
     - target: {fileID: 4243501743334618, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.32618028
+      value: 0.32618025
       objectReference: {fileID: 0}
     - target: {fileID: 4243501743334618, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.62738067
+      value: 0.6273806
       objectReference: {fileID: 0}
     - target: {fileID: 4243501743334618, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.62738067
+      value: 0.6273806
       objectReference: {fileID: 0}
     - target: {fileID: 4075423553758716, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.32618028
+      value: -0.32618025
       objectReference: {fileID: 0}
     - target: {fileID: 4075423553758716, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.32618028
+      value: 0.32618025
       objectReference: {fileID: 0}
     - target: {fileID: 4075423553758716, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.62738067
+      value: 0.6273806
       objectReference: {fileID: 0}
     - target: {fileID: 4075423553758716, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.62738067
+      value: 0.6273806
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b0b32fb5630fb7246b336d0554e987b5, type: 2}
@@ -41034,6 +41090,62 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1436021050}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1449989324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1449989325}
+  - component: {fileID: 1449989327}
+  - component: {fileID: 1449989326}
+  m_Layer: 8
+  m_Name: TelephoneWireCollider1 (22)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1449989325
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1449989324}
+  m_LocalRotation: {x: 0.04689238, y: 0.7936409, z: -0.2752083, w: 0.54055125}
+  m_LocalPosition: {x: -26.06, y: 49.78, z: 151.37}
+  m_LocalScale: {x: 2.0094104, y: 0.64286, z: 14.433281}
+  m_Children: []
+  m_Father: {fileID: 1647910265}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 29.178001, y: 107.60901, z: -14.804001}
+--- !u!114 &1449989326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1449989324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce3b79a254f4fb488fa962fda2ac3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orientationHelper: {fileID: 0}
+  colliders:
+  - {fileID: 1449989327}
+--- !u!65 &1449989327
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1449989324}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1

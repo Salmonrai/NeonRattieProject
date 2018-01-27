@@ -1,4 +1,5 @@
 ﻿using System;
+using Flusk.PhysicsUtility;
 using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
@@ -8,6 +9,11 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
 {
     public class HorizontalPipeWalk : Walk
     {
+        public override RatActionStates State
+        {
+            get { return RatActionStates.HorizontalPipeMotion; }
+        }
+
         private WalkingPoles pole;
         
         public override void Enter(IState state)
@@ -19,6 +25,11 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
         public override void Tick()
         {
             Adjust();
+            if (ChangeToRegularWalk())
+            {
+                rat.ChangeState(RatActionStates.PipeToWalk);
+                return;
+            }
             ChangeStates();
            
         }
@@ -30,7 +41,21 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
                 rat.ChangeState(RatActionStates.Idle);
             }
         }
-        
+
+        protected virtual bool ChangeToRegularWalk()
+        {
+            Vector3 nosePoint = rat.NosePoint.position;
+            Ray ray = new Ray(nosePoint, rat.RatPosition.forward);
+            RaycastHit hit;
+            bool hasHit = PhysicsCasting.SphereCastForType<WalkingPlane>(ray: ray, radius: 4f,
+                info: out hit, distance: 1f, mask: rat.GroundLayer);
+            if (hasHit)
+            {
+                rat.PipeToWalkable = hit.collider.GetComponent<WalkingPlane>();
+            }
+
+            return hasHit;
+        }        
         
         protected override void Adjust()
         {

@@ -57,6 +57,8 @@
         /// </summary>
         HorizontalPipeMotion,
         
-        HorizontalPipeIdle
+        HorizontalPipeIdle,
+        
+        PipeToWalk
     }
 }
