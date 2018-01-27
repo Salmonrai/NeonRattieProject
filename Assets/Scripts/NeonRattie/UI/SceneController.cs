@@ -70,7 +70,11 @@ namespace NeonRattie.UI
             {
                 yield return null;
             }
-            loading.gameObject.SetActive(false);
+
+            if (name == "Menu")
+            {
+                loading.gameObject.SetActive(false);
+            }
             Loading = false;
         }
 
