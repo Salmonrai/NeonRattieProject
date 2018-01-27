@@ -45,11 +45,13 @@ namespace NeonRattie.UI.Menu
                 }
                 currentIndex = next;
                 selection.UpdateImage(Current.Button);
+                Debug.Log(Current);
             }
             else if ( playerControls.CheckKeyDown(playerControls.Back))
             {
                 currentIndex = (currentIndex + 1) % buttons.Length;
                 selection.UpdateImage(Current.Button);
+                Debug.Log(Current);
             }
 
             if (playerControls.CheckKeyDown(playerControls.Select))

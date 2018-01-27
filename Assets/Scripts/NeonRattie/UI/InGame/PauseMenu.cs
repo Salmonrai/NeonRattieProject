@@ -31,6 +31,11 @@ namespace NeonRattie.UI.InGame
         
         protected virtual void Update()
         {
+            if (SceneController.Instance.Loading)
+            {
+                return;
+            }
+            
             if (Input.GetKeyDown(activateKeyCode))
             {
                 active = !active;

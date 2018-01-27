@@ -17511,6 +17511,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114642322956542928, guid: d7436dd55e7c0c347a086963e2c4d1df,
+        type: 2}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d7436dd55e7c0c347a086963e2c4d1df, type: 2}
   m_IsPrefabParent: 0

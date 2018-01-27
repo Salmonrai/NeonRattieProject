@@ -124,14 +124,6 @@ namespace NeonRattie.Controls
             kc.KeyHit += InvokeTurnRight;
         }
 
-        protected virtual void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                SceneManager.LoadScene("Menu");
-            }
-        }
-
         protected virtual void OnDisable()
         {
             var kc = KeyboardControls.Instance;
