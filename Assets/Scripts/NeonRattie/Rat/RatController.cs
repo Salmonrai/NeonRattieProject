@@ -10,6 +10,7 @@ using NeonRattie.Objects;
 using NeonRattie.Rat.Animation;
 using NeonRattie.Rat.Data;
 using NeonRattie.Rat.RatStates;
+using NeonRattie.Rat.RatStates.HorizontalPipe;
 using NeonRattie.Rat.RatStates.PipeClimb;
 using NeonRattie.Shared;
 using NeonRattie.UI;
@@ -289,7 +290,9 @@ namespace NeonRattie.Rat
             climbUp = RatActionStates.ClimbUp,
             climbMotion = RatActionStates.ClimbMotion,
             climbIdle = RatActionStates.ClimbIdle,
-            climbDown = RatActionStates.ClimbDown;
+            climbDown = RatActionStates.ClimbDown,
+            horizontalPipe = RatActionStates.HorizontalPipeMotion,
+            horizontalIdle = RatActionStates.HorizontalPipeIdle;
 
         private Idle idling;
         private Jump jumping;
@@ -301,6 +304,9 @@ namespace NeonRattie.Rat
         private ClimbMotion climbingMotion;
         private ClimbIdle climbingIdle;
         private ClimbDown climbingDown;
+
+        private HorizontalPipeWalk horizontalPipeWalk;
+        private HorizontalPipeIdle horizontalPipeIdle;
         #endregion
 
         #region Rays
@@ -454,7 +460,14 @@ namespace NeonRattie.Rat
         {
             Vector3 translate = transform.position + direction * walkSpeed * Time.deltaTime;
             TryMove(translate, collisionMask, 0.6f);
-        }    
+        }
+
+        public void FreeWalk(Vector3 direction)
+        {
+            Vector3 translate = transform.position + direction * walkSpeed * Time.deltaTime;
+            SetTransform(translate, ratPosition.rotation, ratPosition.localScale);
+        }
+        
 
         public RaycastHit GetGroundData (float distance = 10000)
         {
@@ -479,6 +492,9 @@ namespace NeonRattie.Rat
             climbingMotion = new ClimbMotion();
             climbingIdle = new ClimbIdle();
             climbingDown = new ClimbDown();
+            
+            horizontalPipeWalk = new HorizontalPipeWalk();
+            horizontalPipeIdle = new HorizontalPipeIdle();
 
             idling.Init(this, ratStateMachine);
             walking.Init(this, ratStateMachine);
@@ -492,6 +508,9 @@ namespace NeonRattie.Rat
             climbingMotion.Init(this, ratStateMachine);
             climbingIdle.Init(this, ratStateMachine);
 
+            horizontalPipeWalk.Init(this, ratStateMachine);
+            horizontalPipeIdle.Init(this, ratStateMachine);
+
             ratStateMachine.AddState(idle, idling);
             ratStateMachine.AddState(walk, walking);
             ratStateMachine.AddState(jump, jumping);
@@ -502,6 +521,9 @@ namespace NeonRattie.Rat
             ratStateMachine.AddState(climbDown, climbingDown);
             ratStateMachine.AddState(climbIdle, climbingIdle);
             ratStateMachine.AddState(climbMotion, climbingMotion);
+            
+            ratStateMachine.AddState(horizontalPipe, horizontalPipeWalk);
+            ratStateMachine.AddState(horizontalIdle, horizontalPipeIdle);
             
             ratStateMachine.ChangeState(idle);
         }
@@ -577,6 +599,10 @@ namespace NeonRattie.Rat
 
         protected virtual void OnDisable()
         {
+            if (PlayerControls.Instance == null)
+            {
+                return;
+            }
             PlayerControls.Instance.Walk -= OnWalk;
         }
 
@@ -591,7 +617,9 @@ namespace NeonRattie.Rat
             }
 #if UNITY_EDITOR
             forwardDirection = ForwardDirection;
-            ratState = ratStateMachine.CurrentState.ToString();
+            string stateName = ratStateMachine.CurrentState.ToString();
+            string[] split = stateName.Split('.');
+            ratState = split[split.Length - 1];
 #endif
         }
 
@@ -707,7 +735,7 @@ namespace NeonRattie.Rat
             GUIStyle style = new GUIStyle {fontSize = 50};
             style.normal.textColor = Color.white;
             GUI.Box(new Rect(0, 0, 200, 200),  walkName, style);
-            GUI.Box(new Rect(0, 200, 200, 200), touching, style );
+            GUI.Box(new Rect(0, 100, 200, 200), touching, style );
         }
 #endif
         private void OnWalk(float axis)

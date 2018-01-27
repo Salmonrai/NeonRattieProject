@@ -141,15 +141,6 @@ namespace NeonRattie.Viewing
             }
         }
 
-        private void LateUpdate()
-        {
-            if (keepYPoint)
-            {
-                Vector3 position = transform.position;
-                position.y = cachedYPoint;
-                transform.position = position;
-            }
-        }
 
         private void AxisRotation()
         {

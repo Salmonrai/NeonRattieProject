@@ -50,6 +50,13 @@
         /// <summary>
         /// When idling up a pipe
         /// </summary>
-        ClimbIdle
+        ClimbIdle,
+        
+        /// <summary>
+        /// When on a horizontal pipe
+        /// </summary>
+        HorizontalPipeMotion,
+        
+        HorizontalPipeIdle
     }
 }

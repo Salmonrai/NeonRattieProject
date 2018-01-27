@@ -15,6 +15,11 @@ namespace Flusk.Utility
             Complete = onComplete;
         }
 
+        public virtual void Reset()
+        {
+            time = 0;
+        }
+
         public void Tick (float deltaTime)
         {
             time += deltaTime;
@@ -31,5 +36,6 @@ namespace Flusk.Utility
                 Complete();
             }
         }
+        
     }
 }

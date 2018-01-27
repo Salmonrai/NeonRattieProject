@@ -100,7 +100,7 @@ namespace NeonRattie.Rat.RatStates
             return direction * nextStage * distance;
         }
 
-        protected void AdjustToPlane()
+        protected virtual void AdjustToPlane()
         {
             if (rat.CurrentWalkable == null)
             {
@@ -112,7 +112,7 @@ namespace NeonRattie.Rat.RatStates
         protected bool CheckForJumps(bool activateUi = true)
         {
             JumpBox[] boxes = PhysicsCasting.OverlapSphereForType<JumpBox>(rat.RatPosition.position, 3f,  
-                1 << JumpBoxLayer.value);
+                JumpBoxLayer);
             foundJumpBox = boxes.Length > 0;
             if (activateUi)
             {

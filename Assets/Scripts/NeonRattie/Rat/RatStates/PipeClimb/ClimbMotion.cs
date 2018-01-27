@@ -1,4 +1,5 @@
-﻿using Flusk.Utility;
+﻿using System.Runtime.InteropServices;
+using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
 using UnityEngine;
@@ -60,7 +61,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         private void ChangeToClimbOff(out RaycastHit hitGround, out Ray ray, out bool groundIsClose)
         {
             ray = new Ray(rat.RatPosition.position, rat.RatPosition.forward);
-            groundIsClose = Physics.Raycast(ray, out hitGround, 5f, rat.GroundLayer);
+            groundIsClose = Physics.SphereCast(ray, radius: 1f, hitInfo: out hitGround,  maxDistance: 1f, 
+                layerMask: rat.GroundLayer);
             if (groundIsClose)
             {
                 rat.ChangeState(RatActionStates.ClimbDown);
