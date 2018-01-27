@@ -73,7 +73,7 @@ namespace NeonRattie.Rat.RatStates
 
             if (rat.JumpOffValid())
             {
-                rat.ChangeState(RatActionStates.JumpOff);
+                //rat.ChangeState(RatActionStates.JumpOff);
             }
         }
 

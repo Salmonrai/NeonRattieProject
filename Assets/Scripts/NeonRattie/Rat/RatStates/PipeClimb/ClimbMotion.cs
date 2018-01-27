@@ -63,6 +63,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             ray = new Ray(rat.RatPosition.position, rat.RatPosition.forward);
             groundIsClose = Physics.SphereCast(ray, radius: 0.5f, hitInfo: out hitGround,  maxDistance: 1f, 
                 layerMask: rat.GroundLayer);
+            groundIsClose = groundIsClose && hit.collider.GetComponent<JumpBox>() == null;
             if (groundIsClose)
             {
                 rat.ChangeState(RatActionStates.ClimbDown);

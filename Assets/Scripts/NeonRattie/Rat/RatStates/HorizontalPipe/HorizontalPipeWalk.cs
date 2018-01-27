@@ -21,6 +21,7 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
             base.Enter(state);
             rat.RatAnimator.Wrapper.Scuttle = true;
             pole = rat.CurrentWalkable as WalkingPoles;
+            rat.NullifyJumpBox();
         }
 
         public override void Tick()
