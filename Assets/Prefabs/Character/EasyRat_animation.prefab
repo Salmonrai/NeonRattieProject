@@ -4461,7 +4461,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1224040790669900}
-  m_LocalRotation: {x: -0.32618025, y: 0.32618025, z: 0.6273806, w: 0.6273806}
+  m_LocalRotation: {x: -0.32618028, y: 0.32618028, z: 0.62738067, w: 0.62738067}
   m_LocalPosition: {x: 0.15511, y: -0.195469, z: 0.172044}
   m_LocalScale: {x: 1.0000004, y: 1, z: 1.0000004}
   m_Children:
@@ -4589,7 +4589,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1016320910711264}
-  m_LocalRotation: {x: -0.32618025, y: 0.32618025, z: 0.6273806, w: 0.6273806}
+  m_LocalRotation: {x: -0.32618028, y: 0.32618028, z: 0.62738067, w: 0.62738067}
   m_LocalPosition: {x: 0.15511, y: -0.195469, z: 0.172044}
   m_LocalScale: {x: 1.0000004, y: 1, z: 1.0000004}
   m_Children:
@@ -7125,10 +7125,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94830c8997a1044cbe80cdf4671e449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
+  walkSpeed: 15
   runSpeed: 15
   gravity: {x: 0, y: 0, z: 0}
   nosePoint: {fileID: 4416391124340604}
+  buttPoint: {fileID: 0}
   jumpForce: 10
   jumpArc:
     serializedVersion: 2
@@ -7276,6 +7277,9 @@ MonoBehaviour:
   walkableMask:
     serializedVersion: 2
     m_Bits: 4352
+  climbMask:
+    serializedVersion: 2
+    m_Bits: 0
   climbMotionMultiplier: 5
   climbUpPolesCurve:
     serializedVersion: 2

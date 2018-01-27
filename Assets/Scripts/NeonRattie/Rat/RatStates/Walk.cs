@@ -39,7 +39,7 @@ namespace NeonRattie.Rat.RatStates
             Vector3 direction = ray.GetPoint(rat.IdealGroundDistance);
             direction = (direction - rat.RatPosition.position).normalized;
             rat.Walk(direction);
-            //FallTowards();
+            FallTowards();
             AdjustToPlane();
         }
         

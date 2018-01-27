@@ -7246,7 +7246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94830c8997a1044cbe80cdf4671e449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
+  walkSpeed: 15
   runSpeed: 15
   gravity: {x: 0, y: -9.81, z: 0}
   nosePoint: {fileID: 4821813285184466}

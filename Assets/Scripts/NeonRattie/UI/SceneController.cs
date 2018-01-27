@@ -41,7 +41,7 @@ namespace NeonRattie.UI
 
         protected virtual void OnDisable()
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         protected virtual void Update()

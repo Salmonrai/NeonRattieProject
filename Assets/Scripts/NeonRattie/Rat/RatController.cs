@@ -464,7 +464,7 @@ namespace NeonRattie.Rat
         public void Walk(Vector3 direction)
         {
             Vector3 translate = transform.position + direction * walkSpeed * Time.deltaTime;
-            TryMove(translate, collisionMask, 0.6f);
+            TryMove(translate, collisionMask, 0.3f);
         }
 
         public void FreeWalk(Vector3 direction)
