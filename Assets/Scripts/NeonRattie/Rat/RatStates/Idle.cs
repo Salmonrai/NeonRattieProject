@@ -146,6 +146,7 @@ namespace NeonRattie.Rat.RatStates
             if (StateMachine != null )
             {
                 StateMachine.ChangeState(RatActionStates.Walk);
+                rat.RatAnimator.Wrapper.LongIdle = false;
             }
         }
 
