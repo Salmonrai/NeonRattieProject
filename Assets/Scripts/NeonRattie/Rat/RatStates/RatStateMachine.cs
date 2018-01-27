@@ -14,10 +14,13 @@ namespace NeonRattie.Rat.RatStates
         /// An event for when the rat state changes
         /// </summary>
         public Action<RatActionStates, RatActionStates> stateChanged;
+        
+        public bool Initalised { get; protected set; }
 
         public void Init(RatBrain rat)
         {
             ratBrain = rat;
+            Initalised = true;
         }
 
         public void FixedTick()

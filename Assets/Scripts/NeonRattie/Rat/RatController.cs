@@ -481,7 +481,7 @@ namespace NeonRattie.Rat
             return info;
         }
 
-        private void Init()
+        public void Init()
         {
             RatAnimator = GetComponent<RatAnimator>();
             ratStateMachine.Init(this);
@@ -599,7 +599,7 @@ namespace NeonRattie.Rat
         protected virtual void Start()
         {
             SceneManagement.Instance.Rat = this;
-            Init();
+            //Init();
         }
         
         protected virtual void OnEnable()
@@ -618,6 +618,11 @@ namespace NeonRattie.Rat
 
         protected virtual void Update()
         {
+            if (!ratStateMachine.Initalised)
+            {
+                return;
+            }
+            
             ratStateMachine.Tick();
             JumpOnValid();
             rotationUpdater.Update(Time.deltaTime);
@@ -635,6 +640,10 @@ namespace NeonRattie.Rat
 
         protected virtual void FixedUpdate()
         {
+            if (!ratStateMachine.Initalised)
+            {
+                return;
+            }
             ratStateMachine.FixedTick();
         }
 
