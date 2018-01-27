@@ -19,6 +19,7 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
         public override void Enter(IState state)
         {
             base.Enter(state);
+            rat.RatAnimator.Wrapper.Scuttle = true;
             pole = rat.CurrentWalkable as WalkingPoles;
         }
 
@@ -32,6 +33,12 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
             }
             ChangeStates();
            
+        }
+
+        public override void Exit(IState state)
+        {
+            base.Exit(state);
+            rat.RatAnimator.Wrapper.Scuttle = false;
         }
 
         public override void FixedTick()

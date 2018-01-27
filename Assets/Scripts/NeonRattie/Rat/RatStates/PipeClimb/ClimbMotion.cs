@@ -61,7 +61,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         private void ChangeToClimbOff(out RaycastHit hitGround, out Ray ray, out bool groundIsClose)
         {
             ray = new Ray(rat.RatPosition.position, rat.RatPosition.forward);
-            groundIsClose = Physics.SphereCast(ray, radius: 1f, hitInfo: out hitGround,  maxDistance: 1f, 
+            groundIsClose = Physics.SphereCast(ray, radius: 0.5f, hitInfo: out hitGround,  maxDistance: 1f, 
                 layerMask: rat.GroundLayer);
             if (groundIsClose)
             {

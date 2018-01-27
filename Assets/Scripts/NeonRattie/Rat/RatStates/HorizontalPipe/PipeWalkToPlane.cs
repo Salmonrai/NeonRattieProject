@@ -27,6 +27,8 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
             point = rat.PipeToWalkable.ClosestPoint(rat.transform.position);
             stateTime = 0;
 
+            rat.RatAnimator.Wrapper.Jump = true;
+
             startPoint = rat.RatPosition.position;
         }
 
@@ -38,6 +40,7 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
 
             if (stateTime >= 1)
             {
+                rat.RatAnimator.Wrapper.Jump = false;
                 rat.ChangeState(RatActionStates.Idle);
             }
         }

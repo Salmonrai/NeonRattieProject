@@ -65,6 +65,7 @@ namespace NeonRattie.Rat.RatStates
             base.Exit(state);
             rat.RatAnimator.PlayJump(false);
             rat.RemoveDrawGizmos(DrawGizmos);
+            rat.NullifyJumpBox();
         }
 
         private void DrawGizmos ()
