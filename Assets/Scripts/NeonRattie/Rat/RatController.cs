@@ -767,7 +767,7 @@ namespace NeonRattie.Rat
 
         private void CalculateProjectedPoint()
         {
-            Vector3 point = RatPosition.position + WalkDirection - Down.direction * 10f;
+            Vector3 point = RatPosition.position + WalkDirection - Down.direction * 5f;
             RaycastHit info;
             Ray ray = Down;
             ray.origin = point;
@@ -780,7 +780,7 @@ namespace NeonRattie.Rat
             ProjectedGroundPoint = info.point;
             
             Ray pointRay = new Ray(ProjectedGroundPoint, info.normal);
-            ProjectedWalkPoint = pointRay.GetPoint(maxGroundDistance);
+            ProjectedWalkPoint = pointRay.GetPoint(idealGroundDistance);
             ProjectedDirection = (ProjectedWalkPoint - ratPosition.position).normalized;
             ProjectedInfo = info;
         }

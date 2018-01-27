@@ -116,11 +116,12 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
      
             Quaternion to = new Quaternion();
             
-            WalkingPoles poles = walkable as WalkingPoles;;
+            WalkingPoles poles = walkable as WalkingPoles;
             if (poles != null)
             {
                 to.SetLookRotation(poles.MoveDirection, poles.Up);
-                Vector3 placePoint = poles.ClosestPoint(this.point) + Vector3.up * rat.IdealGroundDistance;
+                Vector3 placePoint = poles.ClosestPoint(this.point) + Vector3.up * rat.IdealGroundDistance +
+                                     poles.MoveDirection * 0.5f;
                 position = new PositionTweener(rat.ClimbDownPolesCurve, rat.RatPosition.position,
                     placePoint, rat.RatPosition);
             }

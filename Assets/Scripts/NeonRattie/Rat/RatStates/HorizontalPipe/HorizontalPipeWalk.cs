@@ -20,10 +20,15 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
         {
             Adjust();
             ChangeStates();
+           
         }
 
         public override void FixedTick()
         {
+            if ( !Physics.Raycast(ray: rat.Down, maxDistance: 5f, layerMask: rat.GroundLayer))
+            {
+                rat.ChangeState(RatActionStates.Idle);
+            }
         }
         
         

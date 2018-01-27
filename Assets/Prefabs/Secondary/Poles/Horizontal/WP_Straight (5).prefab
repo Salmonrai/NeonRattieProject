@@ -11,6 +11,23 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1832621053391118}
   m_IsPrefabParent: 1
+--- !u!1 &1796028732492570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4151226421182942}
+  - component: {fileID: 33637998173370730}
+  - component: {fileID: 23645751196308650}
+  m_Layer: 8
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1832621053391118
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,12 +60,25 @@ GameObject:
   - component: {fileID: 33914832427713432}
   - component: {fileID: 23118342487659204}
   m_Layer: 8
-  m_Name: Sphere
+  m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4151226421182942
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1796028732492570}
+  m_LocalRotation: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
+  m_LocalPosition: {x: 1.48, y: -1.732, z: 0.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4339370342803072}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
 --- !u!4 &4339370342803072
 Transform:
   m_ObjectHideFlags: 1
@@ -59,6 +89,7 @@ Transform:
   m_LocalPosition: {x: -26.216164, y: 17.029633, z: 70.97984}
   m_LocalScale: {x: 1, y: 8.788149, z: 1}
   m_Children:
+  - {fileID: 4151226421182942}
   - {fileID: 4612691043506940}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -69,12 +100,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1912404481251420}
-  m_LocalRotation: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
-  m_LocalPosition: {x: 1.48, y: -1.732, z: 0.17}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.000000029802322, z: 0.7071068, w: -0.7071068}
+  m_LocalPosition: {x: 1.48, y: 1.547, z: 0.17}
+  m_LocalScale: {x: 1.0000008, y: 1, z: 1.0000007}
   m_Children: []
   m_Father: {fileID: 4339370342803072}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
 --- !u!23 &23110151626549148
 MeshRenderer:
@@ -145,6 +176,40 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!23 &23645751196308650
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1796028732492570}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!33 &33267779779757684
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -152,6 +217,13 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1832621053391118}
   m_Mesh: {fileID: 4300012, guid: 8eb1fd4c08a2fc14aaba4ae0bd018ce4, type: 3}
+--- !u!33 &33637998173370730
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1796028732492570}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &33914832427713432
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -185,9 +257,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50bff22b52464a6c92cbef15603dcc15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientationHelper: {fileID: 4612691043506940}
+  orientationHelper: {fileID: 4151226421182942}
   colliders: []
-  walkPlane: {fileID: 4612691043506940}
+  walkPlane: {fileID: 4151226421182942}
+  endPoint: {fileID: 4612691043506940}
 --- !u!114 &114850347053968220
 MonoBehaviour:
   m_ObjectHideFlags: 1
