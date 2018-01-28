@@ -798,7 +798,7 @@ namespace NeonRattie.Rat
             ProjectedGroundPoint = info.point;
             
             Ray pointRay = new Ray(ProjectedGroundPoint, info.normal);
-            ProjectedWalkPoint = pointRay.GetPoint(idealGroundDistance);
+            ProjectedWalkPoint = pointRay.GetPoint(idealGroundDistance + 0.5f);
             ProjectedDirection = (ProjectedWalkPoint - ratPosition.position).normalized;
             ProjectedInfo = info;
         }
