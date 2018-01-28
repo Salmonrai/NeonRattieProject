@@ -1,4 +1,5 @@
-﻿using Flusk.Utility;
+﻿using System;
+using Flusk.Utility;
 using NeonRattie.Controls;
 using NeonRattie.Objects;
 using UnityEngine;
@@ -20,6 +21,16 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
             rat.RatAnimator.Wrapper.Idle = true;
             pole = rat.CurrentWalkable as WalkingPoles;
             toMenuTimer = new Timer(TO_MENU_TIME, ToMenu);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+            PlayerControls pc;
+            if (!PlayerControls.TryGetInstance(out pc))
+            {
+                return;
+            }
         }
 
         public override void FixedTick()
@@ -46,7 +57,6 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
                     sign = -1;
                 }
             }
-            rat.FreeWalk(pole.MoveDirection * sign);
             rat.RotateController.SetLookDirection(pole.MoveDirection * sign, pole.Up);
             FallTowards();
         }
