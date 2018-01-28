@@ -23,6 +23,27 @@ namespace NeonRattie.Objects
             get;
             private set;
         }
+        
+        public Transform GetClosestStartPosition(Vector3 position)
+        {
+            float sqrPlane = Vector3.SqrMagnitude(position - walkPlane.position);
+            float sqrEnd = Vector3.SqrMagnitude(position - endPoint.position);
+            return (sqrEnd > sqrPlane) ? walkPlane : endPoint;
+        }
+        
+        public Transform GetFurtherestStartPosition(Vector3 position)
+        {
+            float sqrPlane = Vector3.SqrMagnitude(position - walkPlane.position);
+            float sqrEnd = Vector3.SqrMagnitude(position - endPoint.position);
+            return (sqrEnd < sqrPlane) ? walkPlane : endPoint;
+        }
+
+        public void CalculateMoveDirection(Vector3 position)
+        {
+            Transform startPoint = GetClosestStartPosition(position);
+            Transform endPoint = GetFurtherestStartPosition(position);
+            MoveDirection = (endPoint.position - startPoint.position).normalized;
+        }
 
         public override Vector3 Up
         {

@@ -120,8 +120,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             if (poles != null)
             {
                 to.SetLookRotation(poles.MoveDirection, poles.Up);
-                Vector3 placePoint = poles.ClosestPoint(this.point) + Vector3.up * rat.IdealGroundDistance +
-                                     poles.MoveDirection * 0.5f;
+                Vector3 placePoint = poles.GetClosestStartPosition(rat.RatPosition.position).position + 
+                                     Vector3.up * rat.IdealGroundDistance;
                 position = new PositionTweener(rat.ClimbDownPolesCurve, rat.RatPosition.position,
                     placePoint, rat.RatPosition);
             }
