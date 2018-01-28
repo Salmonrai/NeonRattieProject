@@ -22,11 +22,13 @@ namespace NeonRattie.UI.InGame
         public void Exit()
         {
             SceneController.Instance.LoadSceneAsync("Menu");
+            Time.timeScale = 1;
         }
 
         public void Credits()
         {
             SceneController.Instance.LoadSceneAsync("Credits");
+            Time.timeScale = 1;
         }
         
         protected virtual void Update()

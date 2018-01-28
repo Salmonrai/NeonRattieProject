@@ -54,10 +54,12 @@ namespace NeonRattie.UI
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            Debug.Log("Scene Loaded");
             if (scene.name == "NewMain")
             {
+                Debug.Log("New main loaded");
                 loading.gameObject.SetActive(true);
-                timer = new Timer(10f, Deactivate);
+                timer = new Timer(8f, Deactivate);
             }
         }
         
