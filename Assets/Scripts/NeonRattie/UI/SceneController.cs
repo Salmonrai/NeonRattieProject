@@ -73,7 +73,7 @@ namespace NeonRattie.UI
                 yield return null;
             }
 
-            if (name == "Menu")
+            if (name != "NewMain")
             {
                 loading.gameObject.SetActive(false);
             }
