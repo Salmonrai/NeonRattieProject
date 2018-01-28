@@ -21517,6 +21517,9 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 4096
+  endPoints:
+    Begin: {fileID: 0}
+    End: {fileID: 0}
   climbPoint: {fileID: 284806425}
   climbOffPoints: []
 --- !u!114 &689958186

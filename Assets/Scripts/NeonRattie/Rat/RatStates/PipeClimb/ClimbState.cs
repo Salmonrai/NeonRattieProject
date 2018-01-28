@@ -32,7 +32,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             }
 
             Vector3 normal = hit.normal;
-            Vector3 tangent = normal.CalculateTangent(up, forward);
+            Vector3 tangent = pole.EndPoints.DirectionFrom(rat.FirstClimbPoint);
 
             Quaternion rotation = rat.RatPosition.rotation;
             rotation.SetLookRotation(tangent * sign, normal);

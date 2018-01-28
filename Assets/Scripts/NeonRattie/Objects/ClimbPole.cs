@@ -15,6 +15,13 @@ namespace NeonRattie.Objects
         protected LayerMask collisionMask;
         public LayerMask Mask { get { return collisionMask; } }
 
+        [SerializeField]
+        protected EndPoints endPoints;
+        public EndPoints EndPoints
+        {
+            get { return endPoints; }
+        }
+
         /// <summary>
         /// The point the that the rat uses to configure itself up
         /// </summary>
@@ -95,5 +102,5 @@ namespace NeonRattie.Objects
             
             collection = new ClimbOffCollection(climbOffPoints);
         }
-    }
+    }  
 }

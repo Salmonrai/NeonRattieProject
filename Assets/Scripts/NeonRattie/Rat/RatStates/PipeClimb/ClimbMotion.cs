@@ -14,6 +14,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         }
         private RaycastHit hit;
         private float sign = 1;
+        
 
         private Vector3 FallTowardsData
         {
@@ -78,11 +79,11 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             {
                 if (pc.CheckKey(pc.ClimDownKey))
                 {
-                    sign = 1;
+                    sign = -1;
                 }
                 else if (pc.CheckKey(pc.ClimbUpKey))
                 {
-                    sign = -1;
+                    sign = 1;
                 }
             }
             

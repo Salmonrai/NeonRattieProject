@@ -263,6 +263,8 @@ namespace NeonRattie.Rat
         public Vector3 ProjectedDirection { get; protected set; }
         public RaycastHit ProjectedInfo { get; protected set; }
         public Vector3 PreviousWalkDirection { get; private set; }
+        
+        public Vector3 FirstClimbPoint { get; private set; }
 
 
 #if UNITY_EDITOR
@@ -417,6 +419,7 @@ namespace NeonRattie.Rat
                 return false;
             }
             CurrentClimbable = hit.collider.GetComponent<IClimbable>();
+            FirstClimbPoint = (CurrentClimbable as ClimbPole).ClosestPoint(ratPosition.position);
             float dot = Mathf.Abs(Vector3.Dot(hit.normal, RatPosition.up));
             return dot <= vectorSimilarityForClimb;
         }
@@ -792,11 +795,6 @@ namespace NeonRattie.Rat
             Ray ray = Down;
             ray.origin = point;
             var raycast = Physics.Raycast(ray, out info, float.MaxValue, walkableMask);
-            if (!raycast)
-            {
-                Debug.Log("failed");
-            }
-
             ProjectedGroundPoint = info.point;
             
             Ray pointRay = new Ray(ProjectedGroundPoint, info.normal);
@@ -815,6 +813,7 @@ namespace NeonRattie.Rat
             }
 
             CurrentClimbable = climbable;
+            FirstClimbPoint = (CurrentClimbable as ClimbPole).ClosestPoint(ratPosition.position);
             if (!climbable.Raycast(ray, out hit, float.MaxValue))
             {
                 return ray.direction;
