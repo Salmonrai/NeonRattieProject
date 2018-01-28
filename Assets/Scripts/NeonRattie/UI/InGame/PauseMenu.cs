@@ -14,6 +14,10 @@ namespace NeonRattie.UI.InGame
 
         public void Toggle()
         {
+            if (IsLoading())
+            {
+                return;
+            }
             Active = !Active;
             Time.timeScale = Active ? 0 : 1;
             ui.SetActive(Active);
@@ -21,6 +25,10 @@ namespace NeonRattie.UI.InGame
         
         public void Resume()
         {
+            if (IsLoading())
+            {
+                return;
+            }
             Active = false;
             Time.timeScale = Active ? 0 : 1;
             ui.SetActive(Active);
@@ -28,6 +36,10 @@ namespace NeonRattie.UI.InGame
 
         public void Pause()
         {
+            if (IsLoading())
+            {
+                return;
+            }
             Active = true;
             Time.timeScale = Active ? 0 : 1;
             ui.SetActive(Active);
@@ -56,6 +68,16 @@ namespace NeonRattie.UI.InGame
             {
                 Toggle();
             }
+        }
+
+        private bool IsLoading()
+        {
+            SceneController sc;
+            if (!SceneController.TryGetInstance(out sc))
+            {
+                return false;
+            }
+            return sc.Loading;
         }
     }
 }

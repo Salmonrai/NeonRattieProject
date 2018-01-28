@@ -60,6 +60,7 @@ namespace NeonRattie.UI
                 Debug.Log("New main loaded");
                 loading.gameObject.SetActive(true);
                 timer = new Timer(8f, Deactivate);
+                Loading = true;
             }
         }
         
@@ -76,8 +77,8 @@ namespace NeonRattie.UI
             if (name != "NewMain")
             {
                 loading.gameObject.SetActive(false);
+                Loading = false;
             }
-            Loading = false;
         }
 
         private void Deactivate()
@@ -85,6 +86,7 @@ namespace NeonRattie.UI
             loading.gameObject.SetActive(false);
             timer = null;
             SceneObjects.Instance.RatController.Init();
+            Loading = false;
         }
     }
 }
