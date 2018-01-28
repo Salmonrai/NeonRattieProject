@@ -14,7 +14,6 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
         }
         private RaycastHit hit;
         private float sign = 1;
-        
 
         private Vector3 FallTowardsData
         {
@@ -27,12 +26,13 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             base.Enter(state);
             PlayerControls.Instance.Unwalk += OnUnWalk;
             rat.AddDrawGizmos(OnGizmosDrawn);
-            
+            pole = (rat.CurrentClimbable as ClimbPole);
             rat.RatAnimator.PlayScuttle();
         }
         public override void Tick()
         {
             base.Tick();
+            
             if (!RotateToClimbPole(out hit, Vector3.up, Vector3.forward, sign))
             {
                 return;
@@ -51,7 +51,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             {
                 return;
             }
-            FallTowards(FallTowardsData, 1 << (rat.CurrentClimbable as ClimbPole).gameObject.layer, 0.1f);
+            FallTowards(FallTowardsData, 1 << pole.gameObject.layer, 0.1f);
         }
 
         public override void FixedTick()

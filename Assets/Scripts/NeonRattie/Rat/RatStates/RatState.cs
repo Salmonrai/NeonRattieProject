@@ -33,6 +33,8 @@ namespace NeonRattie.Rat.RatStates
 
         protected bool foundJumpBox, foundClimbable;
 
+        protected int tickAmount;
+
         public void Init(RatBrain ratBrain, RatStateMachine machine)
         {
             rat = ratBrain;
@@ -44,6 +46,7 @@ namespace NeonRattie.Rat.RatStates
             rat.AddDrawGizmos(OnGizmos);
             rat.AddGUI(OnGui);
             foundJumpBox = foundClimbable = false;
+            tickAmount = 0;
         }
 
         public virtual void Exit(IState nextState)
@@ -53,7 +56,8 @@ namespace NeonRattie.Rat.RatStates
         }
 
         public virtual void Tick()
-        {     
+        {
+            tickAmount++;
         }
 
         public virtual void FixedTick()

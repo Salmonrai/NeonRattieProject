@@ -8,6 +8,8 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
 {
     public class ClimbState : RatState, IActionState
     {
+        protected ClimbPole pole;
+
         public override RatActionStates State
         {
             get { return RatActionStates.ClimbIdle; }
@@ -77,6 +79,14 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             toClimbPole = toClimbPole.Flatten().normalized;
             Ray ray = new Ray(rat.RatPosition.position, toClimbPole);
             Gizmos.DrawRay(ray.origin, ray.direction);
+        }
+
+        protected void ChangeToIdle()
+        {
+            if (Vector3.Distance(pole.transform.position, rat.RatPosition.position) > 20)
+            {
+                rat.ChangeState(RatActionStates.Idle);
+            }
         }
     }
 }

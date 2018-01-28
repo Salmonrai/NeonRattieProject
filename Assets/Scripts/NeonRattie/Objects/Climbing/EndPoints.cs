@@ -17,5 +17,17 @@ namespace NeonRattie.Objects.Climbing
             Vector3 furthestPoint = (beginSize < endSize) ? End.position : Begin.position;
             return (furthestPoint - closestPoint).normalized;
         }
+
+        public Transform Closest(Vector3 position)
+        {
+            float beginSize = Vector3.SqrMagnitude(position - Begin.position);
+            float endSize = Vector3.SqrMagnitude(position - End.position);
+            return (beginSize > endSize) ? End : Begin;
+        }
+
+        public Vector3 ClosestPoint(Vector3 position)
+        {
+            return Closest(position).position;
+        }
     }
 }

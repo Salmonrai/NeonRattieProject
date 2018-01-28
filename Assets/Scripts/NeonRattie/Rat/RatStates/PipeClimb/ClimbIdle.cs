@@ -21,7 +21,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             PlayerControls.Instance.ClimbUp += OnClimb;
             PlayerControls.Instance.ClimbDown += OnClimb;
             rat.AddDrawGizmos(OnGizmosDrawn);
-            
+            pole = (rat.CurrentClimbable as ClimbPole);
             rat.RatAnimator.PlayIdle();
         }
 
@@ -31,7 +31,7 @@ namespace NeonRattie.Rat.RatStates.PipeClimb
             if (RotateToClimbPole(out hit, -1))
             {
                 rat.PreviousClimbFallTowardsPoint = hit.point;
-                FallTowards(rat.PreviousClimbFallTowardsPoint, 1 << (rat.CurrentClimbable as ClimbPole).gameObject.layer, 0.1f);
+                FallTowards(rat.PreviousClimbFallTowardsPoint, 1 << pole.gameObject.layer, 0.1f);
             }
         }
 
