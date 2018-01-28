@@ -10,13 +10,27 @@ namespace NeonRattie.UI.InGame
         [SerializeField]
         private GameObject ui;
 
-        private bool active = false;
+        public bool Active { get; private set; }
 
+        public void Toggle()
+        {
+            Active = !Active;
+            Time.timeScale = Active ? 0 : 1;
+            ui.SetActive(Active);
+        }
+        
         public void Resume()
         {
-            active = !active;
-            Time.timeScale = active ? 0 : 1;
-            ui.SetActive(active);
+            Active = false;
+            Time.timeScale = Active ? 0 : 1;
+            ui.SetActive(Active);
+        }
+
+        public void Pause()
+        {
+            Active = true;
+            Time.timeScale = Active ? 0 : 1;
+            ui.SetActive(Active);
         }
 
         public void Exit()
@@ -40,10 +54,8 @@ namespace NeonRattie.UI.InGame
             
             if (Input.GetKeyDown(activateKeyCode))
             {
-                active = !active;
-                Time.timeScale = active ? 0 : 1;
+                Toggle();
             }
-            ui.SetActive(active);
         }
     }
 }
