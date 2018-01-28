@@ -43,6 +43,8 @@ namespace NeonRattie.Rat.RatStates
 
         public virtual void Enter(IState previousState)
         {
+            rat.RatAnimator.Wrapper.Reset();
+            
             rat.AddDrawGizmos(OnGizmos);
             rat.AddGUI(OnGui);
             foundJumpBox = foundClimbable = false;

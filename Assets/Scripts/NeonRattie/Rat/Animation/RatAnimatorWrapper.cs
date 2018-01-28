@@ -18,7 +18,7 @@ namespace NeonRattie.Rat.Animation
 
         public void Reset()
         {
-            Idle = true;
+            Idle = false;
             LongIdle = false;
             Scamper = false;
             Scuttle = false;

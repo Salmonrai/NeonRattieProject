@@ -32,7 +32,6 @@ namespace NeonRattie.Rat.RatStates
             PlayerControls.Instance.Jump += OnJump;
 
             rat.AttachedMonoBehaviours[typeof(RotateController)].enabled = true;
-
             rat.RatAnimator.PlayIdle();
 
             timeOut = new Timer(5, TimeOut);

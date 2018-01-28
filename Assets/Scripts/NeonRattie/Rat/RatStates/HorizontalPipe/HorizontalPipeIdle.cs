@@ -18,7 +18,7 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
         public override void Enter(IState state)
         {
             base.Enter(state);
-            rat.RatAnimator.Wrapper.Idle = true;
+            rat.RatAnimator.PlayIdle();
             pole = rat.CurrentWalkable as WalkingPoles;
             toMenuTimer = new Timer(TO_MENU_TIME, ToMenu);
         }
@@ -40,6 +40,12 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
             {
                 rat.ChangeState(RatActionStates.Idle);
             }
+        }
+
+        public override void Exit(IState state)
+        {
+            base.Exit(state);
+            rat.RatAnimator.PlayIdle(false);
         }
 
         protected override void AdjustToPlane()
