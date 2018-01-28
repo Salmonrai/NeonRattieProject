@@ -26,6 +26,7 @@ namespace NeonRattie.Rat.RatStates
             if (Math.Abs(rat.WalkDirection.magnitude) < 0.001f)
             {
                 rat.ChangeState(RatActionStates.Idle);
+                rat.RatAnimator.PlayIdle();
                 return;
             }
             Adjust();

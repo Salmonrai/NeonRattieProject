@@ -47,6 +47,7 @@ namespace NeonRattie.Rat.RatStates.HorizontalPipe
         {
             base.Exit(state);
             rat.RatAnimator.PlayJump(false);
+            rat.RatAnimator.PlayIdle();
         }
     }
 }
