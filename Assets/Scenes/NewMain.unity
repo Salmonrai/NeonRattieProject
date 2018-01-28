@@ -21517,9 +21517,6 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 4096
-  endPoints:
-    Begin: {fileID: 0}
-    End: {fileID: 0}
   climbPoint: {fileID: 284806425}
   climbOffPoints: []
 --- !u!114 &689958186
@@ -25794,8 +25791,8 @@ OcclusionArea:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 835974541}
   serializedVersion: 2
-  m_Size: {x: 35.630592, y: 1, z: 1}
-  m_Center: {x: -17.315311, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
   m_IsViewVolume: 1
 --- !u!4 &835974543
 Transform:
@@ -31763,15 +31760,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4055450513532846, guid: c9c29f66fe183634392029c7afe102e1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -39.1
+      value: -43.671886
       objectReference: {fileID: 0}
     - target: {fileID: 4055450513532846, guid: c9c29f66fe183634392029c7afe102e1, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 16.8
+      value: 16.709587
       objectReference: {fileID: 0}
     - target: {fileID: 4055450513532846, guid: c9c29f66fe183634392029c7afe102e1, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 90.1
+      value: 89.828064
       objectReference: {fileID: 0}
     - target: {fileID: 4055450513532846, guid: c9c29f66fe183634392029c7afe102e1, type: 2}
       propertyPath: m_LocalRotation.x
@@ -58189,19 +58186,6 @@ Prefab:
     - target: {fileID: 4638822402418820, guid: 35047f8447f22d74ca7cb66947564ca3, type: 2}
       propertyPath: m_RootOrder
       value: 175
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608150319461578, guid: 35047f8447f22d74ca7cb66947564ca3, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -1.654
-      objectReference: {fileID: 0}
-    - target: {fileID: 4949942817808928, guid: 35047f8447f22d74ca7cb66947564ca3, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 136761295198886008, guid: 35047f8447f22d74ca7cb66947564ca3,
-        type: 2}
-      propertyPath: m_Center.y
-      value: -0.26
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35047f8447f22d74ca7cb66947564ca3, type: 2}
